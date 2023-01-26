@@ -20,8 +20,7 @@ export class PagingRequest {
    * @param {number} pageSize - The page size of the request. Must be greater than 0 and less than 1001.
    * @returns {PagingRequest} - A new instance of the PagingRequest class.
    * @throws {Error} - Thrown when the pageNumber is less than 1.
-   * @throws {Error} - Thrown when the pageSize is less than 1.
-   * @throws {Error} - Thrown when the pageSize is greater than 1000.
+   * @throws {Error} - Thrown when the pageSize is less than 1 or greater than 1000.
    */
   constructor(pageNumber: number, pageSize: number) {
     if (ArgumentValidator.isValidPageNumber(pageNumber) === false) {
