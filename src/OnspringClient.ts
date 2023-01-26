@@ -7,7 +7,7 @@ import { ArgumentValidator } from './models/ArgumentValidator';
  */
 export class OnspringClient {
   /**
-   * @property {AxiosInstance} client - The axios instance that will be used to make requests to the Onspring API.
+   * @readonly {AxiosInstance} client - The axios instance that will be used to make requests to the Onspring API.
    */
   protected readonly client: AxiosInstance;
 
