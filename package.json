@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm test && tsc",
-    "test": "mocha -r ts-node/register ./tests/**/*.spec.ts"
+    "build": "npm tests && tsc",
+    "tests": "mocha -r ts-node/register ./tests/**/*.spec.ts",
+    "test": "mocha -r ts-node/register"
   },
   "author": "Stevan Freeborn",
   "license": "MIT",
