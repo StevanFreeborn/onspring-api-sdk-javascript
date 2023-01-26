@@ -1,4 +1,4 @@
-import { EndpointFactory } from '../src/Models/EndpointFactory';
+import { EndpointFactory } from '../src/models/EndpointFactory';
 import { expect } from 'chai';
 
 describe('EndpointFactory', function () {
