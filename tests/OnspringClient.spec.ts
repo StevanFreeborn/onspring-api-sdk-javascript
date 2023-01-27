@@ -1,8 +1,10 @@
 import { OnspringClient } from '../src/OnspringClient';
+import { ApiResponse } from '../src/models/ApiResponse';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 describe('OnspringClient', function () {
-  const baseUrl = 'https://api.onspring.com';
+  const baseUrl = 'https://api.onspring.dev';
   const apiKey = 'apiKey';
 
   it('should be defined', function () {
@@ -85,5 +87,43 @@ describe('OnspringClient', function () {
 
   it('should have a client property', function () {
     expect(new OnspringClient(baseUrl, apiKey)).to.have.property('_client');
+  });
+
+  describe('canConnect', function () {
+    it('should be defined', function () {
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.be.a('function');
+    });
+
+    it('should have 0 parameters', function () {
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.have.lengthOf(0);
+    });
+
+    it('should return a promise', function () {
+      expect(new OnspringClient(baseUrl, apiKey).canConnect()).to.be.a('promise');
+    });
+
+    it('should return a promise that resolves to a boolean', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+      const result = await client.canConnect();
+      expect(result).to.be.a('boolean');
+    });
+
+    it('should return a promise that resolves to true when able to connect to the Onspring API', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+      sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(200, 'OK', null)));
+      const result = await client.canConnect();
+      expect(result).to.be.true;
+    });
+
+    it('should return a promise that resolves to false when unable to connect to the Onspring API', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+      sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(500, 'Internal Server Error', null)));
+      const result = await client.canConnect();
+      expect(result).to.be.false;
+    });
   });
 });

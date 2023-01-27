@@ -2,6 +2,8 @@ import { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { ArgumentValidator } from './models/ArgumentValidator';
 import { EndpointFactory } from './models/EndpointFactory';
+import { ApiResponseFactory } from './models/ApiResponseFactory';
+import { ApiResponse } from './models/ApiResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -41,18 +43,30 @@ export class OnspringClient {
     });
   }
 
+  /**
+   * @method canConnect - Determines if the client can connect to the Onspring API.
+   * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating if the client can connect to the Onspring API.
+   */
   public async canConnect(): Promise<boolean> {
-    const endpoint = EndpointFactory.getPingEndpoint(this._client.defaults.baseURL);
+    const endpoint = EndpointFactory.getPingEndpoint(
+      this._client.defaults.baseURL
+    );
     try {
-      var response = await this._client.get(endpoint);
-      return response.status === 200;
+      const response = await this.get<ApiResponse<boolean>>(endpoint);
+      return response.isSuccessful;
     } catch (error) {
       return false;
     }
   }
 
-  private async get<T>(endpoint: string): Promise<T> {
-    const response = await this._client.get<T>(endpoint);
-    return response.data;
+  /**
+   * @method get - Makes a GET request to the specified endpoint.
+   * @param {string} endpoint - The endpoint that will be used to make the request.
+   * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
+   */
+  private async get<T>(endpoint: string): Promise<ApiResponse<T>> {
+    const response = await this._client.get(endpoint);
+    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    return apiResponse;
   }
 }
