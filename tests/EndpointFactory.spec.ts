@@ -81,6 +81,13 @@ describe('EndpointFactory', function () {
     });
   });
 
+  describe('getAddOrUpdateListItemEndpoint', function () {
+    it('should return the correct add or update list item endpoint', function () {
+      const result = EndpointFactory.getAddOrUpdateListItemEndpoint(baseUrl, 1);
+      expect(result).to.equal(`${baseUrl}/Lists/id/1/items`);
+    });
+  });
+
   describe('getDeleteListItemEndpoint', function () {
     it('should return the correct delete list item endpoint', function () {
       const result = EndpointFactory.getDeleteListItemEndpoint(baseUrl, 1, '612ac495-8aad-44fd-b57d-1ae798dcf1a5');
