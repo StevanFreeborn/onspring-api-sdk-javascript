@@ -9,7 +9,7 @@ export class OnspringClient {
   /**
    * @readonly {AxiosInstance} client - The axios instance that will be used to make requests to the Onspring API.
    */
-  protected readonly client: AxiosInstance;
+  private readonly _client: AxiosInstance;
 
   /**
    * @constructor - Creates a new instance of the OnspringClient class.
@@ -31,7 +31,7 @@ export class OnspringClient {
       throw new Error('apiKey cannot be null/empty/whitespace.');
     }
 
-    this.client = axios.create({
+    this._client = axios.create({
       baseURL: baseUrl,
       headers: {
         'x-apikey': apiKey,
