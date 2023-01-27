@@ -1,0 +1,16 @@
+enum FieldType {
+  Text = 'Text',
+  Number = 'Number',
+  AutoNumber = 'AutoNumber',
+  Date = 'Date',
+  TimeSpan = 'TimeSpan',
+  List = 'List',
+  Reference = 'Reference',
+  SurveyReference = 'SurveyReference',
+  SurveyGroupScoring = 'SurveyGroupScoring',
+  SurveyCampaign = 'SurveyCampaign',
+  SurveyUnifiedAnswer = 'SurveyUnifiedAnswer',
+  Attachment = 'Attachment',
+  Image = 'Image',
+  Formula = 'Formula',
+}
