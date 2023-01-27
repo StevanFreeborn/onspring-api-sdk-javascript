@@ -1,4 +1,4 @@
-enum FieldType {
+export enum FieldType {
   Text = 'Text',
   Number = 'Number',
   AutoNumber = 'AutoNumber',

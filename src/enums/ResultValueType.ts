@@ -1,4 +1,4 @@
-enum ResultValueType {
+export enum ResultValueType {
   String = 'String',
   Integer = 'Integer',
   Decimal = 'Decimal',

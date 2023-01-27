@@ -1,4 +1,4 @@
-enum TimeSpanIncrement {
+export enum TimeSpanIncrement {
   Seconds = 'Seconds',
   Minutes = 'Minutes',
   Hours = 'Hours',
