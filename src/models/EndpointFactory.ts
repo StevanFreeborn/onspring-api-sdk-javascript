@@ -154,4 +154,88 @@ export class EndpointFactory {
   ): string {
     return `${baseUrl}/Records/appId/${appId}`;
   }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the get record by id endpoint.
+   * @param {number} appId - The id of the app.
+   * @param {number} recordId - The id of the record.
+   * @returns {string} - The get record by id endpoint.
+   */
+  public static getRecordByIdEndpoint(
+    baseUrl: string,
+    appId: number,
+    recordId: number
+  ): string {
+    return `${baseUrl}/Records/appId/${appId}/recordId/${recordId}`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the delete record by id endpoint.
+   * @param {number} appId - The id of the app.
+   * @param {number} recordId - The id of the record.
+   * @returns {string} - The delete record by id endpoint.
+   */
+  public static getDeleteRecordByIdEndpoint(
+    baseUrl: string,
+    appId: number,
+    recordId: number
+  ): string {
+    return `${baseUrl}/Records/appId/${appId}/recordId/${recordId}`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the get records by ids endpoint.
+   * @returns {string} - The get records by ids endpoint.
+   */
+  public static getRecordsByIdsEndpoint(baseUrl: string): string {
+    return `${baseUrl}/Records/batch-get`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the query records endpoint.
+   * @returns {string} - The query records endpoint.
+   */
+  public static getQueryRecordsEndpoint(baseUrl: string): string {
+    return `${baseUrl}/Records/query`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the add or update record endpoint.
+   * @returns {string} - The add or update record endpoint.
+   */
+  public static getAddOrUpdateRecordEndpoint(baseUrl: string): string {
+    return `${baseUrl}/Records`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the delete records by ids endpoint.
+   * @returns {string} - The delete records by ids endpoint.
+   */
+  public static getDeleteRecordsByIdsEndpoint(baseUrl: string): string {
+    return `${baseUrl}/Records/batch-delete`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the get report by id endpoint.
+   * @param {number} reportId - The id of the report.
+   * @returns {string} - The get report by id endpoint.
+   */
+  public static getReportByIdEndpoint(
+    baseUrl: string,
+    reportId: number
+  ): string {
+    return `${baseUrl}/Reports/id/${reportId}`;
+  }
+
+  /**
+   * @param {string} baseUrl - The base url that will be used to create the get reports by app id endpoint.
+   * @param {number} appId - The id of the app.
+   * @returns {string} - The get reports by app id endpoint.
+   */
+  public static getReportsByAppIdEndpoint(
+    baseUrl: string,
+    appId: number
+  ): string {
+    return `${baseUrl}/Reports/appId/${appId}`;
+  }
 }

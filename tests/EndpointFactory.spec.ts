@@ -62,15 +62,24 @@ describe('EndpointFactory', function () {
 
   describe('getDeleteFileByIdEndpoint', function () {
     it('should return the correct delete file endpoint', function () {
-      const result = EndpointFactory.getDeleteFileByIdEndpoint(baseUrl, 1, 2, 3);
-      expect(result).to.equal(`${baseUrl}/Files/recordId/1/fieldId/2/fileId/3/file`);
+      const result = EndpointFactory.getDeleteFileByIdEndpoint(
+        baseUrl,
+        1,
+        2,
+        3
+      );
+      expect(result).to.equal(
+        `${baseUrl}/Files/recordId/1/fieldId/2/fileId/3/file`
+      );
     });
   });
 
   describe('getFileByIdEndpoint', function () {
     it('should return the correct get file endpoint', function () {
       const result = EndpointFactory.getFileByIdEndpoint(baseUrl, 1, 2, 3);
-      expect(result).to.equal(`${baseUrl}/Files/recordId/1/fieldId/2/fileId/3/file`);
+      expect(result).to.equal(
+        `${baseUrl}/Files/recordId/1/fieldId/2/fileId/3/file`
+      );
     });
   });
 
@@ -90,15 +99,77 @@ describe('EndpointFactory', function () {
 
   describe('getDeleteListItemEndpoint', function () {
     it('should return the correct delete list item endpoint', function () {
-      const result = EndpointFactory.getDeleteListItemEndpoint(baseUrl, 1, '612ac495-8aad-44fd-b57d-1ae798dcf1a5');
-      expect(result).to.equal(`${baseUrl}/Lists/id/1/itemId/612ac495-8aad-44fd-b57d-1ae798dcf1a5`);
+      const result = EndpointFactory.getDeleteListItemEndpoint(
+        baseUrl,
+        1,
+        '612ac495-8aad-44fd-b57d-1ae798dcf1a5'
+      );
+      expect(result).to.equal(
+        `${baseUrl}/Lists/id/1/itemId/612ac495-8aad-44fd-b57d-1ae798dcf1a5`
+      );
     });
   });
 
-  describe('getRecordsByAppIdEndpoint', function () { 
+  describe('getRecordsByAppIdEndpoint', function () {
     it('should return the correct records by app id endpoint', function () {
       const result = EndpointFactory.getRecordsByAppIdEndpoint(baseUrl, 1);
       expect(result).to.equal(`${baseUrl}/Records/appId/1`);
+    });
+  });
+
+  describe('getRecordByIdEndpoint', function () {
+    it('should return the correct record by id endpoint', function () {
+      const result = EndpointFactory.getRecordByIdEndpoint(baseUrl, 1, 2);
+      expect(result).to.equal(`${baseUrl}/Records/appId/1/recordId/2`);
+    });
+  });
+
+  describe('getDeleteRecordByIdEndpoint', function () {
+    it('should return the correct delete record by id endpoint', function () {
+      const result = EndpointFactory.getDeleteRecordByIdEndpoint(baseUrl, 1, 2);
+      expect(result).to.equal(`${baseUrl}/Records/appId/1/recordId/2`);
+    });
+  });
+
+  describe('getRecordsByIdsEndpoint', function () {
+    it('should return the correct records by ids endpoint', function () {
+      const result = EndpointFactory.getRecordsByIdsEndpoint(baseUrl);
+      expect(result).to.equal(`${baseUrl}/Records/batch-get`);
+    });
+  });
+
+  describe('getQueryRecordsEndpoint', function(){
+    it('should return the correct query records endpoint', function(){
+      const result = EndpointFactory.getQueryRecordsEndpoint(baseUrl);
+      expect(result).to.equal(`${baseUrl}/Records/query`);
+    });
+  });
+
+  describe('getAddOrUpdateRecordEndpoint', function () {
+    it('should return the correct add or update record endpoint', function () {
+      const result = EndpointFactory.getAddOrUpdateRecordEndpoint(baseUrl);
+      expect(result).to.equal(`${baseUrl}/Records`);
+    });
+  });
+
+  describe('getDeleteRecordsByIdsEndpoint', function () {
+    it('should return the correct delete records by ids endpoint', function () {
+      const result = EndpointFactory.getDeleteRecordsByIdsEndpoint(baseUrl);
+      expect(result).to.equal(`${baseUrl}/Records/batch-delete`);
+    });
+  });
+
+  describe('getReportByIdEndpoint', function () {
+    it('should return the correct report by id endpoint', function () {
+      const result = EndpointFactory.getReportByIdEndpoint(baseUrl, 1);
+      expect(result).to.equal(`${baseUrl}/Reports/id/1`);
+    });
+  });
+
+  describe('getReportsByAppIdEndpoint', function () {
+    it('should return the correct reports by app id endpoint', function () {
+      const result = EndpointFactory.getReportsByAppIdEndpoint(baseUrl, 1);
+      expect(result).to.equal(`${baseUrl}/Reports/appId/1`);
     });
   });
 });
