@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { ArgumentValidator } from './models/ArgumentValidator';
+import { EndpointFactory } from './models/EndpointFactory';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -38,5 +39,20 @@ export class OnspringClient {
         'x-api-version': '2',
       },
     });
+  }
+
+  public async canConnect(): Promise<boolean> {
+    const endpoint = EndpointFactory.getPingEndpoint(this._client.defaults.baseURL);
+    try {
+      var response = await this._client.get(endpoint);
+      return response.status === 200;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  private async get<T>(endpoint: string): Promise<T> {
+    const response = await this._client.get<T>(endpoint);
+    return response.data;
   }
 }
