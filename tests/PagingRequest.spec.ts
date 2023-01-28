@@ -29,4 +29,13 @@ describe('PagingRequest', function () {
   it('should create a new instance of the PagingRequest class when the pageNumber is greater than 0 and the pageSize is between 1 and 1000', function () {
     expect(() => new PagingRequest(1, 1)).to.not.throw();
   });
+
+  it('should create a new instance of the PagingRequest class with the correct properties and values', function () {
+    const pagingRequest = new PagingRequest(1, 1);
+
+    expect(pagingRequest).to.have.property('pageNumber');
+    expect(pagingRequest).to.have.property('pageSize');
+    expect(pagingRequest.pageNumber).to.equal(1);
+    expect(pagingRequest.pageSize).to.equal(1);
+  });
 });

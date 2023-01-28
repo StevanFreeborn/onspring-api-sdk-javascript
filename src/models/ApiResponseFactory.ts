@@ -29,9 +29,9 @@ export class ApiResponseFactory {
    */
   private static TryToGetMessage(response: AxiosResponse): string {
     if (
-      response.status == HttpStatusCode.Unauthorized ||
-      response.status == HttpStatusCode.Forbidden ||
-      response.status == HttpStatusCode.NotFound
+      response.status === HttpStatusCode.Unauthorized ||
+      response.status === HttpStatusCode.Forbidden ||
+      response.status === HttpStatusCode.NotFound
     ) {
       return response.data?.message;
     }

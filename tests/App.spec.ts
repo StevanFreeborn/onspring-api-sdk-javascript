@@ -17,4 +17,15 @@ describe('App', function () {
   it('should create a new instance of the App class', function () {
     expect(() => new App('href', 1, 'name')).to.not.throw();
   });
+
+  it('should create a new instance of the App class with the correct properties and values', function () {
+    const app = new App('href', 1, 'name');
+
+    expect(app).to.have.property('href');
+    expect(app).to.have.property('id');
+    expect(app).to.have.property('name');
+    expect(app.href).to.equal('href');
+    expect(app.id).to.equal(1);
+    expect(app.name).to.equal('name');
+  });
 });

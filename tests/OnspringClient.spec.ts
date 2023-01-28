@@ -1,5 +1,6 @@
 import { OnspringClient } from '../src/OnspringClient';
 import { ApiResponse } from '../src/models/ApiResponse';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -85,7 +86,7 @@ describe('OnspringClient', function () {
     expect(() => new OnspringClient(baseUrl, apiKey)).to.not.throw();
   });
 
-  it('should have a client property', function () {
+  it('should create a new instance of an onspring client with proper properties', function () {
     expect(new OnspringClient(baseUrl, apiKey)).to.have.property('_client');
   });
 
@@ -114,14 +115,50 @@ describe('OnspringClient', function () {
 
     it('should return a promise that resolves to true when able to connect to the Onspring API', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
-      sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(200, 'OK', null)));
+
+      const mockClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+      
+      sinon.stub(mockClient, 'get').returns(Promise.resolve({
+        status: 200,
+        statusText: 'OK',
+        data: null,
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse));
+
+      sinon.stub(client, '_client' as any).value(mockClient);
+
       const result = await client.canConnect();
       expect(result).to.be.true;
     });
 
     it('should return a promise that resolves to false when unable to connect to the Onspring API', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
-      sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(500, 'Internal Server Error', null)));
+      // sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(500, 'Internal Server Error', null)));
+      const mockClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockClient, 'get').returns(Promise.reject({
+        status: 500,
+        statusText: 'Internal Server Error',
+        data: null,
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse));
+
+      sinon.stub(client, '_client' as any).value(mockClient);
+      
       const result = await client.canConnect();
       expect(result).to.be.false;
     });
