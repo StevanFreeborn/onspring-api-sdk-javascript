@@ -1,5 +1,6 @@
 import { EndpointFactory } from '../src/models/EndpointFactory';
 import { expect } from 'chai';
+import { PagingRequest } from '../src/models/PagingRequest';
 
 describe('EndpointFactory', function () {
   const baseUrl = 'https://api.onspring.com';
@@ -12,9 +13,9 @@ describe('EndpointFactory', function () {
   });
 
   describe('getAppsEndpoint', function () {
-    it('should return the correct apps endpoint', function () {
-      const result = EndpointFactory.getAppsEndpoint(baseUrl);
-      expect(result).to.equal(`${baseUrl}/Apps`);
+    it('should return the correct apps endpoint with paging params based on paging request parameter passed', function () {
+      const result = EndpointFactory.getAppsEndpoint(baseUrl, new PagingRequest(2, 1000));
+      expect(result).to.equal(`${baseUrl}/Apps?page=2&pageSize=1000`);
     });
   });
 

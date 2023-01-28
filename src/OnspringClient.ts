@@ -4,6 +4,9 @@ import { ArgumentValidator } from './models/ArgumentValidator';
 import { EndpointFactory } from './models/EndpointFactory';
 import { ApiResponseFactory } from './models/ApiResponseFactory';
 import { ApiResponse } from './models/ApiResponse';
+import { App } from './models/App';
+import { PagingRequest } from './models/PagingRequest';
+import { GetPagedAppsResponse } from './models/GetPagedAppsResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -51,12 +54,25 @@ export class OnspringClient {
     const endpoint = EndpointFactory.getPingEndpoint(
       this._client.defaults.baseURL
     );
-    try {
-      const response = await this.get<ApiResponse<boolean>>(endpoint);
-      return response.isSuccessful;
-    } catch (error) {
-      return false;
-    }
+
+    const response = await this.get<ApiResponse<boolean>>(endpoint);
+    return response.isSuccessful;
+  }
+
+  /**
+   * 
+   * @param pagingRequest - The paging request that will be used to get the apps.
+   * @returns 
+   */
+  public async getApps(
+    pagingRequest: PagingRequest = new PagingRequest(1, 50)
+  ): Promise<ApiResponse<GetPagedAppsResponse>> {
+    const endpoint = EndpointFactory.getAppsEndpoint(
+      this._client.defaults.baseURL,
+      pagingRequest
+    );
+
+    return await this.get<GetPagedAppsResponse>(endpoint);
   }
 
   /**
