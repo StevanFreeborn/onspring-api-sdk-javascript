@@ -1,6 +1,6 @@
-import { AxiosResponse } from "axios";
-import { HttpStatusCode } from "../enums/HttpStatusCode";
-import { ApiResponse } from "./ApiResponse";
+import { AxiosResponse } from 'axios';
+import { HttpStatusCode } from '../enums/HttpStatusCode';
+import { ApiResponse } from './ApiResponse';
 
 /**
  * @class ApiResponseFactory - Factory class for creating ApiResponse objects
@@ -13,9 +13,8 @@ export class ApiResponseFactory {
    */
   public static getApiResponse<T>(response: AxiosResponse): ApiResponse<T> {
     const message = this.TryToGetMessage(response);
-    
-    if (this.isSuccessStatusCode(response.status) === true)
-    {
+
+    if (this.isSuccessStatusCode(response.status) === true) {
       const data = response.data as T;
       return new ApiResponse<T>(response.status, message, data);
     }
@@ -29,22 +28,19 @@ export class ApiResponseFactory {
    * @returns {string} - The message from the response data
    */
   private static TryToGetMessage(response: AxiosResponse): string {
-    
     if (
-      response.status == HttpStatusCode.Unauthorized || 
-      response.status == HttpStatusCode.Forbidden || 
+      response.status == HttpStatusCode.Unauthorized ||
+      response.status == HttpStatusCode.Forbidden ||
       response.status == HttpStatusCode.NotFound
-    )
-    {
+    ) {
       return response.data?.message;
     }
-    
-    if (this.isSuccessStatusCode(response.status) === false)
-    {
+
+    if (this.isSuccessStatusCode(response.status) === false) {
       return JSON.stringify(response.data);
     }
-    
-    return "";
+
+    return '';
   }
 
   /**
