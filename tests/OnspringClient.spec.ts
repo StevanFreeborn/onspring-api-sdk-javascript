@@ -506,4 +506,31 @@ describe('OnspringClient', function () {
       expect(result.data).to.be.null;
     });
   });
+
+  describe('getAppsByIds', function () {
+    it('should be defined', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppsByIds).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppsByIds).to.be.a(
+        'function'
+      );
+    });
+
+    it('should have 1 parameter', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppsByIds).to.have.lengthOf(
+        1
+      );
+    });
+
+    it('should return a promise', function () {
+      expect(
+        new OnspringClient(baseUrl, apiKey).getAppsByIds([1, 2, 3])
+      ).to.be.a('promise');
+    });
+
+    // TODO: complete wriiting tests for getAppsByIds method
+  });
 });

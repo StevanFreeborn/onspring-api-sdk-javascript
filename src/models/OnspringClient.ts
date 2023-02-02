@@ -12,6 +12,9 @@ import { App } from './App';
  * @class OnspringClient - A client that can communicate with the Onspring API.
  */
 export class OnspringClient {
+  getAppsByIds(getAppsByIds: any) {
+    throw new Error('Method not implemented.');
+  }
   /**
    * @readonly {AxiosInstance} client - The axios instance that will be used to make requests to the Onspring API.
    */
