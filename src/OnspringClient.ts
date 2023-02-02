@@ -96,7 +96,7 @@ export class OnspringClient {
    * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
    */
   private async get<T>(endpoint: string, config: AxiosRequestConfig = {}): Promise<ApiResponse<T>> {
-    const response = await this._client.get(endpoint, config);
+const response = await this._client.get(endpoint, config);
     const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
