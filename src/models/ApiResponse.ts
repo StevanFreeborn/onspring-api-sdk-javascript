@@ -23,16 +23,16 @@ export class ApiResponse<T> {
   /**
    * @property {T} data - The data of the response.
    */
-  public data: T;
+  public data: T | null;
 
   /**
    * @constructor - Creates a new instance of the ApiResponse class.
    * @param {number} statusCode - The status code of the response.
    * @param {string} message - The message of the response.
-   * @param {T} data - The data of the response.
+   * @param {T | null} data - The data of the response.
    * @returns {ApiResponse<T>} - A new instance of the ApiResponse class.
    */
-  constructor(statusCode: number, message: string, data: T) {
+  constructor(statusCode: number, message: string, data: T | null) {
     this.statusCode = statusCode;
     this.isSuccessful = statusCode < 400;
     this.message = message;

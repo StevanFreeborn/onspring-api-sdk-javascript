@@ -17,6 +17,10 @@ export class ArgumentValidator {
   public static isValidUrl(value: string | null | undefined): boolean {
     let url: URL;
 
+    if (value === null || value === undefined) {
+      return false;
+    }
+
     try {
       url = new URL(value);
     } catch (error) {
@@ -32,6 +36,10 @@ export class ArgumentValidator {
    * @remarks - A valid page size is a number greater than 0 and less than or equal to 1000.
    */
   public static isValidPageSize(value: number | null | undefined): boolean {
+    if (value === null || value === undefined) {
+      return false;
+    }
+
     return value > 0 && value <= 1000;
   }
 
@@ -41,6 +49,10 @@ export class ArgumentValidator {
    * @remarks - A valid page number is a number greater than 0.
    */
   public static isValidPageNumber(value: number | null | undefined): boolean {
+    if (value === null || value === undefined) {
+      return false;
+    }
+
     return value > 0;
   }
 }

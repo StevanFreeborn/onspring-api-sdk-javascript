@@ -269,10 +269,13 @@ describe('OnspringClient', function () {
       expect(result.data).to.have.property('totalPages', 1);
       expect(result.data).to.have.property('totalRecords', 2);
       expect(result.data).to.have.property('items');
-      expect(result.data.items).to.be.instanceOf(Array);
-      expect(result.data.items).to.have.lengthOf(2);
-      expect(result.data.items[0]).to.be.instanceOf(App);
-      expect(result.data.items[1]).to.be.instanceOf(App);
+      expect(result.data).to.not.be.null;
+      if (result.data != null) {
+        expect(result.data.items).to.be.instanceOf(Array);
+        expect(result.data.items).to.have.lengthOf(2);
+        expect(result.data.items[0]).to.be.instanceOf(App);
+        expect(result.data.items[1]).to.be.instanceOf(App);
+      }
     });
 
     it('should return a promise that resolves to an api response when request returns a 400 status code', async function () {

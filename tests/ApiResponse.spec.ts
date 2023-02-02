@@ -109,14 +109,17 @@ describe('ApiResponse', function () {
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
-      expect(appsPagedResponse.data.totalPages).to.equal(1);
-      expect(appsPagedResponse.data.totalRecords).to.equal(2);
-      expect(appsPagedResponse.data.pageNumber).to.equal(1);
-      expect(appsPagedResponse.data.pageSize).to.equal(2);
-      expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
-      expect(appsPagedResponse.data.items).to.have.lengthOf(2);
-      expect(appsPagedResponse.data.items[0]).to.be.instanceOf(App);
-      expect(appsPagedResponse.data.items[1]).to.be.instanceOf(App);
+      expect(appsPagedResponse.data).to.not.be.null;
+      if (appsPagedResponse.data != null) {
+        expect(appsPagedResponse.data.totalPages).to.equal(1);
+        expect(appsPagedResponse.data.totalRecords).to.equal(2);
+        expect(appsPagedResponse.data.pageNumber).to.equal(1);
+        expect(appsPagedResponse.data.pageSize).to.equal(2);
+        expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
+        expect(appsPagedResponse.data.items).to.have.lengthOf(2);
+        expect(appsPagedResponse.data.items[0]).to.be.instanceOf(App);
+        expect(appsPagedResponse.data.items[1]).to.be.instanceOf(App);
+      }
     });
 
     it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
@@ -133,12 +136,15 @@ describe('ApiResponse', function () {
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
-      expect(appsPagedResponse.data.totalPages).to.equal(0);
-      expect(appsPagedResponse.data.totalRecords).to.equal(0);
-      expect(appsPagedResponse.data.pageNumber).to.equal(0);
-      expect(appsPagedResponse.data.pageSize).to.equal(0);
-      expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
-      expect(appsPagedResponse.data.items).to.have.lengthOf(0);
+      expect(appsPagedResponse.data).to.not.be.null;
+      if (appsPagedResponse.data != null) {
+        expect(appsPagedResponse.data.totalPages).to.equal(0);
+        expect(appsPagedResponse.data.totalRecords).to.equal(0);
+        expect(appsPagedResponse.data.pageNumber).to.equal(0);
+        expect(appsPagedResponse.data.pageSize).to.equal(0);
+        expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
+        expect(appsPagedResponse.data.items).to.have.lengthOf(0);
+      }
     });
   });
 
@@ -163,11 +169,14 @@ describe('ApiResponse', function () {
 
       expect(appResponse).to.be.instanceOf(ApiResponse);
       expect(appResponse.data).to.be.instanceOf(App);
-      expect(appResponse.data.id).to.equal(1);
-      expect(appResponse.data.name).to.equal('Test App');
-      expect(appResponse.data.href).to.equal(
-        'https://api.onspring.dev/apps/id/1'
-      );
+      expect(appResponse.data).to.not.be.null;
+      if (appResponse.data != null) {
+        expect(appResponse.data.id).to.equal(1);
+        expect(appResponse.data.name).to.equal('Test App');
+        expect(appResponse.data.href).to.equal(
+          'https://api.onspring.dev/apps/id/1'
+        );
+      }
     });
   });
 });

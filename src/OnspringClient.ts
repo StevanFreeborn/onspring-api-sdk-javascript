@@ -29,7 +29,7 @@ export class OnspringClient {
     baseUrl: string | undefined | null,
     apiKey: string | undefined | null
   ) {
-    if (ArgumentValidator.isValidUrl(baseUrl) === false) {
+    if (ArgumentValidator.isValidUrl(baseUrl) === false || baseUrl === null) {
       throw new Error('baseUrl must be an absolute and well-formed URI.');
     }
 
@@ -48,9 +48,7 @@ export class OnspringClient {
    * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating if the client can connect to the Onspring API.
    */
   public async canConnect(): Promise<boolean> {
-    const endpoint = EndpointFactory.getPingEndpoint(
-      this._client.defaults.baseURL
-    );
+    const endpoint = EndpointFactory.getPingEndpoint();
 
     const response = await this.get<any>(endpoint);
     return response.isSuccessful;
@@ -64,10 +62,7 @@ export class OnspringClient {
   public async getApps(
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
   ): Promise<ApiResponse<GetPagedAppsResponse>> {
-    const endpoint = EndpointFactory.getAppsEndpoint(
-      this._client.defaults.baseURL,
-      pagingRequest
-    );
+    const endpoint = EndpointFactory.getAppsEndpoint(pagingRequest);
 
     var apiResponse = await this.get<any>(endpoint);
 
@@ -79,10 +74,7 @@ export class OnspringClient {
   }
 
   public async getAppById(appId: number): Promise<ApiResponse<App>> {
-    const endpoint = EndpointFactory.getAppByIdEndpoint(
-      this._client.defaults.baseURL,
-      appId
-    );
+    const endpoint = EndpointFactory.getAppByIdEndpoint(appId);
 
     var apiResponse = await this.get<any>(endpoint);
 
