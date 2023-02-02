@@ -1,3 +1,6 @@
+import { App } from "./App";
+import { GetPagedAppsResponse } from "./GetPagedAppsResponse";
+
 /**
  * @class ApiResponse - A generic response object for API requests.
  */
@@ -5,22 +8,22 @@ export class ApiResponse<T> {
   /**
    * @property {number} statusCode - The status code of the response.
    */
-  readonly statusCode: number;
+  public statusCode: number;
 
   /**
    * @property {boolean} isSuccessful - True if the status code is less than 400; otherwise, false.
    */
-  readonly isSuccessful: boolean;
+  public isSuccessful: boolean;
 
   /**
    * @property {string} message - The message of the response.
    */
-  readonly message: string;
+  public message: string;
 
   /**
    * @property {T} data - The data of the response.
    */
-  readonly data: T;
+  public data: T;
 
   /**
    * @constructor - Creates a new instance of the ApiResponse class.
@@ -34,5 +37,26 @@ export class ApiResponse<T> {
     this.isSuccessful = statusCode < 400;
     this.message = message;
     this.data = data;
+  }
+
+  public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
+    var apiResponse = this as ApiResponse<any>;
+    var apps = apiResponse.data.items.map((item: any) => {
+      return new App(item.href, item.id, item.name);
+    });
+
+    var getAppsPagedResponse = new GetPagedAppsResponse(
+      apps,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
+
+    return new ApiResponse<GetPagedAppsResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      getAppsPagedResponse
+    );
   }
 }

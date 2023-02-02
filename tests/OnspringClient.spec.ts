@@ -3,6 +3,8 @@ import { ApiResponse } from '../src/models/ApiResponse';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
+import { App } from '../src/models/App';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -109,22 +111,16 @@ describe('OnspringClient', function () {
 
     it('should return a promise that resolves to a boolean', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
-      const result = await client.canConnect();
-      expect(result).to.be.a('boolean');
-    });
-
-    it('should return a promise that resolves to true when able to connect to the Onspring API', async function () {
-      const client = new OnspringClient(baseUrl, apiKey);
-
-      const mockClient = axios.create({
+      
+      const mockAxiosClient = axios.create({
         baseURL: baseUrl,
         headers: {
           'x-apikey': apiKey,
           'x-api-version': '2',
         },
       });
-      
-      sinon.stub(mockClient, 'get').returns(Promise.resolve({
+
+      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
         status: 200,
         statusText: 'OK',
         data: null,
@@ -132,7 +128,32 @@ describe('OnspringClient', function () {
         config: {} as InternalAxiosRequestConfig,
       } as AxiosResponse));
 
-      sinon.stub(client, '_client' as any).value(mockClient);
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.canConnect();
+      expect(result).to.be.a('boolean');
+    });
+
+    it('should return a promise that resolves to true when able to connect to the Onspring API', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+      
+      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
+        status: 200,
+        statusText: 'OK',
+        data: null,
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse));
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
 
       const result = await client.canConnect();
       expect(result).to.be.true;
@@ -140,8 +161,8 @@ describe('OnspringClient', function () {
 
     it('should return a promise that resolves to false when unable to connect to the Onspring API', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
-      // sinon.stub(client, 'get' as any).returns(Promise.resolve(new ApiResponse(500, 'Internal Server Error', null)));
-      const mockClient = axios.create({
+
+      const mockAxiosClient = axios.create({
         baseURL: baseUrl,
         headers: {
           'x-apikey': apiKey,
@@ -149,7 +170,7 @@ describe('OnspringClient', function () {
         },
       });
 
-      sinon.stub(mockClient, 'get').returns(Promise.reject({
+      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
         status: 500,
         statusText: 'Internal Server Error',
         data: null,
@@ -157,10 +178,86 @@ describe('OnspringClient', function () {
         config: {} as InternalAxiosRequestConfig,
       } as AxiosResponse));
 
-      sinon.stub(client, '_client' as any).value(mockClient);
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
       
       const result = await client.canConnect();
       expect(result).to.be.false;
+    });
+  });
+
+  describe('getApps', function () {
+    it('should be defined', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getApps).to.not.be.undefined;
+    });
+    
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getApps).to.be.a('function');
+    });
+
+    it('should have 0 parameters', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getApps).to.have.lengthOf(0);
+    });
+
+    it('should return a promise', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getApps()).to.be.a('promise');
+    });
+
+    it('should return a promise that resolves to a paged response of apps when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 2,
+            totalPages: 1,
+            totalRecords: 2,
+            items: [
+              {
+                href: 'https://api.onspring.dev/Apps/id/1',
+                id: '1',
+                name: 'Test App 1',
+              },
+              {
+                href: 'https://api.onspring.dev/Apps/id/2',
+                id: '2',
+                name: 'Test App 2',
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getApps();
+      expect(result).to.be.instanceOf(ApiResponse<GetPagedAppsResponse>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      expect(result.data).to.be.instanceOf(GetPagedAppsResponse);
+      expect(result.data).to.have.property('pageNumber', 1);
+      expect(result.data).to.have.property('pageSize', 2);
+      expect(result.data).to.have.property('totalPages', 1);
+      expect(result.data).to.have.property('totalRecords', 2);
+      expect(result.data).to.have.property('items');
+      expect(result.data.items).to.be.instanceOf(Array);
+      expect(result.data.items).to.have.lengthOf(2);
+      expect(result.data.items[0]).to.be.instanceOf(App);
+      expect(result.data.items[1]).to.be.instanceOf(App);
     });
   });
 });

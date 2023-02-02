@@ -15,7 +15,7 @@ describe('EndpointFactory', function () {
   describe('getAppsEndpoint', function () {
     it('should return the correct apps endpoint with paging params based on paging request parameter passed', function () {
       const result = EndpointFactory.getAppsEndpoint(baseUrl, new PagingRequest(2, 1000));
-      expect(result).to.equal(`${baseUrl}/Apps?page=2&pageSize=1000`);
+      expect(result).to.equal(`${baseUrl}/Apps?pageSize=1000&pageNumber=2`);
     });
   });
 

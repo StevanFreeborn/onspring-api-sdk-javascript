@@ -15,8 +15,7 @@ export class ApiResponseFactory {
     const message = this.TryToGetMessage(response);
 
     if (this.isSuccessStatusCode(response.status) === true) {
-      const data = response.data as T;
-      return new ApiResponse<T>(response.status, message, data);
+      return new ApiResponse<T>(response.status, message, response.data);
     }
 
     return new ApiResponse<T>(response.status, message, null);

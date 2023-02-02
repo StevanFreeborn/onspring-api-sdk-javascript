@@ -1,12 +1,12 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { ArgumentValidator } from './models/ArgumentValidator';
 import { EndpointFactory } from './models/EndpointFactory';
 import { ApiResponseFactory } from './models/ApiResponseFactory';
 import { ApiResponse } from './models/ApiResponse';
-import { App } from './models/App';
 import { PagingRequest } from './models/PagingRequest';
 import { GetPagedAppsResponse } from './models/GetPagedAppsResponse';
+import { App } from './models/App';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -55,14 +55,14 @@ export class OnspringClient {
       this._client.defaults.baseURL
     );
 
-    const response = await this.get<ApiResponse<boolean>>(endpoint);
+    const response = await this.get<any>(endpoint);
     return response.isSuccessful;
   }
 
   /**
-   * 
+   *
    * @param pagingRequest - The paging request that will be used to get the apps.
-   * @returns 
+   * @returns
    */
   public async getApps(
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
@@ -72,7 +72,8 @@ export class OnspringClient {
       pagingRequest
     );
 
-    return await this.get<GetPagedAppsResponse>(endpoint);
+    var apiResponse = await this.get<any>(endpoint);
+    return apiResponse.AsGetPagedAppsResponseType();
   }
 
   /**
