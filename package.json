@@ -9,7 +9,8 @@
     "build": "npm run tests && tsc",
     "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts",
     "test": "mocha -r ts-node/register",
-    "test-coverage": "nyc npm run tests"
+    "test-coverage": "nyc npm run tests",
+    "prepare": "husky install"
   },
   "author": "Stevan Freeborn",
   "license": "MIT",

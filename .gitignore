@@ -1,3 +1,6 @@
+# husky
+.husky/
+
 # Logs
 logs
 *.log
