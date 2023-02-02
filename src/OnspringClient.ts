@@ -1,5 +1,5 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { ArgumentValidator } from './models/ArgumentValidator';
 import { EndpointFactory } from './models/EndpointFactory';
 import { ApiResponseFactory } from './models/ApiResponseFactory';
