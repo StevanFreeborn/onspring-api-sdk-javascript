@@ -37,13 +37,7 @@ export class OnspringClient {
       throw new Error('apiKey cannot be null/empty/whitespace.');
     }
 
-    this._client = axios.create({
-      baseURL: baseUrl,
-      headers: {
-        'x-apikey': apiKey,
-        'x-api-version': '2',
-      },
-    });
+    this._client = axios.create({ baseURL: baseUrl, headers: { 'x-apikey': apiKey, 'x-api-version': '2',},});
   }
 
   /**
