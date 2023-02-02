@@ -59,7 +59,7 @@ describe('ApiResponseFactory', function () {
     it('should return an ApiResponse object when request is forbidden and the response contains a message property', function () {
       const response: AxiosResponse = {
         data: {
-          message: 'Does not have permission to access this resource.'
+          message: 'Does not have permission to access this resource.',
         },
         status: 403,
         statusText: 'Forbidden',
@@ -74,7 +74,9 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse).to.have.property('message');
       expect(apiResponse).to.have.property('data');
       expect(apiResponse.statusCode).to.equal(403);
-      expect(apiResponse.message).to.equal('Does not have permission to access this resource.');
+      expect(apiResponse.message).to.equal(
+        'Does not have permission to access this resource.'
+      );
       expect(apiResponse.data).to.equal(null);
     });
 
@@ -101,7 +103,7 @@ describe('ApiResponseFactory', function () {
     it('should return an ApiResponse object with a message value when request is not found and the response contains a message property', function () {
       const response: AxiosResponse = {
         data: {
-          message: 'Resource not found.'
+          message: 'Resource not found.',
         },
         status: 404,
         statusText: 'Not Found',
@@ -143,7 +145,7 @@ describe('ApiResponseFactory', function () {
     it('should return an ApiResponse object with a message when request is unauthorized and the response contains a message property', function () {
       const response: AxiosResponse = {
         data: {
-          message: 'Unauthorized.'
+          message: 'Unauthorized.',
         },
         status: 401,
         statusText: 'Unauthorized',
@@ -165,7 +167,7 @@ describe('ApiResponseFactory', function () {
     it('should return an ApiResponse object with a message when request is a bad request', function () {
       const response: AxiosResponse = {
         data: {
-          field: 'Invalid input.'
+          field: 'Invalid input.',
         },
         status: 400,
         statusText: 'Bad Request',

@@ -15,15 +15,21 @@ describe('PagingRequest', function () {
   });
 
   it('should throw an error when the pageNumber is less than 1', function () {
-    expect(() => new PagingRequest(0, 1)).to.throw('pageNumber must be greater than 0.');
+    expect(() => new PagingRequest(0, 1)).to.throw(
+      'pageNumber must be greater than 0.'
+    );
   });
 
   it('should throw an error when the pageSize is less than 1', function () {
-    expect(() => new PagingRequest(1, 0)).to.throw('pageSize must be greater than 0 and less than 1001.');
+    expect(() => new PagingRequest(1, 0)).to.throw(
+      'pageSize must be greater than 0 and less than 1001.'
+    );
   });
 
   it('should throw an error when the pageSize is greater than 1000', function () {
-    expect(() => new PagingRequest(1, 1001)).to.throw('pageSize must be greater than 0 and less than 1001.');
+    expect(() => new PagingRequest(1, 1001)).to.throw(
+      'pageSize must be greater than 0 and less than 1001.'
+    );
   });
 
   it('should create a new instance of the PagingRequest class when the pageNumber is greater than 0 and the pageSize is between 1 and 1000', function () {

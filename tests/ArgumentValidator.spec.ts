@@ -187,23 +187,23 @@ describe('ArgumentValidator', function () {
       expect(ArgumentValidator.isValidPageSize(undefined)).to.be.false;
     });
 
-    it('should return false when the value is greater than 1000', function (){
+    it('should return false when the value is greater than 1000', function () {
       expect(ArgumentValidator.isValidPageSize(1001)).to.be.false;
     });
 
-    it('should return false when the value is less than 1', function (){
+    it('should return false when the value is less than 1', function () {
       expect(ArgumentValidator.isValidPageSize(0)).to.be.false;
     });
 
-    it('should return true when the value is 1', function (){
+    it('should return true when the value is 1', function () {
       expect(ArgumentValidator.isValidPageSize(1)).to.be.true;
     });
 
-    it('should return true when the value is 1000', function (){
+    it('should return true when the value is 1000', function () {
       expect(ArgumentValidator.isValidPageSize(1000)).to.be.true;
     });
 
-    it('should return true when the value is 500', function (){
+    it('should return true when the value is 500', function () {
       expect(ArgumentValidator.isValidPageSize(500)).to.be.true;
     });
   });
@@ -225,11 +225,11 @@ describe('ArgumentValidator', function () {
       expect(ArgumentValidator.isValidPageNumber(undefined)).to.be.false;
     });
 
-    it('should return false when the value is less than 1', function (){
+    it('should return false when the value is less than 1', function () {
       expect(ArgumentValidator.isValidPageNumber(0)).to.be.false;
     });
 
-    it('should return true when the value is 1', function (){
+    it('should return true when the value is 1', function () {
       expect(ArgumentValidator.isValidPageNumber(1)).to.be.true;
     });
   });

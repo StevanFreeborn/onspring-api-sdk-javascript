@@ -13,7 +13,7 @@ export enum ResultValueType {
    * @type {string}
    */
   Integer = 'Integer',
-  
+
   /**
    * @constant Decimal - The result value is a decimal.
    * @type {string}

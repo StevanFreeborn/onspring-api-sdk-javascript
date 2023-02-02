@@ -305,7 +305,10 @@ describe('OnspringClient', function () {
       expect(result).to.be.instanceOf(ApiResponse);
       expect(result).to.have.property('statusCode', 400);
       expect(result).to.have.property('isSuccessful', false);
-      expect(result).to.have.property('message', '{"PageSize":["The field PageSize must be between 0 and 1000."]}');
+      expect(result).to.have.property(
+        'message',
+        '{"PageSize":["The field PageSize must be between 0 and 1000."]}'
+      );
       expect(result).to.have.property('data');
       expect(result.data).to.be.null;
     });
@@ -344,19 +347,26 @@ describe('OnspringClient', function () {
 
   describe('getAppById', function () {
     it('should be defined', function () {
-      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.not.be.undefined;
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.not.be
+        .undefined;
     });
 
     it('should be a function', function () {
-      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.be.a('function');
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.be.a(
+        'function'
+      );
     });
 
     it('should have 1 parameter', function () {
-      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.have.lengthOf(1);
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.have.lengthOf(
+        1
+      );
     });
 
     it('should return a promise', function () {
-      expect(new OnspringClient(baseUrl, apiKey).getAppById(1)).to.be.a('promise');
+      expect(new OnspringClient(baseUrl, apiKey).getAppById(1)).to.be.a(
+        'promise'
+      );
     });
 
     it('should return a promise that resolves to an api response of an app when request is successful', async function () {

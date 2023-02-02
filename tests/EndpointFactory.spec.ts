@@ -14,7 +14,10 @@ describe('EndpointFactory', function () {
 
   describe('getAppsEndpoint', function () {
     it('should return the correct apps endpoint with paging params based on paging request parameter passed', function () {
-      const result = EndpointFactory.getAppsEndpoint(baseUrl, new PagingRequest(2, 1000));
+      const result = EndpointFactory.getAppsEndpoint(
+        baseUrl,
+        new PagingRequest(2, 1000)
+      );
       expect(result).to.equal(`${baseUrl}/Apps?pageSize=1000&pageNumber=2`);
     });
   });
@@ -139,8 +142,8 @@ describe('EndpointFactory', function () {
     });
   });
 
-  describe('getQueryRecordsEndpoint', function(){
-    it('should return the correct query records endpoint', function(){
+  describe('getQueryRecordsEndpoint', function () {
+    it('should return the correct query records endpoint', function () {
       const result = EndpointFactory.getQueryRecordsEndpoint(baseUrl);
       expect(result).to.equal(`${baseUrl}/Records/query`);
     });

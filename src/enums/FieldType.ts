@@ -19,7 +19,7 @@ export enum FieldType {
    * @type {string}
    */
   AutoNumber = 'AutoNumber',
-  
+
   /**
    * @constant Date - The field is a date field.
    * @type {string}

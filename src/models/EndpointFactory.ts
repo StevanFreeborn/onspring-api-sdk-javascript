@@ -1,4 +1,4 @@
-import { PagingRequest } from "./PagingRequest";
+import { PagingRequest } from './PagingRequest';
 
 /**
  * @class EndpointFactory - A factory class for creating endpoints.
@@ -16,7 +16,10 @@ export class EndpointFactory {
    * @param {string} baseUrl - The base url that will be used to create the apps endpoint.
    * @returns {string} - The apps endpoint.
    */
-  public static getAppsEndpoint(baseUrl: string, pagingRequest: PagingRequest): string {
+  public static getAppsEndpoint(
+    baseUrl: string,
+    pagingRequest: PagingRequest
+  ): string {
     return `${baseUrl}/Apps?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
   }
 

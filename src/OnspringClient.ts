@@ -37,7 +37,10 @@ export class OnspringClient {
       throw new Error('apiKey cannot be null/empty/whitespace.');
     }
 
-    this._client = axios.create({ baseURL: baseUrl, headers: { 'x-apikey': apiKey, 'x-api-version': '2',},});
+    this._client = axios.create({
+      baseURL: baseUrl,
+      headers: { 'x-apikey': apiKey, 'x-api-version': '2' },
+    });
   }
 
   /**
@@ -95,9 +98,12 @@ export class OnspringClient {
    * @param {string} endpoint - The endpoint that will be used to make the request.
    * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
    */
-  private async get<T>(endpoint: string, config: AxiosRequestConfig = {}): Promise<ApiResponse<T>> {
-const response = await this._client.get(endpoint, config);
-const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
-return apiResponse;
+  private async get<T>(
+    endpoint: string,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResponse<T>> {
+    const response = await this._client.get(endpoint, config);
+    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    return apiResponse;
   }
 }
