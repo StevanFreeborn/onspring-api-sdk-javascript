@@ -39,6 +39,10 @@ export class ApiResponse<T> {
     this.data = data;
   }
 
+  /**
+   * @method AsGetPagedAppsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedAppsResponse>.
+   * @returns {ApiResponse<GetPagedAppsResponse>} - An ApiResponse<GetPagedAppsResponse>.
+  */
   public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     var apiResponse = this as ApiResponse<any>;
     var apps = apiResponse.data.items.map((item: any) => {
