@@ -141,4 +141,33 @@ describe('ApiResponse', function () {
       expect(appsPagedResponse.data.items).to.have.lengthOf(0);
     });
   });
+
+  describe('AsAppType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.AsAppType).to.not.be.undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.AsAppType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<App> when data contain an app', function () {
+      var mockApiResponse = {
+        href: 'https://api.onspring.dev/apps/id/1',
+        id: 1,
+        name: 'Test App',
+      };
+
+      var apiResponse = new ApiResponse<any>(200, 'OK', mockApiResponse);
+      var appResponse = apiResponse.AsAppType();
+
+      expect(appResponse).to.be.instanceOf(ApiResponse);
+      expect(appResponse.data).to.be.instanceOf(App);
+      expect(appResponse.data.id).to.equal(1);
+      expect(appResponse.data.name).to.equal('Test App');
+      expect(appResponse.data.href).to.equal(
+        'https://api.onspring.dev/apps/id/1'
+      );
+    });
+  });
 });

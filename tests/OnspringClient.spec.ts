@@ -81,7 +81,9 @@ describe('OnspringClient', function () {
   });
 
   it('should not throw an error when the baseUrl is a valid url', function () {
-    expect(() => new OnspringClient('http://api.onspring.com', apiKey)).to.not.throw();
+    expect(
+      () => new OnspringClient('http://api.onspring.com', apiKey)
+    ).to.not.throw();
   });
 
   it('should not throw an error when the apiKey is a valid string', function () {
@@ -94,24 +96,31 @@ describe('OnspringClient', function () {
 
   describe('canConnect', function () {
     it('should be defined', function () {
-      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.not.be.undefined;
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.not.be
+        .undefined;
     });
 
     it('should be a function', function () {
-      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.be.a('function');
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.be.a(
+        'function'
+      );
     });
 
     it('should have 0 parameters', function () {
-      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.have.lengthOf(0);
+      expect(new OnspringClient(baseUrl, apiKey).canConnect).to.have.lengthOf(
+        0
+      );
     });
 
     it('should return a promise', function () {
-      expect(new OnspringClient(baseUrl, apiKey).canConnect()).to.be.a('promise');
+      expect(new OnspringClient(baseUrl, apiKey).canConnect()).to.be.a(
+        'promise'
+      );
     });
 
     it('should return a promise that resolves to a boolean', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
-      
+
       const mockAxiosClient = axios.create({
         baseURL: baseUrl,
         headers: {
@@ -120,13 +129,15 @@ describe('OnspringClient', function () {
         },
       });
 
-      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
-        status: 200,
-        statusText: 'OK',
-        data: null,
-        headers: {},
-        config: {} as InternalAxiosRequestConfig,
-      } as AxiosResponse));
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
 
       sinon.stub(client, '_client' as any).value(mockAxiosClient);
 
@@ -144,14 +155,16 @@ describe('OnspringClient', function () {
           'x-api-version': '2',
         },
       });
-      
-      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
-        status: 200,
-        statusText: 'OK',
-        data: null,
-        headers: {},
-        config: {} as InternalAxiosRequestConfig,
-      } as AxiosResponse));
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
 
       sinon.stub(client, '_client' as any).value(mockAxiosClient);
 
@@ -170,16 +183,18 @@ describe('OnspringClient', function () {
         },
       });
 
-      sinon.stub(mockAxiosClient, 'get').returns(Promise.resolve({
-        status: 500,
-        statusText: 'Internal Server Error',
-        data: null,
-        headers: {},
-        config: {} as InternalAxiosRequestConfig,
-      } as AxiosResponse));
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
 
       sinon.stub(client, '_client' as any).value(mockAxiosClient);
-      
+
       const result = await client.canConnect();
       expect(result).to.be.false;
     });
@@ -189,7 +204,7 @@ describe('OnspringClient', function () {
     it('should be defined', function () {
       expect(new OnspringClient(baseUrl, apiKey).getApps).to.not.be.undefined;
     });
-    
+
     it('should be a function', function () {
       expect(new OnspringClient(baseUrl, apiKey).getApps).to.be.a('function');
     });
@@ -259,5 +274,129 @@ describe('OnspringClient', function () {
       expect(result.data.items[0]).to.be.instanceOf(App);
       expect(result.data.items[1]).to.be.instanceOf(App);
     });
+
+    it('should return a promise that resolves to an api response when request returns a 400 status code', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 400,
+          statusText: 'Bad Request',
+          data: {
+            PageSize: ['The field PageSize must be between 0 and 1000.'],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getApps();
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 400);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', '{"PageSize":["The field PageSize must be between 0 and 1000."]}');
+      expect(result).to.have.property('data');
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request returns a 401 status code', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getApps();
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+  });
+
+  describe('getAppById', function () {
+    it('should be defined', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.be.a('function');
+    });
+
+    it('should have 1 parameter', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppById).to.have.lengthOf(1);
+    });
+
+    it('should return a promise', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAppById(1)).to.be.a('promise');
+    });
+
+    it('should return a promise that resolves to an api response of an app when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            href: 'https://api.onspring.dev/Apps/id/1',
+            id: 1,
+            name: 'Test App 1',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getAppById(1);
+      expect(result).to.be.instanceOf(ApiResponse<App>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      expect(result.data).to.be.instanceOf(App);
+      expect(result.data).to.have.property('id', 1);
+      expect(result.data).to.have.property('name', 'Test App 1');
+    });
+
+    // TODO: Add test cases for 401, 403, and 404 status codes
   });
 });

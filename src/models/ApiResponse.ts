@@ -1,5 +1,5 @@
-import { App } from "./App";
-import { GetPagedAppsResponse } from "./GetPagedAppsResponse";
+import { App } from './App';
+import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -42,10 +42,10 @@ export class ApiResponse<T> {
   /**
    * @method AsGetPagedAppsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedAppsResponse>.
    * @returns {ApiResponse<GetPagedAppsResponse>} - An ApiResponse<GetPagedAppsResponse>.
-  */
+   */
   public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     var apiResponse = this as ApiResponse<any>;
-    
+
     var apps = apiResponse.data.items.map((item: any) => {
       return new App(item.href, item.id, item.name);
     });
@@ -62,6 +62,22 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       getAppsPagedResponse
+    );
+  }
+
+  AsAppType(): ApiResponse<App> {
+    var apiResponse = this as ApiResponse<any>;
+
+    var app = new App(
+      apiResponse.data.href,
+      apiResponse.data.id,
+      apiResponse.data.name
+    );
+
+    return new ApiResponse<App>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      app
     );
   }
 }

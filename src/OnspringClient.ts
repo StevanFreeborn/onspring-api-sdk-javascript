@@ -73,7 +73,27 @@ export class OnspringClient {
     );
 
     var apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
     return apiResponse.AsGetPagedAppsResponseType();
+  }
+
+  public async getAppById(appId: number): Promise<ApiResponse<App>> {
+    const endpoint = EndpointFactory.getAppByIdEndpoint(
+      this._client.defaults.baseURL,
+      appId
+    );
+
+    var apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsAppType();
   }
 
   /**
