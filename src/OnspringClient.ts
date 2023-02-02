@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { ArgumentValidator } from './models/ArgumentValidator';
 import { EndpointFactory } from './models/EndpointFactory';
@@ -101,8 +101,8 @@ export class OnspringClient {
    * @param {string} endpoint - The endpoint that will be used to make the request.
    * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
    */
-  private async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-    const response = await this._client.get(endpoint);
+  private async get<T>(endpoint: string, config: AxiosRequestConfig = {}): Promise<ApiResponse<T>> {
+    const response = await this._client.get(endpoint, config);
     const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
