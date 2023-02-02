@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { ArgumentValidator } from './models/ArgumentValidator';
-import { EndpointFactory } from './models/EndpointFactory';
-import { ApiResponseFactory } from './models/ApiResponseFactory';
-import { ApiResponse } from './models/ApiResponse';
-import { PagingRequest } from './models/PagingRequest';
-import { GetPagedAppsResponse } from './models/GetPagedAppsResponse';
-import { App } from './models/App';
+import { ArgumentValidator } from './ArgumentValidator';
+import { EndpointFactory } from './EndpointFactory';
+import { ApiResponseFactory } from './ApiResponseFactory';
+import { ApiResponse } from './ApiResponse';
+import { PagingRequest } from './PagingRequest';
+import { GetPagedAppsResponse } from './GetPagedAppsResponse';
+import { App } from './App';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.

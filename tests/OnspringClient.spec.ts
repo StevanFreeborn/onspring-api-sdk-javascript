@@ -1,4 +1,4 @@
-import { OnspringClient } from '../src/OnspringClient';
+import { OnspringClient } from '../src/models/OnspringClient';
 import { ApiResponse } from '../src/models/ApiResponse';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { expect } from 'chai';

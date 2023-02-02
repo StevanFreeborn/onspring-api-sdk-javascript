@@ -2,8 +2,8 @@
   "name": "onspring-api-sdk",
   "version": "1.0.0",
   "description": "A javascript SDK for interacting with version 2 of the Onspring API.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/onspringApiSdk.js",
+  "types": "dist/onspringApiSdk.d.ts",
   "scripts": {
     "format-staged": "pretty-quick --staged",
     "format": "pretty-quick",
