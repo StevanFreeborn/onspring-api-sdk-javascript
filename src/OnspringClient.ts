@@ -102,8 +102,8 @@ export class OnspringClient {
     endpoint: string,
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
-    const response = await this._client.get(endpoint, config);
-    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+const response = await this._client.get(endpoint, config);
+const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
 }
