@@ -45,6 +45,7 @@ export class ApiResponse<T> {
   */
   public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     var apiResponse = this as ApiResponse<any>;
+    
     var apps = apiResponse.data.items.map((item: any) => {
       return new App(item.href, item.id, item.name);
     });

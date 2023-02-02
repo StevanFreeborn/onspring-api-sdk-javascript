@@ -84,7 +84,7 @@ describe('ApiResponse', function () {
       );
     });
 
-    it('should return an ApiResponse<GetPagedAppsResponse>', function () {
+    it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
       var mockApiResponse = {
         pageNumber: 1,
         pageSize: 2,
@@ -117,6 +117,28 @@ describe('ApiResponse', function () {
       expect(appsPagedResponse.data.items).to.have.lengthOf(2);
       expect(appsPagedResponse.data.items[0]).to.be.instanceOf(App);
       expect(appsPagedResponse.data.items[1]).to.be.instanceOf(App);
+    });
+
+    it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
+      var mockApiResponse = {
+        pageNumber: 0,
+        pageSize: 0,
+        totalPages: 0,
+        totalRecords: 0,
+        items: [],
+      };
+
+      var apiResponse = new ApiResponse<any>(200, 'OK', mockApiResponse);
+      var appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
+
+      expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
+      expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
+      expect(appsPagedResponse.data.totalPages).to.equal(0);
+      expect(appsPagedResponse.data.totalRecords).to.equal(0);
+      expect(appsPagedResponse.data.pageNumber).to.equal(0);
+      expect(appsPagedResponse.data.pageSize).to.equal(0);
+      expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
+      expect(appsPagedResponse.data.items).to.have.lengthOf(0);
     });
   });
 });
