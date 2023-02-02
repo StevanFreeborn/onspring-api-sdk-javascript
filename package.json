@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "format": "pretty-quick --staged",
-    "build": "npm run tests && tsc",
+    "format-staged": "pretty-quick --staged",
+    "format": "pretty-quick",
+    "build": "npm run tests && npm run format && tsc",
     "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts",
     "test": "mocha -r ts-node/register",
     "test-coverage": "nyc npm run tests",
