@@ -6,6 +6,7 @@ import { CollectionResponse } from '../src/models/CollectionResponse';
 import { Field } from '../src/models/Field';
 import { FieldStatus } from '../src/enums/FieldStatus';
 import { FieldType } from '../src/enums/FieldType';
+import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -331,6 +332,108 @@ describe('ApiResponse', function () {
           expect(item).to.have.property('isRequired');
           expect(item).to.have.property('isUnique');
         });
+      }
+    });
+  });
+
+  describe('AsGetPagedFieldsResponseType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.AsGetPagedFieldsResponseType).to.not.be
+        .undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(
+        ApiResponse.prototype.AsGetPagedFieldsResponseType
+      ).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<GetPagedFieldsResponse> when data contains field items', function () {
+      const mockResponseData = {
+        pageNumber: 1,
+        pageSize: 2,
+        totalPages: 1,
+        totalRecords: 2,
+        items: [
+          {
+            id: 1,
+            appId: 1,
+            name: 'Text Field',
+            type: 'Text',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+          {
+            id: 2,
+            appId: 1,
+            name: 'Number Field',
+            type: 'Number',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const getPagedFieldsResponse = apiResponse.AsGetPagedFieldsResponseType();
+
+      expect(getPagedFieldsResponse).to.be.instanceOf(
+        ApiResponse<GetPagedFieldsResponse>
+      );
+      expect(getPagedFieldsResponse.data).to.be.instanceOf(
+        GetPagedFieldsResponse
+      );
+      expect(getPagedFieldsResponse.data).to.not.be.null;
+
+      if (getPagedFieldsResponse.data != null) {
+        expect(getPagedFieldsResponse.data.pageNumber).to.equal(1);
+        expect(getPagedFieldsResponse.data.pageSize).to.equal(2);
+        expect(getPagedFieldsResponse.data.totalPages).to.equal(1);
+        expect(getPagedFieldsResponse.data.totalRecords).to.equal(2);
+        expect(getPagedFieldsResponse.data.items).to.be.instanceOf(Array);
+        expect(getPagedFieldsResponse.data.items).to.have.lengthOf(2);
+        getPagedFieldsResponse.data.items.forEach((item) => {
+          expect(item).to.be.instanceOf(Field);
+          expect(item).to.have.property('id');
+          expect(item).to.have.property('appId');
+          expect(item).to.have.property('name');
+          expect(item).to.have.property('type');
+          expect(item).to.have.property('status');
+          expect(item).to.have.property('isRequired');
+          expect(item).to.have.property('isUnique');
+        });
+      }
+    });
+
+    it('should return an ApiResponse<GetPagedFieldsResponse> when data contains no field items', function () {
+      const mockResponseData = {
+        pageNumber: 0,
+        pageSize: 0,
+        totalPages: 0,
+        totalRecords: 0,
+        items: [],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const getPagedFieldsResponse = apiResponse.AsGetPagedFieldsResponseType();
+
+      expect(getPagedFieldsResponse).to.be.instanceOf(
+        ApiResponse<GetPagedFieldsResponse>
+      );
+      expect(getPagedFieldsResponse.data).to.be.instanceOf(
+        GetPagedFieldsResponse
+      );
+      expect(getPagedFieldsResponse.data).to.not.be.null;
+
+      if (getPagedFieldsResponse.data != null) {
+        expect(getPagedFieldsResponse.data.pageNumber).to.equal(0);
+        expect(getPagedFieldsResponse.data.pageSize).to.equal(0);
+        expect(getPagedFieldsResponse.data.totalPages).to.equal(0);
+        expect(getPagedFieldsResponse.data.totalRecords).to.equal(0);
+        expect(getPagedFieldsResponse.data.items).to.be.instanceOf(Array);
+        expect(getPagedFieldsResponse.data.items).to.have.lengthOf(0);
       }
     });
   });

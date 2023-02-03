@@ -166,7 +166,7 @@ export class ApiResponse<T> {
     );
   }
 
-  AsGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
+  public AsGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
     const fields = apiResponse.data.items.map((item: any) => {
