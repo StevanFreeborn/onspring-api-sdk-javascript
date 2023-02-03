@@ -9,6 +9,7 @@ import { FieldType } from '../src/enums/FieldType';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     expect(ApiResponse).to.not.be.undefined;
   });
 
@@ -108,7 +109,7 @@ describe('ApiResponse', function () {
         ],
       };
 
-      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
@@ -126,7 +127,7 @@ describe('ApiResponse', function () {
       }
     });
 
-    it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
+    it('should return an ApiResponse<GetPagedAppsResponse> when data contains no app items', function () {
       const mockResponseData = {
         pageNumber: 0,
         pageSize: 0,
@@ -135,7 +136,7 @@ describe('ApiResponse', function () {
         items: [],
       };
 
-      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
@@ -168,7 +169,7 @@ describe('ApiResponse', function () {
         name: 'Test App',
       };
 
-      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const appResponse = apiResponse.AsAppType();
 
       expect(appResponse).to.be.instanceOf(ApiResponse);
@@ -209,7 +210,7 @@ describe('ApiResponse', function () {
         ],
       };
 
-      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const appCollectionResponse = apiResponse.AsAppCollectionType();
 
       expect(appCollectionResponse).to.be.instanceOf(
@@ -252,7 +253,7 @@ describe('ApiResponse', function () {
         isUnique: false,
       };
 
-      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const fieldResponse = apiResponse.AsFieldType();
 
       expect(fieldResponse).to.be.instanceOf(ApiResponse);

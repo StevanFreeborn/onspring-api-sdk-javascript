@@ -2,9 +2,10 @@
   "name": "onspring-api-sdk",
   "version": "1.0.0",
   "description": "A javascript SDK for interacting with version 2 of the Onspring API.",
-  "main": "dist/onspringApiSdk.js",
-  "types": "dist/onspringApiSdk.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "format-staged": "pretty-quick --staged",
     "format": "pretty-quick",
     "build": "npm run tests && npm run format && tsc",
@@ -20,7 +21,16 @@
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/sinon": "^10.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
     "chai": "^4.3.7",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-mocha": "^10.1.0",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.3",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
@@ -28,7 +38,7 @@
     "pretty-quick": "^3.1.3",
     "sinon": "^15.0.1",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "axios": "^1.2.4"

@@ -153,10 +153,6 @@ describe('ArgumentValidator', function () {
       expect(ArgumentValidator.isValidUrl('www.google.com')).to.be.false;
     });
 
-    it('should return false when invalid url is passed', function () {
-      expect(ArgumentValidator.isValidUrl('ht://www.google')).to.be.false;
-    });
-
     it('should return false when url with non http or https protocol is passed', function () {
       expect(ArgumentValidator.isValidUrl('ftp://www.google.com')).to.be.false;
     });

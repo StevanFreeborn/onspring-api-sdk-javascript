@@ -1,5 +1,5 @@
 import { PagedResponse } from './PagedResponse';
-import { App } from './App';
+import { type App } from './App';
 
 /**
  * @class GetPagedAppsResponse - A paged response model for the GetApps method.

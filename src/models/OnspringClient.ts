@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { ArgumentValidator } from './ArgumentValidator';
 import { EndpointFactory } from './EndpointFactory';
 import { ApiResponseFactory } from './ApiResponseFactory';
-import { ApiResponse } from './ApiResponse';
+import { type ApiResponse } from './ApiResponse';
 import { PagingRequest } from './PagingRequest';
-import { GetPagedAppsResponse } from './GetPagedAppsResponse';
-import { App } from './App';
-import { CollectionResponse } from './CollectionResponse';
-import { Field } from './Field';
+import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
+import { type App } from './App';
+import { type CollectionResponse } from './CollectionResponse';
+import { type Field } from './Field';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -66,7 +66,7 @@ export class OnspringClient {
   ): Promise<ApiResponse<GetPagedAppsResponse>> {
     const endpoint = EndpointFactory.getAppsEndpoint(pagingRequest);
 
-    var apiResponse = await this.get<any>(endpoint);
+    const apiResponse = await this.get<any>(endpoint);
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -83,7 +83,7 @@ export class OnspringClient {
   public async getAppById(appId: number): Promise<ApiResponse<App>> {
     const endpoint = EndpointFactory.getAppByIdEndpoint(appId);
 
-    var apiResponse = await this.get<any>(endpoint);
+    const apiResponse = await this.get<any>(endpoint);
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -123,6 +123,19 @@ export class OnspringClient {
     }
 
     return apiResponse.AsFieldType();
+  }
+
+  public async getFieldsByIds(
+    fieldIds: number[]
+  ): Promise<ApiResponse<CollectionResponse<Field>>> {
+    const endpoint = EndpointFactory.getFieldsByIdsEndpoint();
+    const apiResponse = await this.post<any>(endpoint, fieldIds);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsFieldCollectionType();
   }
 
   /**

@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 import { HttpStatusCode } from '../enums/HttpStatusCode';
 import { ApiResponse } from './ApiResponse';
 

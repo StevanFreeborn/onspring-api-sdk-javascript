@@ -1,4 +1,4 @@
-import { PagingRequest } from './PagingRequest';
+import { type PagingRequest } from './PagingRequest';
 
 /**
  * @class EndpointFactory - A factory class for creating endpoints.

@@ -1,5 +1,5 @@
 import { ApiResponseFactory } from '../src/models/ApiResponseFactory';
-import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { expect } from 'chai';
 
 describe('ApiResponseFactory', function () {

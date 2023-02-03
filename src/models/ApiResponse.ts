@@ -133,4 +133,8 @@ export class ApiResponse<T> {
       field
     );
   }
+
+  public AsFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
+    throw new Error('Method not implemented.');
+  }
 }

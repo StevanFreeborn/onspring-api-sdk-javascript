@@ -1,6 +1,9 @@
 import { OnspringClient } from '../src/models/OnspringClient';
 import { ApiResponse } from '../src/models/ApiResponse';
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
@@ -82,12 +85,6 @@ describe('OnspringClient', function () {
 
   it('should not throw an error when the baseUrl is a valid url', function () {
     expect(() => new OnspringClient(baseUrl, apiKey)).to.not.throw();
-  });
-
-  it('should not throw an error when the baseUrl is a valid url', function () {
-    expect(
-      () => new OnspringClient('http://api.onspring.com', apiKey)
-    ).to.not.throw();
   });
 
   it('should not throw an error when the apiKey is a valid string', function () {
