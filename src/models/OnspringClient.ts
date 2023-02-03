@@ -129,7 +129,8 @@ export class OnspringClient {
     fieldIds: number[]
   ): Promise<ApiResponse<CollectionResponse<Field>>> {
     const endpoint = EndpointFactory.getFieldsByIdsEndpoint();
-    const apiResponse = await this.post<any>(endpoint, fieldIds);
+    const uniqueIds = [...new Set(fieldIds)];
+    const apiResponse = await this.post<any>(endpoint, uniqueIds);
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;

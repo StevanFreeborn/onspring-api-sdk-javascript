@@ -828,4 +828,183 @@ describe('OnspringClient', function () {
       expect(result.data).to.be.null;
     });
   });
+
+  describe('getFieldsByIds', function () {
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldsByIds).to.be.a(
+        'function'
+      );
+    });
+
+    it('should return a promise', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldsByIds([1])).to.be.a(
+        'promise'
+      );
+    });
+
+    it('should return a promise that resolves to an api response of a collection of fields when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            count: 2,
+            items: [
+              {
+                id: 1,
+                appId: 1,
+                name: 'Text Field',
+                type: 'Text',
+                status: 'Enabled',
+                isRequired: false,
+                isUnique: false,
+              },
+              {
+                id: 2,
+                appId: 1,
+                name: 'Number Field',
+                type: 'Number',
+                status: 'Enabled',
+                isRequired: false,
+                isUnique: false,
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse<CollectionResponse<Field>>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      if (result.data != null) {
+        expect(result.data).to.be.instanceOf(CollectionResponse<Field>);
+        expect(result.data).to.have.property('count', 2);
+        expect(result.data).to.have.property('items');
+        expect(result.data.items).to.have.lengthOf(2);
+        result.data.items.forEach((item) => {
+          expect(item).to.be.instanceOf(Field);
+          expect(item).to.have.property('id');
+          expect(item).to.have.property('appId');
+          expect(item).to.have.property('name');
+          expect(item).to.have.property('type');
+          expect(item).to.have.property('status');
+          expect(item).to.have.property('isRequired');
+          expect(item).to.have.property('isUnique');
+        });
+      }
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: {
+            message: 'Client does not have access to read field: 1,2',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property(
+        'message',
+        'Client does not have access to read field: 1,2'
+      );
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 404 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 404,
+          statusText: 'Not Found',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 404);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+  });
 });

@@ -9,7 +9,6 @@ import { FieldType } from '../src/enums/FieldType';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     expect(ApiResponse).to.not.be.undefined;
   });
 
@@ -196,6 +195,7 @@ describe('ApiResponse', function () {
 
     it('should return an ApiResponse<CollectionResponse<App[]>> when data contains app items', function () {
       const mockResponseData = {
+        count: 2,
         items: [
           {
             href: 'https://api.onspring.dev/apps/id/1',
@@ -221,6 +221,9 @@ describe('ApiResponse', function () {
       );
       expect(appCollectionResponse.data).to.not.be.null;
       if (appCollectionResponse.data != null) {
+        expect(appCollectionResponse.data).to.have.property('count');
+        expect(appCollectionResponse.data).to.have.property('items');
+        expect(appCollectionResponse.data.count).to.equal(2);
         expect(appCollectionResponse.data.items).to.be.instanceOf(Array);
         expect(appCollectionResponse.data.items).to.have.lengthOf(2);
         appCollectionResponse.data.items.forEach((item) => {
@@ -267,6 +270,67 @@ describe('ApiResponse', function () {
         expect(fieldResponse.data.status).to.equal(FieldStatus.Enabled);
         expect(fieldResponse.data.isRequired).to.equal(false);
         expect(fieldResponse.data.isUnique).to.equal(false);
+      }
+    });
+  });
+
+  describe('AsFieldCollectionType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.AsFieldCollectionType).to.not.be.undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.AsFieldCollectionType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<CollectionResponse<Field>> when data contains field items', function () {
+      const mockResponseData = {
+        count: 2,
+        items: [
+          {
+            id: 1,
+            appId: 1,
+            name: 'Text Field',
+            type: 'Text',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+          {
+            id: 2,
+            appId: 1,
+            name: 'Number Field',
+            type: 'Number',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fieldCollectionResponse = apiResponse.AsFieldCollectionType();
+
+      expect(fieldCollectionResponse).to.be.instanceOf(
+        ApiResponse<CollectionResponse<Field>>
+      );
+      expect(fieldCollectionResponse.data).to.be.instanceOf(
+        CollectionResponse<Field>
+      );
+      expect(fieldCollectionResponse.data).to.not.be.null;
+      if (fieldCollectionResponse.data != null) {
+        expect(fieldCollectionResponse.data.items).to.be.instanceOf(Array);
+        expect(fieldCollectionResponse.data.items).to.have.lengthOf(2);
+        fieldCollectionResponse.data.items.forEach((item) => {
+          expect(item).to.be.instanceOf(Field);
+          expect(item).to.have.property('id');
+          expect(item).to.have.property('appId');
+          expect(item).to.have.property('name');
+          expect(item).to.have.property('type');
+          expect(item).to.have.property('status');
+          expect(item).to.have.property('isRequired');
+          expect(item).to.have.property('isUnique');
+        });
       }
     });
   });

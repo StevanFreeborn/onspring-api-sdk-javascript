@@ -135,6 +135,29 @@ export class ApiResponse<T> {
   }
 
   public AsFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
-    throw new Error('Method not implemented.');
+    const apiResponse = this as ApiResponse<any>;
+
+    const fields = apiResponse.data.items.map((item: any) => {
+      return new Field(
+        item.id,
+        item.appId,
+        item.name,
+        item.type,
+        item.status,
+        item.isRequired,
+        item.isUnique
+      );
+    });
+
+    const collectionResponse = new CollectionResponse<Field>(
+      apiResponse.data.count,
+      fields
+    );
+
+    return new ApiResponse<CollectionResponse<Field>>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      collectionResponse
+    );
   }
 }
