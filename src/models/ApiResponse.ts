@@ -166,6 +166,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method AsGetPagedFieldsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedFieldsResponse>.
+   * @returns {ApiResponse<GetPagedFieldsResponse>} - An ApiResponse<GetPagedFieldsResponse>.
+   */
   public AsGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
     const apiResponse = this as ApiResponse<any>;
 

@@ -146,6 +146,12 @@ export class OnspringClient {
     return apiResponse.AsFieldCollectionType();
   }
 
+  /**
+   * @method getFieldsByAppId - Gets a paged list of fields by an app id.
+   * @param {number} appId - The id of the app to get the fields for.
+   * @param {PagingRequest} pagingRequest - The paging request that will be used to get the fields.
+   * @returns {Promise<ApiResponse<GetPagedFieldsResponse>>} - A promise that resolves to an ApiResponse of type GetPagedFieldsResponse.
+   */
   public async getFieldsByAppId(
     appId: number,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
