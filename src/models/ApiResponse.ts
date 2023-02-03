@@ -1,5 +1,6 @@
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
+import { CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { Field } from './Field';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
@@ -197,6 +198,20 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       getPagedFieldsResponse
+    );
+  }
+
+  public AsCreatedWithIdResponseType(): ApiResponse<CreatedWithIdResponse> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const createdWithIdResponse = new CreatedWithIdResponse(
+      apiResponse.data.id
+    );
+
+    return new ApiResponse<CreatedWithIdResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      createdWithIdResponse
     );
   }
 }

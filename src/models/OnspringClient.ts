@@ -10,6 +10,8 @@ import { type App } from './App';
 import { type CollectionResponse } from './CollectionResponse';
 import { type Field } from './Field';
 import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse';
+import { type SaveFileRequest } from './SaveFileRequest';
+import { type CreatedWithIdResponse } from './CreatedWithIdResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -167,6 +169,27 @@ export class OnspringClient {
     }
 
     return apiResponse.AsGetPagedFieldsResponseType();
+  }
+
+  /**
+   * @method saveFile - Saves a file to a record in Onspring.
+   * @param {SaveFileRequest} request - The request that will be used to save the file.
+   * @returns {Promise<ApiResponse<CreatedWithIdResponse>>} - A promise that resolves to an ApiResponse of type CreatedWithIdResponse.
+   */
+  public async saveFile(
+    request: SaveFileRequest
+  ): Promise<ApiResponse<CreatedWithIdResponse>> {
+    const endpoint = EndpointFactory.getSaveFileEndpoint();
+    const formData = request.AsFormData();
+    const apiResponse = await this.post<any>(endpoint, formData, {
+      headers: formData.getHeaders(),
+    });
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsCreatedWithIdResponseType();
   }
 
   /**
