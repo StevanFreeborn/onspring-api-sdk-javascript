@@ -49,8 +49,11 @@ describe('EndpointFactory', function () {
 
   describe('getFieldsByAppIdEndpoint', function () {
     it('should return the correct fields by app id endpoint', function () {
-      const result = EndpointFactory.getFieldsByAppIdEndpoint(1);
-      expect(result).to.equal('/Fields/appId/1');
+      const result = EndpointFactory.getFieldsByAppIdEndpoint(
+        1,
+        new PagingRequest(2, 1000)
+      );
+      expect(result).to.equal('/Fields/appId/1?pageSize=1000&pageNumber=2');
     });
   });
 

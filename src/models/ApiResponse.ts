@@ -2,6 +2,7 @@ import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
 import { Field } from './Field';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
+import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -162,6 +163,36 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       collectionResponse
+    );
+  }
+
+  AsGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const fields = apiResponse.data.items.map((item: any) => {
+      return new Field(
+        item.id,
+        item.appId,
+        item.name,
+        item.type,
+        item.status,
+        item.isRequired,
+        item.isUnique
+      );
+    });
+
+    const getPagedFieldsResponse = new GetPagedFieldsResponse(
+      fields,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
+
+    return new ApiResponse<GetPagedFieldsResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      getPagedFieldsResponse
     );
   }
 }

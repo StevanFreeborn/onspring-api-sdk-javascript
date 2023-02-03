@@ -58,10 +58,14 @@ export class EndpointFactory {
   /**
    * @method getFieldsByAppIdEndpoint - Gets the fields by app id endpoint.
    * @param {number} id - The id of the app.
+   * @param {PagingRequest} pagingRequest - Pagination information to use as query params in the endpoint string.
    * @returns {string} - The fields by app id endpoint.
    */
-  public static getFieldsByAppIdEndpoint(id: number): string {
-    return `/Fields/appId/${id}`;
+  public static getFieldsByAppIdEndpoint(
+    id: number,
+    pagingRequest: PagingRequest
+  ): string {
+    return `/Fields/appId/${id}?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
   }
 
   /**

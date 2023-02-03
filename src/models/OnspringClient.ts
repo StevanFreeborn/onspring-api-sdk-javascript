@@ -9,6 +9,7 @@ import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { type App } from './App';
 import { type CollectionResponse } from './CollectionResponse';
 import { type Field } from './Field';
+import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -143,6 +144,23 @@ export class OnspringClient {
     }
 
     return apiResponse.AsFieldCollectionType();
+  }
+
+  public async getFieldsByAppId(
+    appId: number,
+    pagingRequest: PagingRequest = new PagingRequest(1, 50)
+  ): Promise<ApiResponse<GetPagedFieldsResponse>> {
+    const endpoint = EndpointFactory.getFieldsByAppIdEndpoint(
+      appId,
+      pagingRequest
+    );
+    const apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsGetPagedFieldsResponseType();
   }
 
   /**
