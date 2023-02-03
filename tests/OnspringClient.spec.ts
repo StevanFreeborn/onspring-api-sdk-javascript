@@ -13,7 +13,6 @@ import { Field } from '../src/models/Field';
 import { FieldStatus } from '../src/enums/FieldStatus';
 import { FieldType } from '../src/enums/FieldType';
 import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
-import { PagingRequest } from '../src/models/PagingRequest';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
