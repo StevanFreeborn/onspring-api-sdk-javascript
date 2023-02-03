@@ -11,7 +11,7 @@ describe('GetPagedAppsResponse', function () {
     expect(GetPagedAppsResponse).to.have.property('constructor');
   });
 
-  it('should have 4 parameters', function () {
+  it('should have 5 parameters', function () {
     expect(GetPagedAppsResponse).to.have.lengthOf(5);
   });
 
