@@ -134,6 +134,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method AsFieldCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<Field>>.
+   * @returns {ApiResponse<CollectionResponse<Field>>} - An ApiResponse<CollectionResponse<Field>>.
+   */
   public AsFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
     const apiResponse = this as ApiResponse<any>;
 

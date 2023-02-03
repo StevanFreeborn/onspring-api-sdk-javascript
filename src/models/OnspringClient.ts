@@ -112,6 +112,7 @@ export class OnspringClient {
 
   /**
    * @method getFieldById - Gets a field by its id.
+   * @param {number} fieldId - The id of the field to get.
    * @returns {Promise<ApiResponse<Field>>} - A promise that resolves to an ApiResponse of type Field.
    */
   public async getFieldById(fieldId: number): Promise<ApiResponse<Field>> {
@@ -125,6 +126,11 @@ export class OnspringClient {
     return apiResponse.AsFieldType();
   }
 
+  /**
+   * @method getFieldsByIds - Gets a list of fields by their ids.
+   * @param {number[]} fieldIds - The ids of the fields to get.
+   * @returns {Promise<ApiResponse<CollectionResponse<Field>>>} - A promise that resolves to an ApiResponse of type CollectionResponse<Field>.
+   */
   public async getFieldsByIds(
     fieldIds: number[]
   ): Promise<ApiResponse<CollectionResponse<Field>>> {
