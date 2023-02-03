@@ -20,6 +20,18 @@ describe('Field', function () {
     ).to.not.throw();
   });
 
+  it('should throw an error when the type parameter is not a valid value', function () {
+    expect(
+      () => new Field(1, 1, 'Text Field', 'Invalid', 'Enabled', true, false)
+    ).to.throw();
+  });
+
+  it('should throw an error when the status parameter is not a valid value', function () {
+    expect(
+      () => new Field(1, 1, 'Text Field', 'Text', 'Unabled', true, false)
+    ).to.throw();
+  });
+
   it('should create a new instance of the Field class with the correct properties and values', function () {
     const field = new Field(1, 1, 'Text Field', 'Text', 'Enabled', true, false);
 
@@ -37,17 +49,5 @@ describe('Field', function () {
     expect(field.status).to.equal('Enabled');
     expect(field.isRequired).to.equal(true);
     expect(field.isUnique).to.equal(false);
-  });
-
-  it('should throw an error when the type parameter is not a valid value', function () {
-    expect(
-      () => new Field(1, 1, 'Text Field', 'Invalid', 'Enabled', true, false)
-    ).to.throw();
-  });
-
-  it('should throw an error when the status parameter is not a valid value', function () {
-    expect(
-      () => new Field(1, 1, 'Text Field', 'Text', 'Unabled', true, false)
-    ).to.throw();
   });
 });

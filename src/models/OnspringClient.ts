@@ -111,8 +111,7 @@ export class OnspringClient {
   }
 
   /**
-   * @method getFields - Gets a paged list of fields.
-   * @param {PagingRequest} pagingRequest - The paging request that will be used to get the fields.
+   * @method getFieldById - Gets a field by its id.
    * @returns {Promise<ApiResponse<Field>>} - A promise that resolves to an ApiResponse of type Field.
    */
   public async getFieldById(fieldId: number): Promise<ApiResponse<Field>> {

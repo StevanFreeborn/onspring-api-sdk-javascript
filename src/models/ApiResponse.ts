@@ -110,6 +110,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method AsFieldType - Converts the ApiResponse to an ApiResponse<Field>.
+   * @returns {ApiResponse<Field>} - An ApiResponse<Field>.
+   */
   public AsFieldType(): ApiResponse<Field> {
     const apiResponse = this as ApiResponse<any>;
 
