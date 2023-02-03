@@ -10,7 +10,7 @@ export class CollectionResponse<T> {
   /**
    * @property {T} items - The items in the collection.
    */
-  public items: T;
+  public items: T[];
 
   /**
    * @constructor - Creates a new instance of the CollectionResponse class.
@@ -18,7 +18,7 @@ export class CollectionResponse<T> {
    * @param {T} items - The items in the collection.
    * @returns {CollectionResponse<T>} - A new instance of the CollectionResponse.
    */
-  constructor(count: number, items: T) {
+  constructor(count: number, items: T[]) {
     this.count = count;
     this.items = items;
   }

@@ -5,6 +5,7 @@ import { PagingRequest } from './PagingRequest';
  */
 export class EndpointFactory {
   /**
+   * @method getPingEndpoint - Gets the ping endpoint.
    * @returns {string} - The ping endpoint.
    */
   public static getPingEndpoint(): string {
@@ -12,6 +13,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getAppsEndpoint - Gets the apps endpoint.
    * @param {PagingRequest} pagingRequest - Pagination information to use as query params in the endpoint string.
    * @returns {string} - The apps endpoint.
    */
@@ -20,6 +22,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getAppByIdEndpoint - Gets the app by id endpoint.
    * @param {number} id - The id of the app.
    * @returns {string} - The app by id endpoint.
    */
@@ -28,6 +31,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getAppsByIdsEndpoint - Gets the apps by ids endpoint.
    * @returns {string} - The apps by ids endpoint.
    */
   public static getAppsByIdsEndpoint(): string {
@@ -35,6 +39,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getRecordsEndpoint - Gets the records endpoint.
    * @param {number} id - The id of the field.
    * @returns {string} - The field by id endpoint.
    */
@@ -43,6 +48,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getFieldsByIdsEndpoint - Gets the fields by ids endpoint.
    * @returns {string} - The fields by ids endpoint.
    */
   public static getFieldsByIdsEndpoint(): string {
@@ -50,6 +56,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getFieldsByAppIdEndpoint - Gets the fields by app id endpoint.
    * @param {number} id - The id of the app.
    * @returns {string} - The fields by app id endpoint.
    */
@@ -58,6 +65,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getRecordsEndpoint - Gets the records endpoint.
    * @param {number} recordId - The id of the record.
    * @param {number} fieldId - The id of the field.
    * @param {number} fileId - The id of the file.
@@ -72,6 +80,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getDeleteFileByIdEndpoint - Gets the delete file by id endpoint.
    * @param {number} recordId - The id of the record.
    * @param {number} fieldId - The id of the field.
    * @param {number} fileId - The id of the file.
@@ -86,6 +95,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getFileByIdEndpoint - Gets the file by id endpoint.
    * @param {number} recordId - The id of the record.
    * @param {number} fieldId - The id of the field.
    * @param {number} fileId - The id of the file.
@@ -100,6 +110,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getSaveFileEndpoint - Gets the save file endpoint.
    * @returns {string} - The save file endpoint.
    */
   public static getSaveFileEndpoint(): string {
@@ -107,6 +118,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getAddOrUpdateListItemEndpoint - Gets the add or update list item endpoint.
    * @param {number} listId - The id of the list.
    * @returns {string} - The add or update list item endpoint.
    */
@@ -115,6 +127,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getDeleteListItemEndpoint - Gets the delete list item endpoint.
    * @param {number} listId - The id of the list.
    * @param {string} itemId - The id of the list item.
    * @returns {string} - The delete list item endpoint.
@@ -127,6 +140,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getRecordsByAppIdEndpoint - Gets the get records by app id endpoint.
    * @param {number} appId - The id of the app.
    * @returns {string} - The get records by app id endpoint.
    */
@@ -135,6 +149,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getRecordByIdEndpoint - Gets the get record by id endpoint.
    * @param {number} appId - The id of the app.
    * @param {number} recordId - The id of the record.
    * @returns {string} - The get record by id endpoint.
@@ -144,6 +159,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getDeleteRecordByIdEndpoint - Gets the delete record by id endpoint.
    * @param {number} appId - The id of the app.
    * @param {number} recordId - The id of the record.
    * @returns {string} - The delete record by id endpoint.
@@ -156,6 +172,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getRecordsByIdsEndpoint - Gets the get records by ids endpoint.
    * @returns {string} - The get records by ids endpoint.
    */
   public static getRecordsByIdsEndpoint(): string {
@@ -163,6 +180,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getQueryRecordsEndpoint - Gets the query records endpoint.
    * @returns {string} - The query records endpoint.
    */
   public static getQueryRecordsEndpoint(): string {
@@ -170,6 +188,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getAddOrUpdateRecordEndpoint - Gets the add or update record endpoint.
    * @returns {string} - The add or update record endpoint.
    */
   public static getAddOrUpdateRecordEndpoint(): string {
@@ -177,6 +196,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getDeleteRecordsByIdsEndpoint - Gets the delete records by ids endpoint.
    * @returns {string} - The delete records by ids endpoint.
    */
   public static getDeleteRecordsByIdsEndpoint(): string {
@@ -184,6 +204,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getReportByIdEndpoint - Gets the get report by id endpoint.
    * @param {number} reportId - The id of the report.
    * @returns {string} - The get report by id endpoint.
    */
@@ -192,6 +213,7 @@ export class EndpointFactory {
   }
 
   /**
+   * @method getReportsByAppIdEndpoint - Gets the get reports by app id endpoint.
    * @param {number} appId - The id of the app.
    * @returns {string} - The get reports by app id endpoint.
    */

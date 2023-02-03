@@ -7,14 +7,12 @@ import { ApiResponse } from './ApiResponse';
 import { PagingRequest } from './PagingRequest';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { App } from './App';
+import { CollectionResponse } from './CollectionResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
  */
 export class OnspringClient {
-  getAppsByIds(getAppsByIds: any) {
-    throw new Error('Method not implemented.');
-  }
   /**
    * @readonly {AxiosInstance} client - The axios instance that will be used to make requests to the Onspring API.
    */
@@ -58,9 +56,9 @@ export class OnspringClient {
   }
 
   /**
-   *
+   * @method getApps - Gets a paged list of apps.
    * @param pagingRequest - The paging request that will be used to get the apps.
-   * @returns
+   * @returns - A promise that resolves to an ApiResponse of type GetPagedAppsResponse.
    */
   public async getApps(
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
@@ -76,6 +74,11 @@ export class OnspringClient {
     return apiResponse.AsGetPagedAppsResponseType();
   }
 
+  /**
+   * @method getAppById - Gets an app by its id.
+   * @param appId - The id of the app to get.
+   * @returns - A promise that resolves to an ApiResponse of type App.
+   */
   public async getAppById(appId: number): Promise<ApiResponse<App>> {
     const endpoint = EndpointFactory.getAppByIdEndpoint(appId);
 
@@ -89,8 +92,27 @@ export class OnspringClient {
   }
 
   /**
+   * @method getAppsByIds - Gets a list of apps by their ids.
+   * @param getAppsByIds - The ids of the apps to get.
+   * @returns - A promise that resolves to an ApiResponse of type CollectionResponse<App>.
+   */
+  public async getAppsByIds(
+    getAppsByIds: number[]
+  ): Promise<ApiResponse<CollectionResponse<App>>> {
+    const endpoint = EndpointFactory.getAppsByIdsEndpoint();
+    const apiResponse = await this.post<any>(endpoint, getAppsByIds);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsAppCollectionType();
+  }
+
+  /**
    * @method get - Makes a GET request to the specified endpoint.
    * @param {string} endpoint - The endpoint that will be used to make the request.
+   * @param {AxiosRequestConfig} config - The configuration that will be used to make the request.
    * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
    */
   private async get<T>(
@@ -98,6 +120,23 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.get(endpoint, config);
+    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    return apiResponse;
+  }
+
+  /**
+   *
+   * @param endpoint - The endpoint that will be used to make the request.
+   * @param data - The data that will be sent with the request.
+   * @param config - The configuration that will be used to make the request.
+   * @returns - A promise that resolves to an ApiResponse of type T.
+   */
+  private async post<T>(
+    endpoint: string,
+    data: any,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResponse<T>> {
+    const response = await this._client.post(endpoint, data, config);
     const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }

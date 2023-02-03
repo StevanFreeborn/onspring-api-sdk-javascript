@@ -1,4 +1,5 @@
 import { App } from './App';
+import { CollectionResponse } from './CollectionResponse';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 
 /**
@@ -44,13 +45,13 @@ export class ApiResponse<T> {
    * @returns {ApiResponse<GetPagedAppsResponse>} - An ApiResponse<GetPagedAppsResponse>.
    */
   public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
-    var apiResponse = this as ApiResponse<any>;
+    const apiResponse = this as ApiResponse<any>;
 
-    var apps = apiResponse.data.items.map((item: any) => {
+    const apps = apiResponse.data.items.map((item: any) => {
       return new App(item.href, item.id, item.name);
     });
 
-    var getAppsPagedResponse = new GetPagedAppsResponse(
+    const getAppsPagedResponse = new GetPagedAppsResponse(
       apps,
       apiResponse.data.pageNumber,
       apiResponse.data.pageSize,
@@ -65,10 +66,14 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method AsAppType - Converts the ApiResponse to an ApiResponse<App>.
+   * @returns {ApiResponse<App>} - An ApiResponse<App>.
+   */
   AsAppType(): ApiResponse<App> {
-    var apiResponse = this as ApiResponse<any>;
+    const apiResponse = this as ApiResponse<any>;
 
-    var app = new App(
+    const app = new App(
       apiResponse.data.href,
       apiResponse.data.id,
       apiResponse.data.name
@@ -78,6 +83,29 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       app
+    );
+  }
+
+  /**
+   * @method AsAppCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<App>>.
+   * @returns {ApiResponse<CollectionResponse<App>>} - An ApiResponse<CollectionResponse<App>>.
+   */
+  AsAppCollectionType(): ApiResponse<CollectionResponse<App>> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const apps = apiResponse.data.items.map((item: any) => {
+      return new App(item.href, item.id, item.name);
+    });
+
+    const collectionResponse = new CollectionResponse<App>(
+      apiResponse.data.count,
+      apps
+    );
+
+    return new ApiResponse<CollectionResponse<App>>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      collectionResponse
     );
   }
 }

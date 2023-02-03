@@ -2,6 +2,7 @@ import { ApiResponse } from '../src/models/ApiResponse';
 import { expect } from 'chai';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
 import { App } from '../src/models/App';
+import { CollectionResponse } from '../src/models/CollectionResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -85,7 +86,7 @@ describe('ApiResponse', function () {
     });
 
     it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
-      var mockApiResponse = {
+      const mockResponseData = {
         pageNumber: 1,
         pageSize: 2,
         totalPages: 1,
@@ -104,8 +105,8 @@ describe('ApiResponse', function () {
         ],
       };
 
-      var apiResponse = new ApiResponse<any>(200, 'OK', mockApiResponse);
-      var appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
+      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
@@ -123,7 +124,7 @@ describe('ApiResponse', function () {
     });
 
     it('should return an ApiResponse<GetPagedAppsResponse> when data contains app items', function () {
-      var mockApiResponse = {
+      const mockResponseData = {
         pageNumber: 0,
         pageSize: 0,
         totalPages: 0,
@@ -131,8 +132,8 @@ describe('ApiResponse', function () {
         items: [],
       };
 
-      var apiResponse = new ApiResponse<any>(200, 'OK', mockApiResponse);
-      var appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
+      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
@@ -158,14 +159,14 @@ describe('ApiResponse', function () {
     });
 
     it('should return an ApiResponse<App> when data contain an app', function () {
-      var mockApiResponse = {
+      const mockResponseData = {
         href: 'https://api.onspring.dev/apps/id/1',
         id: 1,
         name: 'Test App',
       };
 
-      var apiResponse = new ApiResponse<any>(200, 'OK', mockApiResponse);
-      var appResponse = apiResponse.AsAppType();
+      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const appResponse = apiResponse.AsAppType();
 
       expect(appResponse).to.be.instanceOf(ApiResponse);
       expect(appResponse.data).to.be.instanceOf(App);
@@ -176,6 +177,54 @@ describe('ApiResponse', function () {
         expect(appResponse.data.href).to.equal(
           'https://api.onspring.dev/apps/id/1'
         );
+      }
+    });
+  });
+
+  describe('AsAppCollectionType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.AsAppCollectionType).to.not.be.undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.AsAppCollectionType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<CollectionResponse<App[]>> when data contains app items', function () {
+      const mockResponseData = {
+        items: [
+          {
+            href: 'https://api.onspring.dev/apps/id/1',
+            id: 1,
+            name: 'Test App 1',
+          },
+          {
+            href: 'https://api.onspring.dev/apps/id/2',
+            id: 2,
+            name: 'Test App 2',
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const appCollectionResponse = apiResponse.AsAppCollectionType();
+
+      expect(appCollectionResponse).to.be.instanceOf(
+        ApiResponse<CollectionResponse<App>>
+      );
+      expect(appCollectionResponse.data).to.be.instanceOf(
+        CollectionResponse<App>
+      );
+      expect(appCollectionResponse.data).to.not.be.null;
+      if (appCollectionResponse.data != null) {
+        expect(appCollectionResponse.data.items).to.be.instanceOf(Array);
+        expect(appCollectionResponse.data.items).to.have.lengthOf(2);
+        appCollectionResponse.data.items.forEach((item) => {
+          expect(item).to.be.instanceOf(App);
+          expect(item).to.have.property('id');
+          expect(item).to.have.property('name');
+          expect(item).to.have.property('href');
+        });
       }
     });
   });

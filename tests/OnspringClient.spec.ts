@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
 import { App } from '../src/models/App';
+import { CollectionResponse } from '../src/models/CollectionResponse';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -454,7 +455,7 @@ describe('OnspringClient', function () {
       sinon.stub(mockAxiosClient, 'get').returns(
         Promise.resolve({
           status: 403,
-          statusText: 'Unauthorized',
+          statusText: 'Forbidden',
           data: {
             message: 'Client does not have access to read app: 1',
           },
@@ -532,5 +533,130 @@ describe('OnspringClient', function () {
     });
 
     // TODO: complete wriiting tests for getAppsByIds method
+    it('should return a promise that resolves to an api response of a collection of apps when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            count: 2,
+            items: [
+              {
+                href: 'https://api.onspring.dev/Apps/id/1',
+                id: 1,
+                name: 'Test App 1',
+              },
+              {
+                href: 'https://api.onspring.dev/Apps/id/2',
+                id: 2,
+                name: 'Test App 2',
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getAppsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse<CollectionResponse<App[]>>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      if (result.data != null) {
+        expect(result.data).to.be.instanceOf(CollectionResponse);
+        expect(result.data).to.have.property('count', 2);
+        expect(result.data).to.have.property('items');
+        if (result.data.items != null) {
+          expect(result.data.items).to.be.an('array');
+          expect(result.data.items).to.have.lengthOf(2);
+          result.data.items.forEach((item) => {
+            expect(item).to.be.instanceOf(App);
+            expect(item).to.have.property('id');
+            expect(item).to.have.property('name');
+            expect(item).to.have.property('href');
+          });
+        }
+      }
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getAppsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: {
+            message: 'Client does not have access to read app: 1, 2',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getAppsByIds([1, 2]);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property(
+        'message',
+        'Client does not have access to read app: 1, 2'
+      );
+      expect(result.data).to.be.null;
+    });
   });
 });
