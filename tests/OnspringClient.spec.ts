@@ -532,7 +532,6 @@ describe('OnspringClient', function () {
       ).to.be.a('promise');
     });
 
-    // TODO: complete wriiting tests for getAppsByIds method
     it('should return a promise that resolves to an api response of a collection of apps when request is successful', async function () {
       const client = new OnspringClient(baseUrl, apiKey);
 
