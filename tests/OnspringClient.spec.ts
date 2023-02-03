@@ -6,6 +6,9 @@ import * as sinon from 'sinon';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
 import { App } from '../src/models/App';
 import { CollectionResponse } from '../src/models/CollectionResponse';
+import { Field } from '../src/models/Field';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { FieldType } from '../src/enums/FieldType';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -655,6 +658,176 @@ describe('OnspringClient', function () {
         'message',
         'Client does not have access to read app: 1, 2'
       );
+      expect(result.data).to.be.null;
+    });
+  });
+
+  describe('getFieldById', function () {
+    it('should be defined', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldById).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldById).to.be.a(
+        'function'
+      );
+    });
+
+    it('should have 1 parameter', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldById).to.have.lengthOf(
+        1
+      );
+    });
+
+    it('should return a promise', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getFieldById(1)).to.be.a(
+        'promise'
+      );
+    });
+
+    it('should return a promise that resolves to an api response of a field when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            id: 1,
+            appId: 1,
+            name: 'Text Field',
+            type: 'Text',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldById(1);
+      expect(result).to.be.instanceOf(ApiResponse<Field>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      if (result.data != null) {
+        expect(result.data).to.be.instanceOf(Field);
+        expect(result.data).to.have.property('id', 1);
+        expect(result.data).to.have.property('appId', 1);
+        expect(result.data).to.have.property('name', 'Text Field');
+        expect(result.data).to.have.property('type', FieldType.Text);
+        expect(result.data).to.have.property('status', FieldStatus.Enabled);
+        expect(result.data).to.have.property('isRequired', false);
+        expect(result.data).to.have.property('isUnique', false);
+      }
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldById(1);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: {
+            message: 'Client does not have access to read field: 1',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldById(1);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property(
+        'message',
+        'Client does not have access to read field: 1'
+      );
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 404 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 404,
+          statusText: 'Not Found',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFieldById(1);
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 404);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
       expect(result.data).to.be.null;
     });
   });

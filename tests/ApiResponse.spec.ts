@@ -3,6 +3,9 @@ import { expect } from 'chai';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
 import { App } from '../src/models/App';
 import { CollectionResponse } from '../src/models/CollectionResponse';
+import { Field } from '../src/models/Field';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { FieldType } from '../src/enums/FieldType';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -225,6 +228,44 @@ describe('ApiResponse', function () {
           expect(item).to.have.property('name');
           expect(item).to.have.property('href');
         });
+      }
+    });
+  });
+
+  describe('AsFieldType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.AsFieldType).to.not.be.undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.AsFieldType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<Field> when data contain a field', function () {
+      const mockResponseData = {
+        id: 1,
+        appId: 1,
+        name: 'Text Field',
+        type: 'Text',
+        status: 'Enabled',
+        isRequired: false,
+        isUnique: false,
+      };
+
+      const apiResponse = new ApiResponse<any>(200, 'OK', mockResponseData);
+      const fieldResponse = apiResponse.AsFieldType();
+
+      expect(fieldResponse).to.be.instanceOf(ApiResponse);
+      expect(fieldResponse.data).to.be.instanceOf(Field);
+      expect(fieldResponse.data).to.not.be.null;
+      if (fieldResponse.data != null) {
+        expect(fieldResponse.data.id).to.equal(1);
+        expect(fieldResponse.data.appId).to.equal(1);
+        expect(fieldResponse.data.name).to.equal('Text Field');
+        expect(fieldResponse.data.type).to.equal(FieldType.Text);
+        expect(fieldResponse.data.status).to.equal(FieldStatus.Enabled);
+        expect(fieldResponse.data.isRequired).to.equal(false);
+        expect(fieldResponse.data.isUnique).to.equal(false);
       }
     });
   });

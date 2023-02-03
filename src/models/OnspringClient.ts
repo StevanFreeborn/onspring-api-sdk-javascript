@@ -8,6 +8,7 @@ import { PagingRequest } from './PagingRequest';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
+import { Field } from './Field';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -107,6 +108,17 @@ export class OnspringClient {
     }
 
     return apiResponse.AsAppCollectionType();
+  }
+
+  public async getFieldById(fieldId: number): Promise<ApiResponse<Field>> {
+    const endpoint = EndpointFactory.getFieldByIdEndpoint(fieldId);
+    const apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.AsFieldType();
   }
 
   /**

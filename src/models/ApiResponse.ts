@@ -1,5 +1,6 @@
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
+import { Field } from './Field';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 
 /**
@@ -70,7 +71,7 @@ export class ApiResponse<T> {
    * @method AsAppType - Converts the ApiResponse to an ApiResponse<App>.
    * @returns {ApiResponse<App>} - An ApiResponse<App>.
    */
-  AsAppType(): ApiResponse<App> {
+  public AsAppType(): ApiResponse<App> {
     const apiResponse = this as ApiResponse<any>;
 
     const app = new App(
@@ -90,7 +91,7 @@ export class ApiResponse<T> {
    * @method AsAppCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<App>>.
    * @returns {ApiResponse<CollectionResponse<App>>} - An ApiResponse<CollectionResponse<App>>.
    */
-  AsAppCollectionType(): ApiResponse<CollectionResponse<App>> {
+  public AsAppCollectionType(): ApiResponse<CollectionResponse<App>> {
     const apiResponse = this as ApiResponse<any>;
 
     const apps = apiResponse.data.items.map((item: any) => {
@@ -106,6 +107,26 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       collectionResponse
+    );
+  }
+
+  public AsFieldType(): ApiResponse<Field> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const field = new Field(
+      apiResponse.data.id,
+      apiResponse.data.appId,
+      apiResponse.data.name,
+      apiResponse.data.type,
+      apiResponse.data.status,
+      apiResponse.data.isRequired,
+      apiResponse.data.isUnique
+    );
+
+    return new ApiResponse<Field>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      field
     );
   }
 }
