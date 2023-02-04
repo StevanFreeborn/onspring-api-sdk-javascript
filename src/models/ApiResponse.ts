@@ -2,6 +2,7 @@ import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { Field } from './Field';
+import { FileInfo } from './FileInfo';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 
@@ -216,6 +217,27 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       createdWithIdResponse
+    );
+  }
+
+  asFileInfoType(): ApiResponse<FileInfo> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const fileInfo = new FileInfo(
+      apiResponse.data.type,
+      apiResponse.data.contentType,
+      apiResponse.data.name,
+      apiResponse.data.createdDate,
+      apiResponse.data.modifiedDate,
+      apiResponse.data.owner,
+      apiResponse.data.notes,
+      apiResponse.data.fileHref
+    );
+
+    return new ApiResponse<FileInfo>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      fileInfo
     );
   }
 }

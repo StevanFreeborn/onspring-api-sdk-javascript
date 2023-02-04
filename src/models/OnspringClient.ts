@@ -12,6 +12,7 @@ import { type Field } from './Field';
 import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 import { type SaveFileRequest } from './SaveFileRequest';
 import { type CreatedWithIdResponse } from './CreatedWithIdResponse';
+import { type FileInfo } from './FileInfo';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -104,7 +105,8 @@ export class OnspringClient {
     appIds: number[]
   ): Promise<ApiResponse<CollectionResponse<App>>> {
     const endpoint = EndpointFactory.getAppsByIdsEndpoint();
-    const apiResponse = await this.post<any>(endpoint, appIds);
+    const uniqueIds = [...new Set(appIds)];
+    const apiResponse = await this.post<any>(endpoint, uniqueIds);
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -169,6 +171,33 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedFieldsResponseType();
+  }
+
+  /**
+   * @method getFileInfoById - Gets a file's information by its id.
+   * @param {number} recordId - The id of the record that the file is attached to.
+   * @param {number} fieldId - The id of the field that the file is attached to.
+   * @param {number} fileId - The id of the file to get the information for.
+   * @returns {Promise<ApiResponse<FileInfo>>} - A promise that resolves to an ApiResponse of type FileInfo.
+   */
+  public async getFileInfoById(
+    recordId: number,
+    fieldId: number,
+    fileId: number
+  ): Promise<ApiResponse<FileInfo>> {
+    const endpoint = EndpointFactory.getFileInfoByIdEndpoint(
+      recordId,
+      fieldId,
+      fileId
+    );
+
+    const apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asFileInfoType();
   }
 
   /**

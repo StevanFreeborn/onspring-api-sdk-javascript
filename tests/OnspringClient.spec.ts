@@ -16,6 +16,7 @@ import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
 import { SaveFileRequest } from '../src/models/SaveFileRequest';
 import { Readable } from 'stream';
 import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
+import { FileInfo } from '../src/models/FileInfo';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -1492,6 +1493,216 @@ describe('OnspringClient', function () {
       expect(result).to.have.property('statusCode', 500);
       expect(result).to.have.property('isSuccessful', false);
       expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+  });
+
+  describe('getFileInfoById', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getFileInfoById).to.be.not.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getFileInfoById).to.be.a('function');
+    });
+
+    it('should return a promise', function () {
+      expect(
+        new OnspringClient(baseUrl, apiKey).getFileInfoById(1, 1, 1)
+      ).to.be.instanceOf(Promise);
+    });
+
+    it('should return a promise that resolves to an api response when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            type: 'Attachment',
+            contentType: 'string',
+            name: 'string',
+            createdDate: '2023-02-04T20:15:45.007Z',
+            modifiedDate: '2023-02-04T20:15:45.007Z',
+            owner: 'string',
+            notes: 'string',
+            fileHref: 'string',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFileInfoById(1, 1, 1);
+
+      expect(result).to.be.instanceOf(ApiResponse<FileInfo>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result.message).to.be.equal('');
+      expect(result.data).to.be.not.null;
+      expect(result.data).to.be.instanceOf(FileInfo);
+      expect(result.data).to.have.property('type', 'Attachment');
+      expect(result.data).to.have.property('contentType', 'string');
+      expect(result.data).to.have.property('name', 'string');
+      expect(result.data).to.have.property(
+        'createdDate',
+        '2023-02-04T20:15:45.007Z'
+      );
+      expect(result.data).to.have.property(
+        'modifiedDate',
+        '2023-02-04T20:15:45.007Z'
+      );
+      expect(result.data).to.have.property('owner', 'string');
+      expect(result.data).to.have.property('notes', 'string');
+      expect(result.data).to.have.property('fileHref', 'string');
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 400 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 400,
+          statusText: 'Bad Request',
+          data: {
+            field: ['Field requested is not a file type field.'],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFileInfoById(1, 1, 1);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 400);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.equal(
+        '{"field":["Field requested is not a file type field."]}'
+      );
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFileInfoById(1, 1, 1);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.be.undefined;
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: {
+            message:
+              'The user does not have permission to access this resource.',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFileInfoById(1, 1, 1);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.equal(
+        'The user does not have permission to access this resource.'
+      );
+      expect(result.data).to.be.null;
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 404 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 404,
+          statusText: 'Not Found',
+          data: {
+            message: 'The requested resource was not found.',
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getFileInfoById(1, 1, 1);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 404);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result.message).to.equal('The requested resource was not found.');
       expect(result.data).to.be.null;
     });
   });

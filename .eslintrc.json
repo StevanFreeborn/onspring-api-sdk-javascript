@@ -16,7 +16,8 @@
       "files": ["tests/**/*.spec.ts"],
       "rules": {
         "@typescript-eslint/no-unused-expressions": "off",
-        "@typescript-eslint/consistent-type-assertions": "off"
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "no-new": "off"
       }
     }
   ],
