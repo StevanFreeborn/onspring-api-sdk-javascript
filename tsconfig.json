@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "target": "es2015",
     "declaration": true,
     "outDir": "./dist",
