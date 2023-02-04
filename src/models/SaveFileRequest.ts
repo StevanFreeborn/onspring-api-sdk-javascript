@@ -1,5 +1,5 @@
 import { type Readable } from 'stream';
-import FormData = require('form-data');
+import FormData from 'form-data';
 
 /**
  * @class SaveFileRequest - Represents a request to save a file.

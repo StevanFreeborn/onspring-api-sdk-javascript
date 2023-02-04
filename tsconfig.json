@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
     "strictNullChecks": true,
-    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2015",
     "declaration": true,
-    "outDir": "./dist",
+    "declarationDir": "./dist/types",
     "esModuleInterop": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2015"
+    },
+    "moduleTypes": {
+      "*.ts": "cjs"
+    }
+  }
 }

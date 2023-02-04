@@ -2,15 +2,20 @@
   "name": "onspring-api-sdk",
   "version": "1.0.0",
   "description": "A javascript SDK for interacting with version 2 of the Onspring API.",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+    "default": "./dist/cjs/index.js"
+  },
   "scripts": {
     "clean": "rimraf dist",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint-fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts . --max-warnings=0",
     "format-staged": "pretty-quick --staged",
     "format": "pretty-quick",
-    "build": "npm run lint-fix && npm run tests && npm run format && npm run clean && tsc",
+    "build": "npm run lint-fix && npm run tests && npm run format && npm run clean && tsc --project tsconfig.cjs.json & tsc --project tsconfig.esm.json",
     "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts",
     "test": "mocha -r ts-node/register",
     "test-coverage": "nyc npm run tests",
