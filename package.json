@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
-    "lint-fix-staged": "eslint --fix --ignore-path .eslintignore --ext .js,.ts . --max-warnings=0",
+    "lint-fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts . --max-warnings=0",
     "format-staged": "pretty-quick --staged",
     "format": "pretty-quick",
     "build": "npm run tests && npm run format && tsc",
