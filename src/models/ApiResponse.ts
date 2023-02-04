@@ -201,6 +201,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asCreatedWithIdResponseType - Converts the ApiResponse to an ApiResponse<CreatedWithIdResponse>.
+   * @returns {ApiResponse<CreatedWithIdResponse>} - An ApiResponse<CreatedWithIdResponse>.
+   */
   public asCreatedWithIdResponseType(): ApiResponse<CreatedWithIdResponse> {
     const apiResponse = this as ApiResponse<any>;
 
