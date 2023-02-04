@@ -75,7 +75,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsGetPagedAppsResponseType();
+    return apiResponse.asGetPagedAppsResponseType();
   }
 
   /**
@@ -92,7 +92,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsAppType();
+    return apiResponse.asAppType();
   }
 
   /**
@@ -110,7 +110,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsAppCollectionType();
+    return apiResponse.asAppCollectionType();
   }
 
   /**
@@ -126,7 +126,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsFieldType();
+    return apiResponse.asFieldType();
   }
 
   /**
@@ -145,7 +145,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsFieldCollectionType();
+    return apiResponse.asFieldCollectionType();
   }
 
   /**
@@ -168,7 +168,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.AsGetPagedFieldsResponseType();
+    return apiResponse.asGetPagedFieldsResponseType();
   }
 
   /**
@@ -180,16 +180,16 @@ export class OnspringClient {
     request: SaveFileRequest
   ): Promise<ApiResponse<CreatedWithIdResponse>> {
     const endpoint = EndpointFactory.getSaveFileEndpoint();
-    const formData = request.AsFormData();
+    const formData = request.asFormData();
     const apiResponse = await this.post<any>(endpoint, formData, {
-      headers: formData.getHeaders(),
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
     }
 
-    return apiResponse.AsCreatedWithIdResponseType();
+    return apiResponse.asCreatedWithIdResponseType();
   }
 
   /**

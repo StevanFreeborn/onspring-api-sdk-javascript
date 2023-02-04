@@ -44,10 +44,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsGetPagedAppsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedAppsResponse>.
+   * @method asGetPagedAppsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedAppsResponse>.
    * @returns {ApiResponse<GetPagedAppsResponse>} - An ApiResponse<GetPagedAppsResponse>.
    */
-  public AsGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
+  public asGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
     const apps = apiResponse.data.items.map((item: any) => {
@@ -70,10 +70,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsAppType - Converts the ApiResponse to an ApiResponse<App>.
+   * @method asAppType - Converts the ApiResponse to an ApiResponse<App>.
    * @returns {ApiResponse<App>} - An ApiResponse<App>.
    */
-  public AsAppType(): ApiResponse<App> {
+  public asAppType(): ApiResponse<App> {
     const apiResponse = this as ApiResponse<any>;
 
     const app = new App(
@@ -90,10 +90,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsAppCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<App>>.
+   * @method asAppCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<App>>.
    * @returns {ApiResponse<CollectionResponse<App>>} - An ApiResponse<CollectionResponse<App>>.
    */
-  public AsAppCollectionType(): ApiResponse<CollectionResponse<App>> {
+  public asAppCollectionType(): ApiResponse<CollectionResponse<App>> {
     const apiResponse = this as ApiResponse<any>;
 
     const apps = apiResponse.data.items.map((item: any) => {
@@ -113,10 +113,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsFieldType - Converts the ApiResponse to an ApiResponse<Field>.
+   * @method asFieldType - Converts the ApiResponse to an ApiResponse<Field>.
    * @returns {ApiResponse<Field>} - An ApiResponse<Field>.
    */
-  public AsFieldType(): ApiResponse<Field> {
+  public asFieldType(): ApiResponse<Field> {
     const apiResponse = this as ApiResponse<any>;
 
     const field = new Field(
@@ -137,10 +137,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsFieldCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<Field>>.
+   * @method asFieldCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<Field>>.
    * @returns {ApiResponse<CollectionResponse<Field>>} - An ApiResponse<CollectionResponse<Field>>.
    */
-  public AsFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
+  public asFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
     const apiResponse = this as ApiResponse<any>;
 
     const fields = apiResponse.data.items.map((item: any) => {
@@ -168,10 +168,10 @@ export class ApiResponse<T> {
   }
 
   /**
-   * @method AsGetPagedFieldsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedFieldsResponse>.
+   * @method asGetPagedFieldsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedFieldsResponse>.
    * @returns {ApiResponse<GetPagedFieldsResponse>} - An ApiResponse<GetPagedFieldsResponse>.
    */
-  public AsGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
+  public asGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
     const fields = apiResponse.data.items.map((item: any) => {
@@ -201,7 +201,7 @@ export class ApiResponse<T> {
     );
   }
 
-  public AsCreatedWithIdResponseType(): ApiResponse<CreatedWithIdResponse> {
+  public asCreatedWithIdResponseType(): ApiResponse<CreatedWithIdResponse> {
     const apiResponse = this as ApiResponse<any>;
 
     const createdWithIdResponse = new CreatedWithIdResponse(

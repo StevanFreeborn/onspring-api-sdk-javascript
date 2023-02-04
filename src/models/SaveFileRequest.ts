@@ -1,3 +1,4 @@
+import { type Readable } from 'stream';
 import FormData = require('form-data');
 
 /**
@@ -35,9 +36,9 @@ export class SaveFileRequest {
   public contentType: string;
 
   /**
-   * @property {ReadableStream} fileStream - The file stream.
+   * @property {Readable} fileStream - The file stream.
    */
-  public fileStream: ReadableStream;
+  public fileStream: Readable;
 
   /**
    * @constructor - Creates a new SaveFileRequest.
@@ -47,7 +48,7 @@ export class SaveFileRequest {
    * @param {Date} modifiedDate - The modified date for the file.
    * @param {string} fileName - The name of the file.
    * @param {string} contentType - The content type of the file.
-   * @param {ReadableStream} fileStream - The file stream.
+   * @param {Readable} fileStream - The file stream.
    * @returns {SaveFileRequest} - A new SaveFileRequest.
    */
   constructor(
@@ -57,7 +58,7 @@ export class SaveFileRequest {
     modifiedDate: Date,
     fileName: string,
     contentType: string,
-    fileStream: ReadableStream
+    fileStream: Readable
   ) {
     this.recordId = recordId;
     this.fieldId = fieldId;
@@ -72,7 +73,7 @@ export class SaveFileRequest {
    * @method AsFormData - Converts the SaveFileRequest to a FormData object.
    * @returns {FormData} - The SaveFileRequest as a FormData object.
    */
-  public AsFormData(): FormData {
+  public asFormData(): FormData {
     const formData = new FormData();
     formData.append('recordId', this.recordId.toString());
     formData.append('fieldId', this.fieldId.toString());

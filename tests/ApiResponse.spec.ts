@@ -7,6 +7,7 @@ import { Field } from '../src/models/Field';
 import { FieldStatus } from '../src/enums/FieldStatus';
 import { FieldType } from '../src/enums/FieldType';
 import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
+import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -77,14 +78,14 @@ describe('ApiResponse', function () {
     );
   });
 
-  describe('AsGetPagedAppsResponseType', function () {
+  describe('asGetPagedAppsResponseType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsGetPagedAppsResponseType).to.not.be
+      expect(ApiResponse.prototype.asGetPagedAppsResponseType).to.not.be
         .undefined;
     });
 
     it('should have no parameters', function () {
-      expect(ApiResponse.prototype.AsGetPagedAppsResponseType).to.have.lengthOf(
+      expect(ApiResponse.prototype.asGetPagedAppsResponseType).to.have.lengthOf(
         0
       );
     });
@@ -110,7 +111,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
+      const appsPagedResponse = apiResponse.asGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
@@ -137,7 +138,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const appsPagedResponse = apiResponse.AsGetPagedAppsResponseType();
+      const appsPagedResponse = apiResponse.asGetPagedAppsResponseType();
 
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
@@ -153,13 +154,13 @@ describe('ApiResponse', function () {
     });
   });
 
-  describe('AsAppType', function () {
+  describe('asAppType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsAppType).to.not.be.undefined;
+      expect(ApiResponse.prototype.asAppType).to.not.be.undefined;
     });
 
     it('should have no parameters', function () {
-      expect(ApiResponse.prototype.AsAppType).to.have.lengthOf(0);
+      expect(ApiResponse.prototype.asAppType).to.have.lengthOf(0);
     });
 
     it('should return an ApiResponse<App> when data contain an app', function () {
@@ -170,7 +171,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const appResponse = apiResponse.AsAppType();
+      const appResponse = apiResponse.asAppType();
 
       expect(appResponse).to.be.instanceOf(ApiResponse);
       expect(appResponse.data).to.be.instanceOf(App);
@@ -185,13 +186,13 @@ describe('ApiResponse', function () {
     });
   });
 
-  describe('AsAppCollectionType', function () {
+  describe('asAppCollectionType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsAppCollectionType).to.not.be.undefined;
+      expect(ApiResponse.prototype.asAppCollectionType).to.not.be.undefined;
     });
 
     it('should have no parameters', function () {
-      expect(ApiResponse.prototype.AsAppCollectionType).to.have.lengthOf(0);
+      expect(ApiResponse.prototype.asAppCollectionType).to.have.lengthOf(0);
     });
 
     it('should return an ApiResponse<CollectionResponse<App[]>> when data contains app items', function () {
@@ -212,7 +213,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const appCollectionResponse = apiResponse.AsAppCollectionType();
+      const appCollectionResponse = apiResponse.asAppCollectionType();
 
       expect(appCollectionResponse).to.be.instanceOf(
         ApiResponse<CollectionResponse<App>>
@@ -237,13 +238,13 @@ describe('ApiResponse', function () {
     });
   });
 
-  describe('AsFieldType', function () {
+  describe('asFieldType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsFieldType).to.not.be.undefined;
+      expect(ApiResponse.prototype.asFieldType).to.not.be.undefined;
     });
 
     it('should have no parameters', function () {
-      expect(ApiResponse.prototype.AsFieldType).to.have.lengthOf(0);
+      expect(ApiResponse.prototype.asFieldType).to.have.lengthOf(0);
     });
 
     it('should return an ApiResponse<Field> when data contain a field', function () {
@@ -258,7 +259,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const fieldResponse = apiResponse.AsFieldType();
+      const fieldResponse = apiResponse.asFieldType();
 
       expect(fieldResponse).to.be.instanceOf(ApiResponse);
       expect(fieldResponse.data).to.be.instanceOf(Field);
@@ -275,13 +276,13 @@ describe('ApiResponse', function () {
     });
   });
 
-  describe('AsFieldCollectionType', function () {
+  describe('asFieldCollectionType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsFieldCollectionType).to.not.be.undefined;
+      expect(ApiResponse.prototype.asFieldCollectionType).to.not.be.undefined;
     });
 
     it('should have no parameters', function () {
-      expect(ApiResponse.prototype.AsFieldCollectionType).to.have.lengthOf(0);
+      expect(ApiResponse.prototype.asFieldCollectionType).to.have.lengthOf(0);
     });
 
     it('should return an ApiResponse<CollectionResponse<Field>> when data contains field items', function () {
@@ -310,7 +311,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const fieldCollectionResponse = apiResponse.AsFieldCollectionType();
+      const fieldCollectionResponse = apiResponse.asFieldCollectionType();
 
       expect(fieldCollectionResponse).to.be.instanceOf(
         ApiResponse<CollectionResponse<Field>>
@@ -336,15 +337,15 @@ describe('ApiResponse', function () {
     });
   });
 
-  describe('AsGetPagedFieldsResponseType', function () {
+  describe('asGetPagedFieldsResponseType', function () {
     it('should be defined', function () {
-      expect(ApiResponse.prototype.AsGetPagedFieldsResponseType).to.not.be
+      expect(ApiResponse.prototype.asGetPagedFieldsResponseType).to.not.be
         .undefined;
     });
 
     it('should have no parameters', function () {
       expect(
-        ApiResponse.prototype.AsGetPagedFieldsResponseType
+        ApiResponse.prototype.asGetPagedFieldsResponseType
       ).to.have.lengthOf(0);
     });
 
@@ -377,7 +378,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const getPagedFieldsResponse = apiResponse.AsGetPagedFieldsResponseType();
+      const getPagedFieldsResponse = apiResponse.asGetPagedFieldsResponseType();
 
       expect(getPagedFieldsResponse).to.be.instanceOf(
         ApiResponse<GetPagedFieldsResponse>
@@ -417,7 +418,7 @@ describe('ApiResponse', function () {
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const getPagedFieldsResponse = apiResponse.AsGetPagedFieldsResponseType();
+      const getPagedFieldsResponse = apiResponse.asGetPagedFieldsResponseType();
 
       expect(getPagedFieldsResponse).to.be.instanceOf(
         ApiResponse<GetPagedFieldsResponse>
@@ -434,6 +435,39 @@ describe('ApiResponse', function () {
         expect(getPagedFieldsResponse.data.totalRecords).to.equal(0);
         expect(getPagedFieldsResponse.data.items).to.be.instanceOf(Array);
         expect(getPagedFieldsResponse.data.items).to.have.lengthOf(0);
+      }
+    });
+  });
+
+  describe('asCreatedWithIdResponseType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asCreatedWithIdResponseType).to.not.be
+        .undefined;
+    });
+
+    it('should have no parameters', function () {
+      expect(
+        ApiResponse.prototype.asCreatedWithIdResponseType
+      ).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<CreatedWithIdResponse> when data contains an id', function () {
+      const mockResponseData = {
+        id: 1,
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const createdWithIdResponse = apiResponse.asCreatedWithIdResponseType();
+
+      expect(createdWithIdResponse).to.be.instanceOf(
+        ApiResponse<CreatedWithIdResponse>
+      );
+      expect(createdWithIdResponse.data).to.be.instanceOf(
+        CreatedWithIdResponse
+      );
+      expect(createdWithIdResponse.data).to.not.be.null;
+      if (createdWithIdResponse.data != null) {
+        expect(createdWithIdResponse.data.id).to.equal(1);
       }
     });
   });
