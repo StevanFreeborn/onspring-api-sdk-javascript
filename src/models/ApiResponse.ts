@@ -1,10 +1,15 @@
+import { FieldType } from '../enums/FieldType';
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { Field } from './Field';
 import { FileInfo } from './FileInfo';
+import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
+import { ListField } from './ListField';
+import { ListValue } from './ListValue';
+import { ReferenceField } from './ReferenceField';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -119,16 +124,7 @@ export class ApiResponse<T> {
    */
   public asFieldType(): ApiResponse<Field> {
     const apiResponse = this as ApiResponse<any>;
-
-    const field = new Field(
-      apiResponse.data.id,
-      apiResponse.data.appId,
-      apiResponse.data.name,
-      apiResponse.data.type,
-      apiResponse.data.status,
-      apiResponse.data.isRequired,
-      apiResponse.data.isUnique
-    );
+    const field = ApiResponse.getFieldByType(apiResponse.data);
 
     return new ApiResponse<Field>(
       apiResponse.statusCode,
@@ -144,17 +140,9 @@ export class ApiResponse<T> {
   public asFieldCollectionType(): ApiResponse<CollectionResponse<Field>> {
     const apiResponse = this as ApiResponse<any>;
 
-    const fields = apiResponse.data.items.map((item: any) => {
-      return new Field(
-        item.id,
-        item.appId,
-        item.name,
-        item.type,
-        item.status,
-        item.isRequired,
-        item.isUnique
-      );
-    });
+    const fields = apiResponse.data.items.map((item: any) =>
+      ApiResponse.getFieldByType(item)
+    );
 
     const collectionResponse = new CollectionResponse<Field>(
       apiResponse.data.count,
@@ -175,17 +163,9 @@ export class ApiResponse<T> {
   public asGetPagedFieldsResponseType(): ApiResponse<GetPagedFieldsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
-    const fields = apiResponse.data.items.map((item: any) => {
-      return new Field(
-        item.id,
-        item.appId,
-        item.name,
-        item.type,
-        item.status,
-        item.isRequired,
-        item.isUnique
-      );
-    });
+    const fields = apiResponse.data.items.map((item: any) =>
+      ApiResponse.getFieldByType(item)
+    );
 
     const getPagedFieldsResponse = new GetPagedFieldsResponse(
       fields,
@@ -220,7 +200,7 @@ export class ApiResponse<T> {
     );
   }
 
-  asFileInfoType(): ApiResponse<FileInfo> {
+  public asFileInfoType(): ApiResponse<FileInfo> {
     const apiResponse = this as ApiResponse<any>;
 
     const fileInfo = new FileInfo(
@@ -239,5 +219,87 @@ export class ApiResponse<T> {
       apiResponse.message,
       fileInfo
     );
+  }
+
+  /**
+   * @method asFileCollectionType - Converts the field item to the appropriate field object based upon the field item's type.
+   * @param fieldItem - The field item to convert.
+   * @returns {Field} - The converted field object.
+   */
+  private static getFieldByType(fieldItem: any): Field {
+    switch (fieldItem.type) {
+      case FieldType.Reference: {
+        return new ReferenceField(
+          fieldItem.id,
+          fieldItem.appId,
+          fieldItem.name,
+          fieldItem.type,
+          fieldItem.status,
+          fieldItem.isRequired,
+          fieldItem.isUnique,
+          fieldItem.multiplicity,
+          fieldItem.referencedAppId
+        );
+      }
+      case FieldType.List: {
+        const values = ApiResponse.getListValues(fieldItem);
+
+        return new ListField(
+          fieldItem.id,
+          fieldItem.appId,
+          fieldItem.name,
+          fieldItem.type,
+          fieldItem.status,
+          fieldItem.isRequired,
+          fieldItem.isUnique,
+          fieldItem.multiplicity,
+          fieldItem.listId,
+          values
+        );
+      }
+      case FieldType.Formula: {
+        const values = ApiResponse.getListValues(fieldItem);
+
+        return new FormulaField(
+          fieldItem.id,
+          fieldItem.appId,
+          fieldItem.name,
+          fieldItem.type,
+          fieldItem.status,
+          fieldItem.isRequired,
+          fieldItem.isUnique,
+          fieldItem.outputType,
+          values
+        );
+      }
+      default: {
+        return new Field(
+          fieldItem.id,
+          fieldItem.appId,
+          fieldItem.name,
+          fieldItem.type,
+          fieldItem.status,
+          fieldItem.isRequired,
+          fieldItem.isUnique
+        );
+      }
+    }
+  }
+
+  /**
+   * @method getListValues - Converts the field items list values to a ListValue[].
+   * @param fieldItem - The field item whose values should be converted.
+   * @returns {ListValue[]} - The converted list values.
+   */
+  private static getListValues(fieldItem: any): ListValue[] {
+    return fieldItem.values.map((listValue: any) => {
+      return new ListValue(
+        listValue.id,
+        listValue.name,
+        listValue.sortOrder,
+        listValue.numericValue,
+        listValue.color
+      );
+    });
   }
 }

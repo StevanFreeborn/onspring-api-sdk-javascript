@@ -69,6 +69,11 @@ export enum FieldType {
   SurveyUnifiedAnswer = 'SurveyUnifiedAnswer',
 
   /**
+   * @constant SurveyDelegation - The field is a survey delegation field.
+   */
+  SurveyDelegation = 'SurveyDelegation',
+
+  /**
    * @constant Attachment - The field is a attachment field.
    * @type {string}
    */
