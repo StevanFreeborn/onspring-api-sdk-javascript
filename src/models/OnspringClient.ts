@@ -253,6 +253,22 @@ export class OnspringClient {
     return apiResponse.asCreatedWithIdResponseType();
   }
 
+  public async deleteFileById(
+    recordId: number,
+    fieldId: number,
+    fileId: number
+  ): Promise<ApiResponse<any>> {
+    const endpoint = EndpointFactory.getDeleteFileByIdEndpoint(
+      recordId,
+      fieldId,
+      fileId
+    );
+
+    const apiResponse = await this.delete<any>(endpoint);
+
+    return apiResponse;
+  }
+
   /**
    * @method get - Makes a GET request to the specified endpoint.
    * @param {string} endpoint - The endpoint that will be used to make the request.
@@ -281,6 +297,15 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.post(endpoint, data, config);
+    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    return apiResponse;
+  }
+
+  private async delete<T>(
+    endpoint: string,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResponse<T>> {
+    const response = await this._client.delete(endpoint, config);
     const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
