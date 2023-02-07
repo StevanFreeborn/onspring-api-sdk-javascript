@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
+import { PagingRequest } from './PagingRequest';
 import { ArgumentValidator } from './ArgumentValidator';
 import { EndpointFactory } from './EndpointFactory';
 import { ApiResponseFactory } from './ApiResponseFactory';
+import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { type ApiResponse } from './ApiResponse';
-import { PagingRequest } from './PagingRequest';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { type App } from './App';
 import { type CollectionResponse } from './CollectionResponse';
@@ -13,6 +13,7 @@ import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 import { type SaveFileRequest } from './SaveFileRequest';
 import { type CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { type FileInfo } from './FileInfo';
+import { type File } from './File';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -198,6 +199,37 @@ export class OnspringClient {
     }
 
     return apiResponse.asFileInfoType();
+  }
+
+  /**
+   * @method getFileById - Gets a file by its id.
+   * @param {number} recordId - The id of the record that the file is attached to.
+   * @param {number} fieldId - The id of the field that the file is attached to.
+   * @param {number} fileId - The id of the file to get.
+   * @returns {Promise<ApiResponse<File>>} - A promise that resolves to an ApiResponse of type File.
+   */
+  public async getFileById(
+    recordId: number,
+    fieldId: number,
+    fileId: number
+  ): Promise<ApiResponse<File>> {
+    const endpoint = EndpointFactory.getFileByIdEndpoint(
+      recordId,
+      fieldId,
+      fileId
+    );
+
+    const response = await this._client.get(endpoint, {
+      responseType: 'stream',
+    });
+
+    const apiResponse = ApiResponseFactory.getApiResponse<any>(response);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asFileType(response);
   }
 
   /**

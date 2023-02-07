@@ -14,6 +14,10 @@ import { ListValue } from '../src/models/ListValue';
 import { ReferenceField } from '../src/models/ReferenceField';
 import { Multiplicity } from '../src/enums/Multiplicity';
 import { ListField } from '../src/models/ListField';
+import { File } from '../src/models/File';
+import fs from 'fs';
+import { type AxiosResponse } from 'axios';
+import path from 'path';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -122,13 +126,15 @@ describe('ApiResponse', function () {
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
       expect(appsPagedResponse.data).to.not.be.null;
+      expect(appsPagedResponse.data).to.have.property('totalPages', 1);
+      expect(appsPagedResponse.data).to.have.property('totalRecords', 2);
+      expect(appsPagedResponse.data).to.have.property('pageNumber', 1);
+      expect(appsPagedResponse.data).to.have.property('pageSize', 2);
+      expect(appsPagedResponse.data)
+        .to.have.property('items')
+        .that.is.an.instanceOf(Array)
+        .and.has.lengthOf(2);
       if (appsPagedResponse.data != null) {
-        expect(appsPagedResponse.data.totalPages).to.equal(1);
-        expect(appsPagedResponse.data.totalRecords).to.equal(2);
-        expect(appsPagedResponse.data.pageNumber).to.equal(1);
-        expect(appsPagedResponse.data.pageSize).to.equal(2);
-        expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
-        expect(appsPagedResponse.data.items).to.have.lengthOf(2);
         expect(appsPagedResponse.data.items[0]).to.be.instanceOf(App);
         expect(appsPagedResponse.data.items[1]).to.be.instanceOf(App);
       }
@@ -149,13 +155,21 @@ describe('ApiResponse', function () {
       expect(appsPagedResponse).to.be.instanceOf(ApiResponse);
       expect(appsPagedResponse.data).to.be.instanceOf(GetPagedAppsResponse);
       expect(appsPagedResponse.data).to.not.be.null;
+      expect(appsPagedResponse.data).to.have.property('totalPages', 0);
+      expect(appsPagedResponse.data).to.have.property('totalRecords', 0);
+      expect(appsPagedResponse.data).to.have.property('pageNumber', 0);
+      expect(appsPagedResponse.data).to.have.property('pageSize', 0);
+      expect(appsPagedResponse.data)
+        .to.have.property('items')
+        .that.is.an.instanceOf(Array)
+        .and.has.lengthOf(0);
       if (appsPagedResponse.data != null) {
-        expect(appsPagedResponse.data.totalPages).to.equal(0);
-        expect(appsPagedResponse.data.totalRecords).to.equal(0);
-        expect(appsPagedResponse.data.pageNumber).to.equal(0);
-        expect(appsPagedResponse.data.pageSize).to.equal(0);
-        expect(appsPagedResponse.data.items).to.be.instanceOf(Array);
-        expect(appsPagedResponse.data.items).to.have.lengthOf(0);
+        appsPagedResponse.data.items.forEach((item) => {
+          expect(item).to.be.instanceOf(App);
+          expect(item).to.have.property('id');
+          expect(item).to.have.property('name');
+          expect(item).to.have.property('href');
+        });
       }
     });
   });
@@ -182,13 +196,12 @@ describe('ApiResponse', function () {
       expect(appResponse).to.be.instanceOf(ApiResponse);
       expect(appResponse.data).to.be.instanceOf(App);
       expect(appResponse.data).to.not.be.null;
-      if (appResponse.data != null) {
-        expect(appResponse.data.id).to.equal(1);
-        expect(appResponse.data.name).to.equal('Test App');
-        expect(appResponse.data.href).to.equal(
-          'https://api.onspring.dev/apps/id/1'
-        );
-      }
+      expect(appResponse.data).to.have.property('id', 1);
+      expect(appResponse.data).to.have.property('name', 'Test App');
+      expect(appResponse.data).to.have.property(
+        'href',
+        'https://api.onspring.dev/apps/id/1'
+      );
     });
   });
 
@@ -228,12 +241,12 @@ describe('ApiResponse', function () {
         CollectionResponse<App>
       );
       expect(appCollectionResponse.data).to.not.be.null;
+      expect(appCollectionResponse.data).to.have.property('count', 2);
+      expect(appCollectionResponse.data)
+        .to.have.property('items')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(2);
       if (appCollectionResponse.data != null) {
-        expect(appCollectionResponse.data).to.have.property('count');
-        expect(appCollectionResponse.data).to.have.property('items');
-        expect(appCollectionResponse.data.count).to.equal(2);
-        expect(appCollectionResponse.data.items).to.be.instanceOf(Array);
-        expect(appCollectionResponse.data.items).to.have.lengthOf(2);
         appCollectionResponse.data.items.forEach((item) => {
           expect(item).to.be.instanceOf(App);
           expect(item).to.have.property('id');
@@ -270,15 +283,16 @@ describe('ApiResponse', function () {
       expect(fieldResponse).to.be.instanceOf(ApiResponse);
       expect(fieldResponse.data).to.be.instanceOf(Field);
       expect(fieldResponse.data).to.not.be.null;
-      if (fieldResponse.data != null) {
-        expect(fieldResponse.data.id).to.equal(1);
-        expect(fieldResponse.data.appId).to.equal(1);
-        expect(fieldResponse.data.name).to.equal('Text Field');
-        expect(fieldResponse.data.type).to.equal(FieldType.Text);
-        expect(fieldResponse.data.status).to.equal(FieldStatus.Enabled);
-        expect(fieldResponse.data.isRequired).to.equal(false);
-        expect(fieldResponse.data.isUnique).to.equal(false);
-      }
+      expect(fieldResponse.data).to.have.property('id', 1);
+      expect(fieldResponse.data).to.have.property('appId', 1);
+      expect(fieldResponse.data).to.have.property('name', 'Text Field');
+      expect(fieldResponse.data).to.have.property('type', FieldType.Text);
+      expect(fieldResponse.data).to.have.property(
+        'status',
+        FieldStatus.Enabled
+      );
+      expect(fieldResponse.data).to.have.property('isRequired', false);
+      expect(fieldResponse.data).to.have.property('isUnique', false);
     });
 
     it('should return an ApiResponse<Field> when data contains a list field', function () {
@@ -324,19 +338,32 @@ describe('ApiResponse', function () {
       expect(fieldResponse.data).to.be.instanceOf(Field);
       expect(fieldResponse.data).to.be.instanceOf(ListField);
       expect(fieldResponse.data).to.not.be.null;
+      expect(fieldResponse.data).to.be.instanceOf(ListField);
+      expect(fieldResponse.data).to.have.property('id', 11929);
+      expect(fieldResponse.data).to.have.property('appId', 373);
+      expect(fieldResponse.data).to.have.property(
+        'name',
+        'single-select list field'
+      );
+      expect(fieldResponse.data).to.have.property('type', FieldType.List);
+      expect(fieldResponse.data).to.have.property(
+        'status',
+        FieldStatus.Enabled
+      );
+      expect(fieldResponse.data).to.have.property('isRequired', false);
+      expect(fieldResponse.data).to.have.property('isUnique', false);
+      expect(fieldResponse.data).to.have.property(
+        'multiplicity',
+        Multiplicity.SingleSelect
+      );
+      expect(fieldResponse.data).to.have.property('listId', 1581);
+      expect(fieldResponse.data)
+        .to.have.property('values')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(3);
+
       if (fieldResponse.data != null) {
         const listField = fieldResponse.data as ListField;
-        expect(listField.id).to.equal(11929);
-        expect(listField.appId).to.equal(373);
-        expect(listField.name).to.equal('single-select list field');
-        expect(listField.type).to.equal(FieldType.List);
-        expect(listField.status).to.equal(FieldStatus.Enabled);
-        expect(listField.isRequired).to.equal(false);
-        expect(listField.isUnique).to.equal(false);
-        expect(listField.multiplicity).to.equal(Multiplicity.SingleSelect);
-        expect(listField.listId).to.equal(1581);
-        expect(listField.values).to.be.instanceOf(Array);
-        expect(listField.values).to.have.lengthOf(3);
         listField.values.forEach((value) => {
           expect(value).to.be.instanceOf(ListValue);
           expect(value).to.have.property('id');
@@ -368,18 +395,22 @@ describe('ApiResponse', function () {
       expect(fieldResponse.data).to.be.instanceOf(Field);
       expect(fieldResponse.data).to.be.instanceOf(ReferenceField);
       expect(fieldResponse.data).to.not.be.null;
-      if (fieldResponse.data != null) {
-        const referenceField = fieldResponse.data as ReferenceField;
-        expect(referenceField.id).to.equal(11866);
-        expect(referenceField.appId).to.equal(373);
-        expect(referenceField.name).to.equal('Created By');
-        expect(referenceField.type).to.equal(FieldType.Reference);
-        expect(referenceField.status).to.equal(FieldStatus.Enabled);
-        expect(referenceField.isRequired).to.equal(false);
-        expect(referenceField.isUnique).to.equal(false);
-        expect(referenceField.multiplicity).to.equal(Multiplicity.SingleSelect);
-        expect(referenceField.referencedAppId).to.equal(2);
-      }
+      expect(fieldResponse.data).to.be.instanceOf(ReferenceField);
+      expect(fieldResponse.data).to.have.property('id', 11866);
+      expect(fieldResponse.data).to.have.property('appId', 373);
+      expect(fieldResponse.data).to.have.property('name', 'Created By');
+      expect(fieldResponse.data).to.have.property('type', FieldType.Reference);
+      expect(fieldResponse.data).to.have.property(
+        'status',
+        FieldStatus.Enabled
+      );
+      expect(fieldResponse.data).to.have.property('isRequired', false);
+      expect(fieldResponse.data).to.have.property('isUnique', false);
+      expect(fieldResponse.data).to.have.property(
+        'multiplicity',
+        Multiplicity.SingleSelect
+      );
+      expect(fieldResponse.data).to.have.property('referencedAppId', 2);
     });
 
     it('should return an ApiResponse<Field> when data contains a list formula field', function () {
@@ -417,18 +448,28 @@ describe('ApiResponse', function () {
       expect(fieldResponse.data).to.be.instanceOf(Field);
       expect(fieldResponse.data).to.be.instanceOf(FormulaField);
       expect(fieldResponse.data).to.not.be.null;
+      expect(fieldResponse.data).to.be.instanceOf(FormulaField);
+      expect(fieldResponse.data).to.have.property('id', 12680);
+      expect(fieldResponse.data).to.have.property('appId', 373);
+      expect(fieldResponse.data).to.have.property('name', 'List Formula Field');
+      expect(fieldResponse.data).to.have.property('type', FieldType.Formula);
+      expect(fieldResponse.data).to.have.property(
+        'status',
+        FieldStatus.Enabled
+      );
+      expect(fieldResponse.data).to.have.property('isRequired', false);
+      expect(fieldResponse.data).to.have.property('isUnique', false);
+      expect(fieldResponse.data).to.have.property(
+        'outputType',
+        FormulaOutputType.ListValue
+      );
+      expect(fieldResponse.data)
+        .to.have.property('values')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(2);
+
       if (fieldResponse.data != null) {
         const formulaField = fieldResponse.data as FormulaField;
-        expect(formulaField.id).to.equal(12680);
-        expect(formulaField.appId).to.equal(373);
-        expect(formulaField.name).to.equal('List Formula Field');
-        expect(formulaField.type).to.equal(FieldType.Formula);
-        expect(formulaField.status).to.equal(FieldStatus.Enabled);
-        expect(formulaField.isRequired).to.equal(false);
-        expect(formulaField.isUnique).to.equal(false);
-        expect(formulaField.outputType).to.equal(FormulaOutputType.ListValue);
-        expect(formulaField.values).to.be.instanceOf(Array);
-        expect(formulaField.values).to.have.lengthOf(2);
         formulaField.values.forEach((value) => {
           expect(value).to.be.instanceOf(ListValue);
           expect(value).to.have.property('id');
@@ -460,19 +501,25 @@ describe('ApiResponse', function () {
       expect(fieldResponse.data).to.be.instanceOf(Field);
       expect(fieldResponse.data).to.be.instanceOf(FormulaField);
       expect(fieldResponse.data).to.not.be.null;
-      if (fieldResponse.data != null) {
-        const formulaField = fieldResponse.data as FormulaField;
-        expect(formulaField.id).to.equal(12060);
-        expect(formulaField.appId).to.equal(373);
-        expect(formulaField.name).to.equal('GetWeekOfYear');
-        expect(formulaField.type).to.equal(FieldType.Formula);
-        expect(formulaField.status).to.equal(FieldStatus.Enabled);
-        expect(formulaField.isRequired).to.equal(false);
-        expect(formulaField.isUnique).to.equal(false);
-        expect(formulaField.outputType).to.equal(FormulaOutputType.Text);
-        expect(formulaField.values).to.be.instanceOf(Array);
-        expect(formulaField.values).to.have.lengthOf(0);
-      }
+      expect(fieldResponse.data).to.be.instanceOf(FormulaField);
+      expect(fieldResponse.data).to.have.property('id', 12060);
+      expect(fieldResponse.data).to.have.property('appId', 373);
+      expect(fieldResponse.data).to.have.property('name', 'GetWeekOfYear');
+      expect(fieldResponse.data).to.have.property('type', FieldType.Formula);
+      expect(fieldResponse.data).to.have.property(
+        'status',
+        FieldStatus.Enabled
+      );
+      expect(fieldResponse.data).to.have.property('isRequired', false);
+      expect(fieldResponse.data).to.have.property('isUnique', false);
+      expect(fieldResponse.data).to.have.property(
+        'outputType',
+        FormulaOutputType.Text
+      );
+      expect(fieldResponse.data)
+        .to.have.property('values')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(0);
     });
   });
 
@@ -520,9 +567,13 @@ describe('ApiResponse', function () {
         CollectionResponse<Field>
       );
       expect(fieldCollectionResponse.data).to.not.be.null;
+      expect(fieldCollectionResponse.data).to.have.property('count', 2);
+      expect(fieldCollectionResponse.data)
+        .to.have.property('items')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(2);
+
       if (fieldCollectionResponse.data != null) {
-        expect(fieldCollectionResponse.data.items).to.be.instanceOf(Array);
-        expect(fieldCollectionResponse.data.items).to.have.lengthOf(2);
         fieldCollectionResponse.data.items.forEach((item) => {
           expect(item).to.be.instanceOf(Field);
           expect(item).to.have.property('id');
@@ -587,14 +638,16 @@ describe('ApiResponse', function () {
         GetPagedFieldsResponse
       );
       expect(getPagedFieldsResponse.data).to.not.be.null;
+      expect(getPagedFieldsResponse.data).to.have.property('pageNumber', 1);
+      expect(getPagedFieldsResponse.data).to.have.property('pageSize', 2);
+      expect(getPagedFieldsResponse.data).to.have.property('totalPages', 1);
+      expect(getPagedFieldsResponse.data).to.have.property('totalRecords', 2);
+      expect(getPagedFieldsResponse.data)
+        .to.have.property('items')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(2);
 
       if (getPagedFieldsResponse.data != null) {
-        expect(getPagedFieldsResponse.data.pageNumber).to.equal(1);
-        expect(getPagedFieldsResponse.data.pageSize).to.equal(2);
-        expect(getPagedFieldsResponse.data.totalPages).to.equal(1);
-        expect(getPagedFieldsResponse.data.totalRecords).to.equal(2);
-        expect(getPagedFieldsResponse.data.items).to.be.instanceOf(Array);
-        expect(getPagedFieldsResponse.data.items).to.have.lengthOf(2);
         getPagedFieldsResponse.data.items.forEach((item) => {
           expect(item).to.be.instanceOf(Field);
           expect(item).to.have.property('id');
@@ -627,15 +680,14 @@ describe('ApiResponse', function () {
         GetPagedFieldsResponse
       );
       expect(getPagedFieldsResponse.data).to.not.be.null;
-
-      if (getPagedFieldsResponse.data != null) {
-        expect(getPagedFieldsResponse.data.pageNumber).to.equal(0);
-        expect(getPagedFieldsResponse.data.pageSize).to.equal(0);
-        expect(getPagedFieldsResponse.data.totalPages).to.equal(0);
-        expect(getPagedFieldsResponse.data.totalRecords).to.equal(0);
-        expect(getPagedFieldsResponse.data.items).to.be.instanceOf(Array);
-        expect(getPagedFieldsResponse.data.items).to.have.lengthOf(0);
-      }
+      expect(getPagedFieldsResponse.data).to.have.property('pageNumber', 0);
+      expect(getPagedFieldsResponse.data).to.have.property('pageSize', 0);
+      expect(getPagedFieldsResponse.data).to.have.property('totalPages', 0);
+      expect(getPagedFieldsResponse.data).to.have.property('totalRecords', 0);
+      expect(getPagedFieldsResponse.data)
+        .to.have.property('items')
+        .that.is.instanceOf(Array)
+        .and.has.lengthOf(0);
     });
   });
 
@@ -666,9 +718,202 @@ describe('ApiResponse', function () {
         CreatedWithIdResponse
       );
       expect(createdWithIdResponse.data).to.not.be.null;
-      if (createdWithIdResponse.data != null) {
-        expect(createdWithIdResponse.data.id).to.equal(1);
-      }
+      expect(createdWithIdResponse.data).to.have.property('id', 1);
+    });
+  });
+
+  describe('asFileType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asFileType).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asFileType).to.be.a('function');
+    });
+
+    it('should have 1 parameter', function () {
+      expect(ApiResponse.prototype.asFileType).to.have.lengthOf(1);
+    });
+
+    it('should return an ApiResponse<File> when data contains an attachment file', function () {
+      const mockResponse = {
+        headers: {
+          'content-type': 'text/plain',
+          'content-disposition': 'attachment; filename="test-attachment.txt"',
+          'Content-Length': '13',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-attachment.txt'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse).to.be.instanceOf(ApiResponse<File>);
+      expect(fileResponse.data).to.be.instanceOf(File);
+      expect(fileResponse.data).to.not.be.null;
+      expect(fileResponse.data).to.have.property(
+        'fileName',
+        'test-attachment.txt'
+      );
+      expect(fileResponse.data).to.have.property('contentLength', 13);
+      expect(fileResponse.data).to.have.property('contentType', 'text/plain');
+      expect(fileResponse.data).to.have.property('stream', mockResponseData);
+    });
+
+    it('should return an ApiResponse<File> when data contains an image file', function () {
+      const mockResponse = {
+        headers: {
+          'content-type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'Content-Length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse).to.be.instanceOf(ApiResponse<File>);
+      expect(fileResponse.data).to.be.instanceOf(File);
+      expect(fileResponse.data).to.not.be.null;
+      expect(fileResponse.data).to.have.property('fileName', 'test-image.jpeg');
+      expect(fileResponse.data).to.have.property('contentLength', 98897);
+      expect(fileResponse.data).to.have.property('contentType', 'image/jpeg');
+      expect(fileResponse.data).to.have.property('stream', mockResponseData);
+    });
+
+    it('should return an ApiResponse<file> with proper contentType value when header is Content-Type', function () {
+      const mockResponse = {
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'Content-Length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentType', 'image/jpeg');
+    });
+
+    it('should return an ApiResponse<file> with proper contentType value when header is content-type', function () {
+      const mockResponse = {
+        headers: {
+          'content-type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'Content-Length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentType', 'image/jpeg');
+    });
+
+    it('should return an ApiResponse<file> with proper contentType value when no content-type header is present', function () {
+      const mockResponse = {
+        headers: {
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'Content-Length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentType', null);
+    });
+
+    it('should return an ApiResponse<file> with proper contentLength value when header is Content-Length', function () {
+      const mockResponse = {
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'Content-Length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentLength', 98897);
+    });
+
+    it('should return an ApiResponse<file> with proper contentLength value when header is content-length', function () {
+      const mockResponse = {
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'content-length': '98897',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentLength', 98897);
+    });
+
+    it('should return an ApiResponse<file> with proper contentLength value when no content-length header is present', function () {
+      const mockResponse = {
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'content-disposition': 'attachment; filename="test-image.jpeg"',
+        } as AxiosResponse['headers'],
+      } as AxiosResponse;
+
+      const attachmentPath = path.join(
+        __dirname,
+        'testData',
+        'test-image.jpeg'
+      );
+      const mockResponseData = fs.createReadStream(attachmentPath);
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const fileResponse = apiResponse.asFileType(mockResponse);
+
+      expect(fileResponse.data).to.have.property('contentLength', 0);
     });
   });
 });

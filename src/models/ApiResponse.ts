@@ -1,8 +1,10 @@
+import { type AxiosResponse } from 'axios';
 import { FieldType } from '../enums/FieldType';
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { Field } from './Field';
+import { File } from './File';
 import { FileInfo } from './FileInfo';
 import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
@@ -218,6 +220,41 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       fileInfo
+    );
+  }
+
+  public asFileType(response: AxiosResponse): ApiResponse<File> {
+    const apiResponse = this as ApiResponse<any>;
+
+    let fileName = response.headers['content-disposition']
+      .split(';')[1]
+      .split('=')[1];
+
+    fileName = fileName.substring(1, fileName.length - 1);
+
+    const contentType =
+      response.headers['content-type'] ??
+      response.headers['Content-Type'] ??
+      null;
+
+    let contentLength =
+      response.headers['content-length'] ??
+      response.headers['Content-Length'] ??
+      0;
+
+    contentLength = parseInt(contentLength);
+
+    const file = new File(
+      apiResponse.data,
+      fileName,
+      contentType,
+      contentLength
+    );
+
+    return new ApiResponse<File>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      file
     );
   }
 
