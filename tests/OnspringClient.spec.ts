@@ -20,6 +20,8 @@ import { FileInfo } from '../src/models/FileInfo';
 import { File } from '../src/models/File';
 import fs from 'fs';
 import path from 'path';
+import { ListItemRequest } from '../src/models/ListItemRequest';
+import { ListItemResponse } from '../src/models/ListItemResponse';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -2107,5 +2109,200 @@ describe('OnspringClient', function () {
       expect(result.message).to.be.undefined;
       expect(result.data).to.be.null;
     });
+  });
+
+  describe('addOrUpdateListItem', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.addOrUpdateListItem).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.addOrUpdateListItem).to.be.a('function');
+    });
+
+    it('should return a promise', function () {
+      expect(
+        new OnspringClient(baseUrl, apiKey).addOrUpdateListItem(
+          new ListItemRequest(1, 'id', 'value', 1, 'color')
+        )
+      ).to.be.instanceOf(Promise);
+    });
+
+    it('should return a promise that resolves to an api response when request is successful at updating a list item', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'put').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.addOrUpdateListItem(
+        new ListItemRequest(1, 'id', 'value', 1, 'color')
+      );
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result.data).to.be.instanceOf(ListItemResponse);
+      expect(result.data).to.have.property(
+        'id',
+        '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      );
+    });
+
+    it('should return a promise that resolves to an api response when request is successful at adding a list item', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'put').returns(
+        Promise.resolve({
+          status: 201,
+          statusText: 'OK',
+          data: { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.addOrUpdateListItem(
+        new ListItemRequest(1, 'id', 'value', 1, 'color')
+      );
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 201);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result.data).to.be.instanceOf(ListItemResponse);
+      expect(result.data).to.have.property(
+        'id',
+        '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      );
+    });
+  });
+
+  it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+    const client = new OnspringClient(baseUrl, apiKey);
+
+    const mockAxiosClient = axios.create({
+      baseURL: baseUrl,
+      headers: {
+        'x-apikey': apiKey,
+        'x-api-version': '2',
+      },
+    });
+
+    sinon.stub(mockAxiosClient, 'put').returns(
+      Promise.resolve({
+        status: 401,
+        statusText: 'Unauthorized',
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse)
+    );
+
+    sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+    const result = await client.addOrUpdateListItem(
+      new ListItemRequest(1, 'id', 'value', 1, 'color')
+    );
+
+    expect(result).to.be.instanceOf(ApiResponse);
+    expect(result).to.have.property('statusCode', 401);
+    expect(result).to.have.property('isSuccessful', false);
+    expect(result.message).to.be.undefined;
+    expect(result.data).to.be.null;
+  });
+
+  it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+    const client = new OnspringClient(baseUrl, apiKey);
+
+    const mockAxiosClient = axios.create({
+      baseURL: baseUrl,
+      headers: {
+        'x-apikey': apiKey,
+        'x-api-version': '2',
+      },
+    });
+
+    sinon.stub(mockAxiosClient, 'put').returns(
+      Promise.resolve({
+        status: 403,
+        statusText: 'Forbidden',
+        data: { message: 'Forbidden' },
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse)
+    );
+
+    sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+    const result = await client.addOrUpdateListItem(
+      new ListItemRequest(1, 'id', 'value', 1, 'color')
+    );
+
+    expect(result).to.be.instanceOf(ApiResponse);
+    expect(result).to.have.property('statusCode', 403);
+    expect(result).to.have.property('isSuccessful', false);
+    expect(result).to.have.property('message', 'Forbidden');
+    expect(result.data).to.be.null;
+  });
+
+  it('should return a promise that resolves to an api response when request receives a 404 response', async function () {
+    const client = new OnspringClient(baseUrl, apiKey);
+
+    const mockAxiosClient = axios.create({
+      baseURL: baseUrl,
+      headers: {
+        'x-apikey': apiKey,
+        'x-api-version': '2',
+      },
+    });
+
+    sinon.stub(mockAxiosClient, 'put').returns(
+      Promise.resolve({
+        status: 404,
+        statusText: 'Not Found',
+        data: { message: 'Not Found' },
+        headers: {},
+        config: {} as InternalAxiosRequestConfig,
+      } as AxiosResponse)
+    );
+
+    sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+    const result = await client.addOrUpdateListItem(
+      new ListItemRequest(1, 'id', 'value', 1, 'color')
+    );
+
+    expect(result).to.be.instanceOf(ApiResponse);
+    expect(result).to.have.property('statusCode', 404);
+    expect(result).to.have.property('isSuccessful', false);
+    expect(result).to.have.property('message', 'Not Found');
+    expect(result.data).to.be.null;
   });
 });

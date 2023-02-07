@@ -10,6 +10,7 @@ import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 import { ListField } from './ListField';
+import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
 import { ReferenceField } from './ReferenceField';
 
@@ -255,6 +256,18 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       file
+    );
+  }
+
+  public asListItemResponseType(): ApiResponse<ListItemResponse> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const listItemResponse = new ListItemResponse(apiResponse.data.id);
+
+    return new ApiResponse<ListItemResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      listItemResponse
     );
   }
 

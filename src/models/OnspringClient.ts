@@ -14,6 +14,8 @@ import { type SaveFileRequest } from './SaveFileRequest';
 import { type CreatedWithIdResponse } from './CreatedWithIdResponse';
 import { type FileInfo } from './FileInfo';
 import { type File } from './File';
+import { type ListItemResponse } from './ListItemResponse';
+import { type ListItemRequest } from './ListItemRequest';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -269,6 +271,22 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  public async addOrUpdateListItem(
+    listItemRequest: ListItemRequest
+  ): Promise<ApiResponse<ListItemResponse>> {
+    const { listId, ...data } = listItemRequest;
+
+    const endpoint = EndpointFactory.getAddOrUpdateListItemEndpoint(listId);
+
+    const apiResponse = await this.put<any>(endpoint, data);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asListItemResponseType();
+  }
+
   /**
    * @method get - Makes a GET request to the specified endpoint.
    * @param {string} endpoint - The endpoint that will be used to make the request.
@@ -301,6 +319,29 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  /**
+   * @method put - Makes a PUT request to the specified endpoint.
+   * @param {string} endpoint - The endpoint that will be used to make the request.
+   * @param {any} data - The data that will be sent with the request.
+   * @param {AxiosRequestConfig} config - The configuration that will be used to make the request.
+   * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
+   */
+  private async put<T>(
+    endpoint: string,
+    data: any,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResponse<T>> {
+    const response = await this._client.put(endpoint, data, config);
+    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    return apiResponse;
+  }
+
+  /**
+   * @method delete - Makes a DELETE request to the specified endpoint.
+   * @param {string} endpoint - The endpoint that will be used to make the request.
+   * @param {AxiosRequestConfig} config - The configuration that will be used to make the request.
+   * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse of type T.
+   */
   private async delete<T>(
     endpoint: string,
     config: AxiosRequestConfig = {}

@@ -18,6 +18,7 @@ import { File } from '../src/models/File';
 import fs from 'fs';
 import { type AxiosResponse } from 'axios';
 import path from 'path';
+import { ListItemResponse } from '../src/models/ListItemResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -914,6 +915,31 @@ describe('ApiResponse', function () {
       const fileResponse = apiResponse.asFileType(mockResponse);
 
       expect(fileResponse.data).to.have.property('contentLength', 0);
+    });
+  });
+
+  describe('asListItemResponseType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asListItemResponseType).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asListItemResponseType).to.be.a('function');
+    });
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.asListItemResponseType.length).to.equal(0);
+    });
+    it('should return an ApiResponse<ListItemResponse>', function () {
+      const apiResponse = new ApiResponse(200, 'OK', {
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      });
+      const listItemResponse = apiResponse.asListItemResponseType();
+      expect(listItemResponse).to.be.an.instanceof(ApiResponse);
+      expect(listItemResponse.data).to.be.an.instanceof(ListItemResponse);
+      expect(listItemResponse.data).to.have.property(
+        'id',
+        '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      );
     });
   });
 });
