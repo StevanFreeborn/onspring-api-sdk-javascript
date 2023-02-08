@@ -291,6 +291,12 @@ export class OnspringClient {
     return apiResponse.asListItemResponseType();
   }
 
+  /**
+   * @method deleteListItemById - Deletes a list item by its id.
+   * @param {number} listId - The id of the list that the list item belongs to.
+   * @param {string} itemId - The id of the list item to delete.
+   * @returns {Promise<ApiResponse<any>>} - A promise that resolves to an ApiResponse of type any.
+   */
   public async deleteListItemById(
     listId: number,
     itemId: string
