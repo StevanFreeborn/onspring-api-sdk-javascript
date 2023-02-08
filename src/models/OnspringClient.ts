@@ -306,6 +306,24 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  public async getReportsByAppId(
+    appId: number,
+    pagingRequest: PagingRequest = new PagingRequest(1, 50)
+  ) {
+    const endpoint = EndpointFactory.getReportsByAppIdEndpoint(
+      appId,
+      pagingRequest
+    );
+
+    const apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asGetPagedReportsResponseType();
+  }
+
   /**
    * @method get - Makes a GET request to the specified endpoint.
    * @param {string} endpoint - The endpoint that will be used to make the request.

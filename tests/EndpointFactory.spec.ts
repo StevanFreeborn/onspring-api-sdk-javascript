@@ -162,8 +162,11 @@ describe('EndpointFactory', function () {
 
   describe('getReportsByAppIdEndpoint', function () {
     it('should return the correct reports by app id endpoint', function () {
-      const result = EndpointFactory.getReportsByAppIdEndpoint(1);
-      expect(result).to.equal('/Reports/appId/1');
+      const result = EndpointFactory.getReportsByAppIdEndpoint(
+        1,
+        new PagingRequest(2, 1000)
+      );
+      expect(result).to.equal('/Reports/appId/1?pageSize=1000&pageNumber=2');
     });
   });
 });

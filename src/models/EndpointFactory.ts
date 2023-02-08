@@ -219,9 +219,13 @@ export class EndpointFactory {
   /**
    * @method getReportsByAppIdEndpoint - Gets the get reports by app id endpoint.
    * @param {number} appId - The id of the app.
+   * @param {PagingRequest} pagingRequest - The paging information that will be used to make the request.
    * @returns {string} - The get reports by app id endpoint.
    */
-  public static getReportsByAppIdEndpoint(appId: number): string {
-    return `/Reports/appId/${appId}`;
+  public static getReportsByAppIdEndpoint(
+    appId: number,
+    pagingRequest: PagingRequest
+  ): string {
+    return `/Reports/appId/${appId}?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
   }
 }

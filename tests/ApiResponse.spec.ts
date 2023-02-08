@@ -942,4 +942,45 @@ describe('ApiResponse', function () {
       );
     });
   });
+
+  describe('asGetPagedReportsResponse', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asGetPagedReportsResponseType).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asGetPagedReportsResponseType).to.be.a(
+        'function'
+      );
+    });
+
+    it('should have no parameters', function () {
+      expect(
+        ApiResponse.prototype.asGetPagedReportsResponseType.length
+      ).to.equal(0);
+    });
+
+    it('should return an ApiResponse<GetPagedReportsResponse>', function () {
+      const mockResponseData = [
+        {
+          appId: 1,
+          id: 1,
+          name: 'string',
+          description: 'description',
+        },
+        {
+          appId: 2,
+          id: 2,
+          name: 'string',
+          description: 'description'
+        }
+      ]
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const getPagedReportsResponse = apiResponse.asGetPagedReportsResponseType();
+
+      
+    });
+  });
 });

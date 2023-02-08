@@ -9,10 +9,12 @@ import { FileInfo } from './FileInfo';
 import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
+import { GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { ListField } from './ListField';
 import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
 import { ReferenceField } from './ReferenceField';
+import { Report } from './Report';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -272,6 +274,28 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       listItemResponse
+    );
+  }
+
+  public asGetPagedReportsResponseType(): ApiResponse<GetPagedReportsResponse> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const reports = apiResponse.data.items.map((item: any) => {
+      return new Report(item.id, item.appId, item.name, item.description);
+    });
+
+    const getPagedReportsResponse = new GetPagedReportsResponse(
+      reports,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
+
+    return new ApiResponse<GetPagedReportsResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      getPagedReportsResponse
     );
   }
 
