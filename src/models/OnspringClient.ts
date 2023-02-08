@@ -267,7 +267,6 @@ export class OnspringClient {
     );
 
     const apiResponse = await this.delete<any>(endpoint);
-
     return apiResponse;
   }
 
@@ -290,6 +289,15 @@ export class OnspringClient {
     }
 
     return apiResponse.asListItemResponseType();
+  }
+
+  public async deleteListItemById(
+    listId: number,
+    itemId: string
+  ): Promise<ApiResponse<any>> {
+    const endpoint = EndpointFactory.getDeleteListItemEndpoint(listId, itemId);
+    const apiResponse = await this.delete<any>(endpoint);
+    return apiResponse;
   }
 
   /**
