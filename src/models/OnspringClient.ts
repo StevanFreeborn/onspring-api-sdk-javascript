@@ -271,6 +271,11 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  /**
+   * @method addOrUpdateListItem - Adds or updates a list item depending on if an id is provided or not.
+   * @param {ListItemRequest} listItemRequest - The request that will be used to add or update the list item.
+   * @returns {Promise<ApiResponse<ListItemResponse>>} - A promise that resolves to an ApiResponse of type ListItemResponse.
+   */
   public async addOrUpdateListItem(
     listItemRequest: ListItemRequest
   ): Promise<ApiResponse<ListItemResponse>> {

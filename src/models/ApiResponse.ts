@@ -259,6 +259,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asListItemResponseType - Converts the ApiResponse to an ApiResponse<ListItemResponse>.
+   * @returns {ApiResponse<ListItemResponse>} - An ApiResponse<ListItemResponse>.
+   */
   public asListItemResponseType(): ApiResponse<ListItemResponse> {
     const apiResponse = this as ApiResponse<any>;
 
