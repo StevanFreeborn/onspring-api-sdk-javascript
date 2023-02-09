@@ -307,6 +307,12 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  /**
+   * @method getReportsByAppId - Gets a paged list of reports by the app id.
+   * @param {number} appId - The id of the app to get the reports for.
+   * @param {PagingRequest} pagingRequest - The paging request that will be used to get the reports.
+   * @returns {Promise<ApiResponse<GetPagedReportsResponse>>} - A promise that resolves to an ApiResponse of type GetPagedReportsResponse.
+   */
   public async getReportsByAppId(
     appId: number,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
