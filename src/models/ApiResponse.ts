@@ -305,7 +305,7 @@ export class ApiResponse<T> {
 
   /**
    * @method asFileCollectionType - Converts the field item to the appropriate field object based upon the field item's type.
-   * @param fieldItem - The field item to convert.
+   * @param {any} fieldItem - The field item to convert.
    * @returns {Field} - The converted field object.
    */
   private static getFieldByType(fieldItem: any): Field {
