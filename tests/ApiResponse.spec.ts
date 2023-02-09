@@ -19,6 +19,8 @@ import fs from 'fs';
 import { type AxiosResponse } from 'axios';
 import path from 'path';
 import { ListItemResponse } from '../src/models/ListItemResponse';
+import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
+import { Report } from '../src/models/Report';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -962,25 +964,54 @@ describe('ApiResponse', function () {
     });
 
     it('should return an ApiResponse<GetPagedReportsResponse>', function () {
-      const mockResponseData = [
-        {
-          appId: 1,
-          id: 1,
-          name: 'string',
-          description: 'description',
-        },
-        {
-          appId: 2,
-          id: 2,
-          name: 'string',
-          description: 'description'
-        }
-      ]
+      const mockResponseData = {
+        pageSize: 2,
+        pageNumber: 1,
+        totalRecords: 2,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            id: 1,
+            name: 'string',
+            description: 'description',
+          },
+          {
+            appId: 2,
+            id: 2,
+            name: 'string',
+            description: 'description',
+          },
+        ],
+      };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const getPagedReportsResponse = apiResponse.asGetPagedReportsResponseType();
+      const getPagedReportsResponse =
+        apiResponse.asGetPagedReportsResponseType();
 
-      
+      expect(getPagedReportsResponse).to.be.an.instanceof(
+        ApiResponse<GetPagedReportsResponse>
+      );
+      expect(getPagedReportsResponse.data).to.be.an.instanceof(
+        GetPagedReportsResponse
+      );
+      expect(getPagedReportsResponse.data).to.have.property('pageSize', 2);
+      expect(getPagedReportsResponse.data).to.have.property('pageNumber', 1);
+      expect(getPagedReportsResponse.data).to.have.property('totalRecords', 2);
+      expect(getPagedReportsResponse.data).to.have.property('totalPages', 1);
+
+      expect(getPagedReportsResponse.data)
+        .to.have.property('items')
+        .to.be.an('array')
+        .that.has.lengthOf(2);
+
+      expect(getPagedReportsResponse.data).to.not.be.null;
+
+      if (getPagedReportsResponse.data != null) {
+        getPagedReportsResponse.data.items.forEach((report) => {
+          expect(report).to.be.an.instanceof(Report);
+        });
+      }
     });
   });
 });

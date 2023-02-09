@@ -16,6 +16,7 @@ import { type FileInfo } from './FileInfo';
 import { type File } from './File';
 import { type ListItemResponse } from './ListItemResponse';
 import { type ListItemRequest } from './ListItemRequest';
+import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -309,7 +310,7 @@ export class OnspringClient {
   public async getReportsByAppId(
     appId: number,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
-  ) {
+  ): Promise<ApiResponse<GetPagedReportsResponse>> {
     const endpoint = EndpointFactory.getReportsByAppIdEndpoint(
       appId,
       pagingRequest
