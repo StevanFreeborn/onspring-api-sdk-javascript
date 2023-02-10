@@ -1,5 +1,8 @@
 import { type AxiosResponse } from 'axios';
+import { FieldStatus } from '../enums/FieldStatus';
 import { FieldType } from '../enums/FieldType';
+import { FormulaOutputType } from '../enums/FormulaOutputType';
+import { Multiplicity } from '../enums/Multiplicity';
 import { App } from './App';
 import { CollectionResponse } from './CollectionResponse';
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
@@ -327,48 +330,55 @@ export class ApiResponse<T> {
    * @returns {Field} - The converted field object.
    */
   private static getFieldByType(fieldItem: any): Field {
-    switch (fieldItem.type) {
+    const type = FieldType[fieldItem.type];
+    const status = FieldStatus[fieldItem.status];
+
+    switch (type) {
       case FieldType.Reference: {
+        const multiplicity = Multiplicity[fieldItem.multiplicity];
+
         return new ReferenceField(
           fieldItem.id,
           fieldItem.appId,
           fieldItem.name,
-          fieldItem.type,
-          fieldItem.status,
+          type,
+          status,
           fieldItem.isRequired,
           fieldItem.isUnique,
-          fieldItem.multiplicity,
+          multiplicity,
           fieldItem.referencedAppId
         );
       }
       case FieldType.List: {
         const values = ApiResponse.getListValues(fieldItem);
+        const multiplicity = Multiplicity[fieldItem.multiplicity];
 
         return new ListField(
           fieldItem.id,
           fieldItem.appId,
           fieldItem.name,
-          fieldItem.type,
-          fieldItem.status,
+          type,
+          status,
           fieldItem.isRequired,
           fieldItem.isUnique,
-          fieldItem.multiplicity,
+          multiplicity,
           fieldItem.listId,
           values
         );
       }
       case FieldType.Formula: {
         const values = ApiResponse.getListValues(fieldItem);
+        const outputType = FormulaOutputType[fieldItem.outputType];
 
         return new FormulaField(
           fieldItem.id,
           fieldItem.appId,
           fieldItem.name,
-          fieldItem.type,
-          fieldItem.status,
+          type,
+          status,
           fieldItem.isRequired,
           fieldItem.isUnique,
-          fieldItem.outputType,
+          outputType,
           values
         );
       }
@@ -377,8 +387,8 @@ export class ApiResponse<T> {
           fieldItem.id,
           fieldItem.appId,
           fieldItem.name,
-          fieldItem.type,
-          fieldItem.status,
+          type,
+          status,
           fieldItem.isRequired,
           fieldItem.isUnique
         );

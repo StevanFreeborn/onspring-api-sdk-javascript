@@ -7,12 +7,12 @@ export class PagingRequest {
   /**
    * @property {number} pageNumber - The page number of the request.
    */
-  pageNumber: number;
+  public pageNumber: number;
 
   /**
    * @property {number} pageSize - The page size of the request.
    */
-  pageSize: number;
+  public pageSize: number;
 
   /**
    * @constructor - Creates a new instance of the PagingRequest class.

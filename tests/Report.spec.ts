@@ -27,4 +27,28 @@ describe('Report', function () {
     expect(report.name).to.be.equal('report');
     expect(report.description).to.be.equal('report description');
   });
+
+  it('should have an id property', function () {
+    expect(new Report(1, 1, 'report', 'report description')).to.have.property(
+      'id'
+    );
+  });
+
+  it('should have an appId property', function () {
+    expect(new Report(1, 1, 'report', 'report description')).to.have.property(
+      'appId'
+    );
+  });
+
+  it('should have a name property', function () {
+    expect(new Report(1, 1, 'report', 'report description')).to.have.property(
+      'name'
+    );
+  });
+
+  it('should have a description property', function () {
+    expect(new Report(1, 1, 'report', 'report description')).to.have.property(
+      'description'
+    );
+  });
 });

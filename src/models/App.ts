@@ -5,17 +5,17 @@ export class App {
   /**
    * @property {string} href - The URL to the app
    */
-  href: string;
+  public href: string;
 
   /**
    * @property {number} id - The id of the app
    */
-  id: number;
+  public id: number;
 
   /**
    * @property {string} name - The name of the app
    */
-  name: string;
+  public name: string;
 
   /**
    * @constructor - Creates a new instance of the App class.

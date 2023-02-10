@@ -1,5 +1,8 @@
 import { FormulaField } from '../src/models/FormulaField';
 import { expect } from 'chai';
+import { FieldType } from '../src/enums/FieldType';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { FormulaOutputType } from '../src/enums/FormulaOutputType';
 
 describe('FormulaField', function () {
   it('should be defined', function () {
@@ -14,33 +17,16 @@ describe('FormulaField', function () {
     expect(FormulaField).to.have.property('constructor');
   });
 
-  it('should throw an error if the outputType is not a valid FormulaOutputType', function () {
-    expect(
-      () =>
-        new FormulaField(
-          1,
-          1,
-          'Formula Field',
-          'Formula',
-          'Enabled',
-          false,
-          false,
-          'NotAType',
-          []
-        )
-    ).to.throw();
-  });
-
   it('should create a new FormulaField', function () {
     const formulaField = new FormulaField(
       1,
       1,
       'Formula Field',
-      'Formula',
-      'Enabled',
+      FieldType.Formula,
+      FieldStatus.Enabled,
       false,
       false,
-      'Text',
+      FormulaOutputType.Text,
       []
     );
     expect(formulaField).to.be.an.instanceOf(FormulaField);
@@ -51,11 +37,11 @@ describe('FormulaField', function () {
       1,
       1,
       'Formula Field',
-      'Formula',
-      'Enabled',
+      FieldType.Formula,
+      FieldStatus.Enabled,
       false,
       false,
-      'Text',
+      FormulaOutputType.Text,
       []
     );
     expect(formulaField).to.have.property('outputType');
@@ -66,11 +52,11 @@ describe('FormulaField', function () {
       1,
       1,
       'Formula Field',
-      'Formula',
-      'Enabled',
+      FieldType.Formula,
+      FieldStatus.Enabled,
       false,
       false,
-      'Text',
+      FormulaOutputType.Text,
       []
     );
     expect(formulaField).to.have.property('values');

@@ -1,4 +1,6 @@
 import { expect } from 'chai';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { FieldType } from '../src/enums/FieldType';
 import { Field } from '../src/models/Field';
 
 describe('Field', function () {
@@ -16,38 +18,36 @@ describe('Field', function () {
 
   it('should create a new instance of the Field class', function () {
     expect(
-      () => new Field(1, 1, 'Text Field', 'Text', 'Enabled', true, false)
+      () =>
+        new Field(
+          1,
+          1,
+          'Text Field',
+          FieldType.Text,
+          FieldStatus.Enabled,
+          true,
+          false
+        )
     ).to.not.throw();
   });
 
-  it('should throw an error when the type parameter is not a valid value', function () {
-    expect(
-      () => new Field(1, 1, 'Text Field', 'Invalid', 'Enabled', true, false)
-    ).to.throw();
-  });
-
-  it('should throw an error when the status parameter is not a valid value', function () {
-    expect(
-      () => new Field(1, 1, 'Text Field', 'Text', 'Unabled', true, false)
-    ).to.throw();
-  });
-
   it('should create a new instance of the Field class with the correct properties and values', function () {
-    const field = new Field(1, 1, 'Text Field', 'Text', 'Enabled', true, false);
+    const field = new Field(
+      1,
+      1,
+      'Text Field',
+      FieldType.Text,
+      FieldStatus.Enabled,
+      true,
+      false
+    );
 
-    expect(field).to.have.property('id');
-    expect(field).to.have.property('appId');
-    expect(field).to.have.property('name');
-    expect(field).to.have.property('type');
-    expect(field).to.have.property('status');
-    expect(field).to.have.property('isRequired');
-    expect(field).to.have.property('isUnique');
-    expect(field.id).to.equal(1);
-    expect(field.appId).to.equal(1);
-    expect(field.name).to.equal('Text Field');
-    expect(field.type).to.equal('Text');
-    expect(field.status).to.equal('Enabled');
-    expect(field.isRequired).to.equal(true);
-    expect(field.isUnique).to.equal(false);
+    expect(field).to.have.property('id', 1);
+    expect(field).to.have.property('appId', 1);
+    expect(field).to.have.property('name', 'Text Field');
+    expect(field).to.have.property('type', FieldType.Text);
+    expect(field).to.have.property('status', FieldStatus.Enabled);
+    expect(field).to.have.property('isRequired', true);
+    expect(field).to.have.property('isUnique', false);
   });
 });

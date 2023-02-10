@@ -1,6 +1,8 @@
 import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
 import { Field } from '../src/models/Field';
 import { expect } from 'chai';
+import { FieldType } from '../src/enums/FieldType';
+import { FieldStatus } from '../src/enums/FieldStatus';
 
 describe('GetPagedFieldsResponse', function () {
   it('should be defined', function () {
@@ -17,7 +19,17 @@ describe('GetPagedFieldsResponse', function () {
 
   it('should construct a new instance of GetPagedFieldsResponse', function () {
     const getPagedFieldsResponse = new GetPagedFieldsResponse(
-      [new Field(1, 1, 'Text Field 1', 'Text', 'Enabled', false, false)],
+      [
+        new Field(
+          1,
+          1,
+          'Text Field 1',
+          FieldType.Text,
+          FieldStatus.Enabled,
+          false,
+          false
+        ),
+      ],
       1,
       10,
       100,

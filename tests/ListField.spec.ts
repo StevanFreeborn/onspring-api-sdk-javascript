@@ -1,5 +1,8 @@
 import { ListField } from '../src/models/ListField';
 import { expect } from 'chai';
+import { FieldType } from '../src/enums/FieldType';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { Multiplicity } from '../src/enums/Multiplicity';
 
 describe('ListField', function () {
   it('should be defined', function () {
@@ -14,34 +17,16 @@ describe('ListField', function () {
     expect(ListField).to.have.property('constructor');
   });
 
-  it('should throw an error if the multiplicity is not valid', function () {
-    expect(
-      () =>
-        new ListField(
-          1,
-          1,
-          'List Field',
-          'List',
-          'Enabled',
-          false,
-          false,
-          'Alone',
-          1,
-          []
-        )
-    ).to.throw();
-  });
-
   it('should create a new ListField', function () {
     const listField = new ListField(
       1,
       1,
       'List Field',
-      'List',
-      'Enabled',
+      FieldType.List,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1,
       []
     );
@@ -53,11 +38,11 @@ describe('ListField', function () {
       1,
       1,
       'List Field',
-      'List',
-      'Enabled',
+      FieldType.List,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1,
       []
     );
@@ -69,11 +54,11 @@ describe('ListField', function () {
       1,
       1,
       'List Field',
-      'List',
-      'Enabled',
+      FieldType.List,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1,
       []
     );
@@ -85,11 +70,11 @@ describe('ListField', function () {
       1,
       1,
       'List Field',
-      'List',
-      'Enabled',
+      FieldType.List,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1,
       []
     );

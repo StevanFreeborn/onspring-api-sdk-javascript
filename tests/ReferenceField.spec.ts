@@ -1,5 +1,8 @@
 import { ReferenceField } from '../src/models/ReferenceField';
 import { expect } from 'chai';
+import { FieldType } from '../src/enums/FieldType';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { Multiplicity } from '../src/enums/Multiplicity';
 
 describe('ReferenceField', function () {
   it('should be defined', function () {
@@ -14,33 +17,16 @@ describe('ReferenceField', function () {
     expect(ReferenceField).to.have.property('constructor');
   });
 
-  it('should throw an error if the multiplicity is not valid', function () {
-    expect(
-      () =>
-        new ReferenceField(
-          1,
-          1,
-          'Reference Field',
-          'Reference',
-          'Enabled',
-          false,
-          false,
-          'Alone',
-          1
-        )
-    ).to.throw();
-  });
-
   it('should create a new ReferenceField', function () {
     const referenceField = new ReferenceField(
       1,
       1,
       'Reference Field',
-      'Reference',
-      'Enabled',
+      FieldType.Reference,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1
     );
     expect(referenceField).to.be.an.instanceOf(ReferenceField);
@@ -51,11 +37,11 @@ describe('ReferenceField', function () {
       1,
       1,
       'Reference Field',
-      'Reference',
-      'Enabled',
+      FieldType.Reference,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1
     );
     expect(referenceField).to.have.property('multiplicity');
@@ -66,11 +52,11 @@ describe('ReferenceField', function () {
       1,
       1,
       'Reference Field',
-      'Reference',
-      'Enabled',
+      FieldType.Reference,
+      FieldStatus.Enabled,
       false,
       false,
-      'SingleSelect',
+      Multiplicity.SingleSelect,
       1
     );
     expect(referenceField).to.have.property('referencedAppId');

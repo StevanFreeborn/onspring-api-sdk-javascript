@@ -47,4 +47,12 @@ describe('ReportData', function () {
         .with.lengthOf(2);
     });
   });
+
+  it('should have a columns property', function () {
+    expect(new ReportData(['a', 'b'], [])).to.have.property('columns');
+  });
+
+  it('should have a rows property', function () {
+    expect(new ReportData(['a', 'b'], [])).to.have.property('rows');
+  });
 });

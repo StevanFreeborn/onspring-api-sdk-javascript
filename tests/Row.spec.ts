@@ -16,4 +16,12 @@ describe('Row', function () {
     expect(row).to.have.property('recordId', 1);
     expect(row).to.have.property('cells').that.is.an('array').with.lengthOf(2);
   });
+
+  it('should have a recordId property', function () {
+    expect(new Row(1, [{}, {}])).to.have.property('recordId');
+  });
+
+  it('should have a cells property', function () {
+    expect(new Row(1, [{}, {}])).to.have.property('cells');
+  });
 });

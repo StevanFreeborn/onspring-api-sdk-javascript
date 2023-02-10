@@ -23,7 +23,7 @@ export class ListValue {
   public numericValue: number;
 
   /**
-   *
+   * @property {string} color - The color of the list value.
    */
   public color: string;
 

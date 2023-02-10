@@ -1,87 +1,87 @@
-import { ResultValueType } from '../src/enums/ResultValueType';
+import { RecordValueType } from '../src/enums/RecordValueType';
 import { expect } from 'chai';
 
-describe('ResultValueType', function () {
+describe('RecordValueType', function () {
   describe('String', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.String;
+      const result = RecordValueType.String;
       expect(result).to.equal('String');
     });
   });
 
   describe('Integer', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.Integer;
+      const result = RecordValueType.Integer;
       expect(result).to.equal('Integer');
     });
   });
 
   describe('Decimal', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.Decimal;
+      const result = RecordValueType.Decimal;
       expect(result).to.equal('Decimal');
     });
   });
 
   describe('Date', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.Date;
+      const result = RecordValueType.Date;
       expect(result).to.equal('Date');
     });
   });
 
   describe('TimeSpan', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.TimeSpan;
+      const result = RecordValueType.TimeSpan;
       expect(result).to.equal('TimeSpan');
     });
   });
 
   describe('Guid', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.Guid;
+      const result = RecordValueType.Guid;
       expect(result).to.equal('Guid');
     });
   });
 
   describe('StringList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.StringList;
+      const result = RecordValueType.StringList;
       expect(result).to.equal('StringList');
     });
   });
 
   describe('IntegerList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.IntegerList;
+      const result = RecordValueType.IntegerList;
       expect(result).to.equal('IntegerList');
     });
   });
 
   describe('GuidList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.GuidList;
+      const result = RecordValueType.GuidList;
       expect(result).to.equal('GuidList');
     });
   });
 
   describe('AttachmentList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.AttachmentList;
+      const result = RecordValueType.AttachmentList;
       expect(result).to.equal('AttachmentList');
     });
   });
 
   describe('ScoringGroupList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.ScoringGroupList;
+      const result = RecordValueType.ScoringGroupList;
       expect(result).to.equal('ScoringGroupList');
     });
   });
 
   describe('FileList', function () {
     it('should return the correct value', function () {
-      const result = ResultValueType.FileList;
+      const result = RecordValueType.FileList;
       expect(result).to.equal('FileList');
     });
   });
