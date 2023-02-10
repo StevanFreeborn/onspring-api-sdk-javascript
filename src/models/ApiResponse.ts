@@ -16,6 +16,7 @@ import { GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { ListField } from './ListField';
 import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
+import { Record } from './Record';
 import { ReferenceField } from './ReferenceField';
 import { Report } from './Report';
 import { ReportData } from './ReportData';
@@ -308,6 +309,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asReportDataType - Converts the ApiResponse to an ApiResponse<ReportData>.
+   * @returns {ApiResponse<ReportData>} - An ApiResponse<ReportData>.
+   */
   asReportDataType(): ApiResponse<ReportData> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -325,13 +330,38 @@ export class ApiResponse<T> {
   }
 
   /**
+   * @method asRecordType - Converts the ApiResponse to an ApiResponse<Record>.
+   * @returns {ApiResponse<Record>} - An ApiResponse<Record>.
+   */
+  public asRecordType(): ApiResponse<Record> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const record = new Record(
+      apiResponse.data.appId,
+      apiResponse.data.recordId,
+      apiResponse.data.fieldData
+    );
+
+    return new ApiResponse<Record>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      record
+    );
+  }
+
+  /**
    * @method asFileCollectionType - Converts the field item to the appropriate field object based upon the field item's type.
    * @param {any} fieldItem - The field item to convert.
    * @returns {Field} - The converted field object.
+   * @throws {Error} - If the field item's type is unknown.
    */
   private static getFieldByType(fieldItem: any): Field {
     const type = FieldType[fieldItem.type];
     const status = FieldStatus[fieldItem.status];
+
+    if (type === undefined) {
+      throw new Error(`Unknown field type: ${fieldItem.type as string}`);
+    }
 
     switch (type) {
       case FieldType.Reference: {

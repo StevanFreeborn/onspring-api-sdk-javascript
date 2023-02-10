@@ -1,8 +1,5 @@
 import { EndpointFactory } from '../src/models/EndpointFactory';
 import { expect } from 'chai';
-import { PagingRequest } from '../src/models/PagingRequest';
-import { DataFormat } from '../src/enums/DataFormat';
-import { ReportDataType } from '../src/enums/ReportDataType';
 
 describe('EndpointFactory', function () {
   describe('getPingEndpoint', function () {
@@ -14,10 +11,8 @@ describe('EndpointFactory', function () {
 
   describe('getAppsEndpoint', function () {
     it('should return the correct apps endpoint with paging params based on paging request parameter passed', function () {
-      const result = EndpointFactory.getAppsEndpoint(
-        new PagingRequest(2, 1000)
-      );
-      expect(result).to.equal('/Apps?pageSize=1000&pageNumber=2');
+      const result = EndpointFactory.getAppsEndpoint();
+      expect(result).to.equal('/Apps');
     });
   });
 
@@ -51,11 +46,8 @@ describe('EndpointFactory', function () {
 
   describe('getFieldsByAppIdEndpoint', function () {
     it('should return the correct fields by app id endpoint', function () {
-      const result = EndpointFactory.getFieldsByAppIdEndpoint(
-        1,
-        new PagingRequest(2, 1000)
-      );
-      expect(result).to.equal('/Fields/appId/1?pageSize=1000&pageNumber=2');
+      const result = EndpointFactory.getFieldsByAppIdEndpoint(1);
+      expect(result).to.equal('/Fields/appId/1');
     });
   });
 
@@ -157,24 +149,15 @@ describe('EndpointFactory', function () {
 
   describe('getReportByIdEndpoint', function () {
     it('should return the correct report by id endpoint', function () {
-      const result = EndpointFactory.getReportByIdEndpoint(
-        1,
-        DataFormat.Raw,
-        ReportDataType.ReportData
-      );
-      expect(result).to.equal(
-        '/Reports/id/1?apiDataFormat=Raw&dataType=ReportData'
-      );
+      const result = EndpointFactory.getReportByIdEndpoint(1);
+      expect(result).to.equal('/Reports/id/1');
     });
   });
 
   describe('getReportsByAppIdEndpoint', function () {
     it('should return the correct reports by app id endpoint', function () {
-      const result = EndpointFactory.getReportsByAppIdEndpoint(
-        1,
-        new PagingRequest(2, 1000)
-      );
-      expect(result).to.equal('/Reports/appId/1?pageSize=1000&pageNumber=2');
+      const result = EndpointFactory.getReportsByAppIdEndpoint(1);
+      expect(result).to.equal('/Reports/appId/1');
     });
   });
 });

@@ -15,30 +15,30 @@ export class TimeSpanData {
   /**
    * @property {TimeSpanRecurrence} recurrence - The recurrence of the time span.
    */
-  public recurrence: TimeSpanRecurrenceType;
+  public recurrence: TimeSpanRecurrenceType | null;
 
   /**
    * @property {number} endAfterOccurrences - The number of occurrences of the time span.
    */
-  public endAfterOccurrences: number;
+  public endAfterOccurrences: number | null;
 
-  public endByDate: Date;
+  public endByDate: Date | null;
 
   /**
    * @constructor - Creates a new instance of TimeSpanData.
    * @param {number} quantity - The quantity of the time span.
    * @param {TimeSpanIncrement} increment - The increment of the time span.
-   * @param {TimeSpanRecurrenceType} recurrence - The recurrence of the time span.
-   * @param {number} endAfterOccurrences - The number of occurrences of the time span.
-   * @param {Date} endByDate - The end date of the time span.
+   * @param {TimeSpanRecurrenceType | null} recurrence - The recurrence of the time span.
+   * @param {number | null} endAfterOccurrences - The number of occurrences of the time span.
+   * @param {Date | null} endByDate - The end date of the time span.
    * @returns {TimeSpanData} - A new instance of TimeSpanData.
    */
   constructor(
     quantity: number,
     increment: TimeSpanIncrement,
-    recurrence: TimeSpanRecurrenceType,
-    endAfterOccurrences: number,
-    endByDate: Date
+    recurrence: TimeSpanRecurrenceType | null,
+    endAfterOccurrences: number | null,
+    endByDate: Date | null
   ) {
     this.quantity = quantity;
     this.increment = increment;

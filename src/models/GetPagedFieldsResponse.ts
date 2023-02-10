@@ -1,6 +1,9 @@
 import { type Field } from './Field';
 import { PagedResponse } from './PagedResponse';
 
+/**
+ * @class GetPagedFieldsResponse - A response containing a paged collection of fields.
+ */
 export class GetPagedFieldsResponse extends PagedResponse<Field> {
   /**
    * @constructor - Creates a new instance of the GetPagedAppsResponse class.

@@ -15,22 +15,18 @@ export class Record {
   public recordId: number;
 
   /**
-   * @property {Array<RecordValue<any>>} fieldData - The data for the fields in the record.
+   * @property {RecordValue[]} fieldData - The data for the fields in the record.
    */
-  public fieldData: Array<RecordValue<any>>;
+  public fieldData: RecordValue[];
 
   /**
    * @constructor - Creates a new instance of Record.
    * @param {number} appId - The id of the app that the record belongs to.
    * @param {number} recordId - The id of the record.
-   * @param {Array<RecordValue<any>>} fieldData - The data for the fields in the record.
+   * @param {RecordValue[]} fieldData - The data for the fields in the record.
    * @returns {Record} - A new instance of Record.
    */
-  constructor(
-    appId: number,
-    recordId: number,
-    fieldData: Array<RecordValue<any>>
-  ) {
+  constructor(appId: number, recordId: number, fieldData: RecordValue[]) {
     this.appId = appId;
     this.recordId = recordId;
     this.fieldData = fieldData;

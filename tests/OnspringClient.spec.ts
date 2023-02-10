@@ -5,7 +5,6 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
 import { App } from '../src/models/App';
 import { CollectionResponse } from '../src/models/CollectionResponse';
@@ -18,13 +17,14 @@ import { Readable } from 'stream';
 import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
 import { FileInfo } from '../src/models/FileInfo';
 import { File } from '../src/models/File';
-import fs from 'fs';
-import path from 'path';
 import { ListItemRequest } from '../src/models/ListItemRequest';
 import { ListItemResponse } from '../src/models/ListItemResponse';
 import { Report } from '../src/models/Report';
 import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
 import { ReportData } from '../src/models/ReportData';
+import fs from 'fs';
+import path from 'path';
+import * as sinon from 'sinon';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';

@@ -20,6 +20,8 @@ import { type ListItemResponse } from './ListItemResponse';
 import { type ListItemRequest } from './ListItemRequest';
 import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { type ReportData } from './ReportData';
+import { type Record } from './Record';
+import { type GetRecordRequest } from './GetRecordRequest';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -75,9 +77,9 @@ export class OnspringClient {
   public async getApps(
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
   ): Promise<ApiResponse<GetPagedAppsResponse>> {
-    const endpoint = EndpointFactory.getAppsEndpoint(pagingRequest);
-
-    const apiResponse = await this.get<any>(endpoint);
+    const endpoint = EndpointFactory.getAppsEndpoint();
+    const params = { ...pagingRequest };
+    const apiResponse = await this.get<any>(endpoint, { params });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -167,11 +169,9 @@ export class OnspringClient {
     appId: number,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
   ): Promise<ApiResponse<GetPagedFieldsResponse>> {
-    const endpoint = EndpointFactory.getFieldsByAppIdEndpoint(
-      appId,
-      pagingRequest
-    );
-    const apiResponse = await this.get<any>(endpoint);
+    const endpoint = EndpointFactory.getFieldsByAppIdEndpoint(appId);
+    const params = { ...pagingRequest };
+    const apiResponse = await this.get<any>(endpoint, { params });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -310,6 +310,20 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  public async getRecordById(
+    request: GetRecordRequest
+  ): Promise<ApiResponse<Record>> {
+    const { appId, recordId, ...params } = request;
+    const endpoint = EndpointFactory.getRecordByIdEndpoint(appId, recordId);
+    const apiResponse = await this.get<any>(endpoint, { params });
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asRecordType();
+  }
+
   /**
    * @method getReportsByAppId - Gets a paged list of reports by the app id.
    * @param {number} appId - The id of the app to get the reports for.
@@ -320,12 +334,9 @@ export class OnspringClient {
     appId: number,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
   ): Promise<ApiResponse<GetPagedReportsResponse>> {
-    const endpoint = EndpointFactory.getReportsByAppIdEndpoint(
-      appId,
-      pagingRequest
-    );
-
-    const apiResponse = await this.get<any>(endpoint);
+    const endpoint = EndpointFactory.getReportsByAppIdEndpoint(appId);
+    const params = { ...pagingRequest };
+    const apiResponse = await this.get<any>(endpoint, { params });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -334,18 +345,25 @@ export class OnspringClient {
     return apiResponse.asGetPagedReportsResponseType();
   }
 
+  /**
+   * @method getReportById - Gets a report by its id.
+   * @param {number} reportId - The id of the report to get.
+   * @param {DataFormat} apiDataFormat - The data format that the report data will be returned in.
+   * @param {ReportDataType} dataType - The type of data that will be returned.
+   * @returns {Promise<ApiResponse<ReportData>>} - A promise that resolves to an ApiResponse of type ReportData.
+   */
   public async getReportById(
     reportId: number,
     apiDataFormat: DataFormat = DataFormat.Raw,
-    reportDataType: ReportDataType = ReportDataType.ReportData
+    dataType: ReportDataType = ReportDataType.ReportData
   ): Promise<ApiResponse<ReportData>> {
-    const endpoint = EndpointFactory.getReportByIdEndpoint(
-      reportId,
+    const endpoint = EndpointFactory.getReportByIdEndpoint(reportId);
+    const params = {
       apiDataFormat,
-      reportDataType
-    );
+      dataType,
+    };
 
-    const apiResponse = await this.get<any>(endpoint);
+    const apiResponse = await this.get<any>(endpoint, { params });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;

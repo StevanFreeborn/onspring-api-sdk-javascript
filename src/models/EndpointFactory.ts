@@ -1,7 +1,3 @@
-import { type DataFormat } from '../enums/DataFormat';
-import { type ReportDataType } from '../enums/ReportDataType';
-import { type PagingRequest } from './PagingRequest';
-
 /**
  * @class EndpointFactory - A factory class for creating endpoints.
  */
@@ -16,11 +12,10 @@ export class EndpointFactory {
 
   /**
    * @method getAppsEndpoint - Gets the apps endpoint.
-   * @param {PagingRequest} pagingRequest - Pagination information to use as query params in the endpoint string.
    * @returns {string} - The apps endpoint.
    */
-  public static getAppsEndpoint(pagingRequest: PagingRequest): string {
-    return `/Apps?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
+  public static getAppsEndpoint(): string {
+    return `/Apps`;
   }
 
   /**
@@ -60,14 +55,10 @@ export class EndpointFactory {
   /**
    * @method getFieldsByAppIdEndpoint - Gets the fields by app id endpoint.
    * @param {number} id - The id of the app.
-   * @param {PagingRequest} pagingRequest - Pagination information to use as query params in the endpoint string.
    * @returns {string} - The fields by app id endpoint.
    */
-  public static getFieldsByAppIdEndpoint(
-    id: number,
-    pagingRequest: PagingRequest
-  ): string {
-    return `/Fields/appId/${id}?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
+  public static getFieldsByAppIdEndpoint(id: number): string {
+    return `/Fields/appId/${id}`;
   }
 
   /**
@@ -212,28 +203,18 @@ export class EndpointFactory {
   /**
    * @method getReportByIdEndpoint - Gets the get report by id endpoint.
    * @param {number} reportId - The id of the report.
-   * @param {DataFormat} apiDataFormat - The data format that will be used to make the request.
-   * @param {ReportDataType} reportDataType - The report data type that will be used to make the request.
    * @returns {string} - The get report by id endpoint.
    */
-  public static getReportByIdEndpoint(
-    reportId: number,
-    apiDataFormat: DataFormat,
-    reportDataType: ReportDataType
-  ): string {
-    return `/Reports/id/${reportId}?apiDataFormat=${apiDataFormat}&dataType=${reportDataType}`;
+  public static getReportByIdEndpoint(reportId: number): string {
+    return `/Reports/id/${reportId}`;
   }
 
   /**
    * @method getReportsByAppIdEndpoint - Gets the get reports by app id endpoint.
    * @param {number} appId - The id of the app.
-   * @param {PagingRequest} pagingRequest - The paging information that will be used to make the request.
    * @returns {string} - The get reports by app id endpoint.
    */
-  public static getReportsByAppIdEndpoint(
-    appId: number,
-    pagingRequest: PagingRequest
-  ): string {
-    return `/Reports/appId/${appId}?pageSize=${pagingRequest.pageSize}&pageNumber=${pagingRequest.pageNumber}`;
+  public static getReportsByAppIdEndpoint(appId: number): string {
+    return `/Reports/appId/${appId}`;
   }
 }
