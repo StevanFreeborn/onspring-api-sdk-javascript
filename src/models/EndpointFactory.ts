@@ -1,3 +1,5 @@
+import { type DataFormat } from '../enums/DataFormat';
+import { type ReportDataType } from '../enums/ReportDataType';
 import { type PagingRequest } from './PagingRequest';
 
 /**
@@ -210,10 +212,16 @@ export class EndpointFactory {
   /**
    * @method getReportByIdEndpoint - Gets the get report by id endpoint.
    * @param {number} reportId - The id of the report.
+   * @param {DataFormat} apiDataFormat - The data format that will be used to make the request.
+   * @param {ReportDataType} reportDataType - The report data type that will be used to make the request.
    * @returns {string} - The get report by id endpoint.
    */
-  public static getReportByIdEndpoint(reportId: number): string {
-    return `/Reports/id/${reportId}`;
+  public static getReportByIdEndpoint(
+    reportId: number,
+    apiDataFormat: DataFormat,
+    reportDataType: ReportDataType
+  ): string {
+    return `/Reports/id/${reportId}?apiDataFormat=${apiDataFormat}&dataType=${reportDataType}`;
   }
 
   /**

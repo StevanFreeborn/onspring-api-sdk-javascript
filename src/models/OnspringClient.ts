@@ -3,6 +3,8 @@ import { PagingRequest } from './PagingRequest';
 import { ArgumentValidator } from './ArgumentValidator';
 import { EndpointFactory } from './EndpointFactory';
 import { ApiResponseFactory } from './ApiResponseFactory';
+import { DataFormat } from '../enums/DataFormat';
+import { ReportDataType } from '../enums/ReportDataType';
 import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { type ApiResponse } from './ApiResponse';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
@@ -17,6 +19,7 @@ import { type File } from './File';
 import { type ListItemResponse } from './ListItemResponse';
 import { type ListItemRequest } from './ListItemRequest';
 import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
+import { type ReportData } from './ReportData';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -329,6 +332,26 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedReportsResponseType();
+  }
+
+  public async getReportById(
+    reportId: number,
+    apiDataFormat: DataFormat = DataFormat.Raw,
+    reportDataType: ReportDataType = ReportDataType.ReportData
+  ): Promise<ApiResponse<ReportData>> {
+    const endpoint = EndpointFactory.getReportByIdEndpoint(
+      reportId,
+      apiDataFormat,
+      reportDataType
+    );
+
+    const apiResponse = await this.get<any>(endpoint);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asReportDataType();
   }
 
   /**

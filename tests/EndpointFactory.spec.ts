@@ -1,6 +1,8 @@
 import { EndpointFactory } from '../src/models/EndpointFactory';
 import { expect } from 'chai';
 import { PagingRequest } from '../src/models/PagingRequest';
+import { DataFormat } from '../src/enums/DataFormat';
+import { ReportDataType } from '../src/enums/ReportDataType';
 
 describe('EndpointFactory', function () {
   describe('getPingEndpoint', function () {
@@ -155,8 +157,14 @@ describe('EndpointFactory', function () {
 
   describe('getReportByIdEndpoint', function () {
     it('should return the correct report by id endpoint', function () {
-      const result = EndpointFactory.getReportByIdEndpoint(1);
-      expect(result).to.equal('/Reports/id/1');
+      const result = EndpointFactory.getReportByIdEndpoint(
+        1,
+        DataFormat.Raw,
+        ReportDataType.ReportData
+      );
+      expect(result).to.equal(
+        '/Reports/id/1?apiDataFormat=Raw&dataType=ReportData'
+      );
     });
   });
 

@@ -15,6 +15,8 @@ import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
 import { ReferenceField } from './ReferenceField';
 import { Report } from './Report';
+import { ReportData } from './ReportData';
+import { Row } from './Row';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -300,6 +302,22 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       getPagedReportsResponse
+    );
+  }
+
+  asReportDataType(): ApiResponse<ReportData> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const rows = apiResponse.data.rows.map((row) => {
+      return new Row(row.recordId, row.cells);
+    });
+
+    const reportData = new ReportData(apiResponse.data.columns, rows);
+
+    return new ApiResponse<ReportData>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      reportData
     );
   }
 

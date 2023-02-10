@@ -21,6 +21,8 @@ import path from 'path';
 import { ListItemResponse } from '../src/models/ListItemResponse';
 import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
 import { Report } from '../src/models/Report';
+import { ReportData } from '../src/models/ReportData';
+import { Row } from '../src/models/Row';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -1010,6 +1012,56 @@ describe('ApiResponse', function () {
       if (getPagedReportsResponse.data != null) {
         getPagedReportsResponse.data.items.forEach((report) => {
           expect(report).to.be.an.instanceof(Report);
+        });
+      }
+    });
+  });
+
+  describe('asReportDataType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asReportDataType).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asReportDataType).to.be.a('function');
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.asReportDataType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<ReportData>', function () {
+      const mockResponseData = {
+        columns: ['field 1', 'field 2'],
+        rows: [
+          {
+            recordId: 1,
+            cells: ['field value 1', 'field value 2'],
+          },
+          {
+            recordId: 2,
+            cells: ['field value 1', 'field value 2'],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const reportData = apiResponse.asReportDataType();
+
+      expect(reportData).to.be.an.instanceof(ApiResponse<ReportData>);
+      expect(reportData.data).to.be.an.instanceof(ReportData);
+      expect(reportData.data).to.have.property('columns').that.is.an('array');
+      expect(reportData.data).to.have.property('rows').that.is.an('array');
+      expect(reportData.data).to.not.be.null;
+
+      if (reportData.data != null) {
+        expect(reportData.data.columns).to.have.lengthOf(2);
+        reportData.data.columns.forEach((column) => {
+          expect(column).to.be.a('string');
+        });
+        expect(reportData.data.rows).to.have.lengthOf(2);
+        reportData.data.rows.forEach((row) => {
+          expect(row).to.be.an.instanceOf(Row);
         });
       }
     });
