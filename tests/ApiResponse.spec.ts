@@ -23,6 +23,8 @@ import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
 import { Report } from '../src/models/Report';
 import { ReportData } from '../src/models/ReportData';
 import { Row } from '../src/models/Row';
+import { Record } from '../src/models/Record';
+import { RecordValue } from '../src/models/RecordValue';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -526,6 +528,21 @@ describe('ApiResponse', function () {
         .that.is.instanceOf(Array)
         .and.has.lengthOf(0);
     });
+
+    it('should throw an error when data contains an unknown field type', function () {
+      const mockResponseData = {
+        id: 1,
+        appId: 1,
+        name: 'Unknown Field',
+        type: 'Unknown',
+        status: 'Enabled',
+        isRequired: false,
+        isUnique: false,
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      expect(() => apiResponse.asFieldType()).to.throw();
+    });
   });
 
   describe('asFieldCollectionType', function () {
@@ -590,6 +607,26 @@ describe('ApiResponse', function () {
           expect(item).to.have.property('isUnique');
         });
       }
+    });
+
+    it('should throw an error when data contains an unknown field type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            id: 1,
+            appId: 1,
+            name: 'Unknown Field',
+            type: 'Unknown',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      expect(() => apiResponse.asFieldCollectionType()).to.throw();
     });
   });
 
@@ -693,6 +730,29 @@ describe('ApiResponse', function () {
         .to.have.property('items')
         .that.is.instanceOf(Array)
         .and.has.lengthOf(0);
+    });
+
+    it('should throw an error when data contains an unknown field type', function () {
+      const mockResponseData = {
+        pageNumber: 1,
+        pageSize: 1,
+        totalPages: 1,
+        totalRecords: 1,
+        items: [
+          {
+            id: 1,
+            appId: 1,
+            name: 'Unknown Field',
+            type: 'Unknown',
+            status: 'Enabled',
+            isRequired: false,
+            isUnique: false,
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      expect(() => apiResponse.asGetPagedFieldsResponseType()).to.throw();
     });
   });
 
@@ -1062,6 +1122,53 @@ describe('ApiResponse', function () {
         expect(reportData.data.rows).to.have.lengthOf(2);
         reportData.data.rows.forEach((row) => {
           expect(row).to.be.an.instanceOf(Row);
+        });
+      }
+    });
+  });
+
+  describe('asRecordType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asRecordType).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asRecordType).to.be.a('function');
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.asRecordType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<Record>', function () {
+      const mockResponseData = {
+        appId: 1,
+        recordId: 1,
+        fieldData: [
+          {
+            type: 'Text',
+            fieldId: 'field 1',
+            value: 'field value 1',
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const record = apiResponse.asRecordType();
+
+      expect(record).to.be.an.instanceof(ApiResponse<Record>);
+      expect(record.data).to.be.an.instanceof(Record);
+      expect(record.data).to.have.property('appId', 1);
+      expect(record.data).to.have.property('recordId', 1);
+      expect(record.data).to.have.property('fieldData').that.is.an('array');
+      expect(record.data).to.not.be.null;
+
+      if (record.data != null) {
+        record.data.fieldData.forEach((recordValue) => {
+          expect(recordValue).to.be.an.instanceof(RecordValue);
+          expect(recordValue).to.have.property('type');
+          expect(recordValue).to.have.property('fieldId');
+          expect(recordValue).to.have.property('value');
         });
       }
     });

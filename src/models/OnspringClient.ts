@@ -313,9 +313,11 @@ export class OnspringClient {
   public async getRecordById(
     request: GetRecordRequest
   ): Promise<ApiResponse<Record>> {
-    const { appId, recordId, ...params } = request;
+    const { appId, recordId, fieldIds, dataFormat } = request;
     const endpoint = EndpointFactory.getRecordByIdEndpoint(appId, recordId);
-    const apiResponse = await this.get<any>(endpoint, { params });
+    const apiResponse = await this.get<any>(endpoint, {
+      params: { fieldIds: fieldIds.join(','), dataFormat },
+    });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;

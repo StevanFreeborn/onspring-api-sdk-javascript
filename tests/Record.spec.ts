@@ -1,6 +1,7 @@
 import { Record } from '../src/models/Record';
 import { expect } from 'chai';
 import { RecordValueType } from '../src/enums/RecordValueType';
+import { RecordValue } from '../src/models/RecordValue';
 
 describe('Record', function () {
   it('should be defined', function () {
@@ -17,16 +18,8 @@ describe('Record', function () {
 
   it('should have a constructor that sets its properties correctly', function () {
     const record = new Record(1, 2, [
-      {
-        type: RecordValueType.String,
-        fieldId: 1,
-        value: 'test',
-      },
-      {
-        type: RecordValueType.String,
-        fieldId: 2,
-        value: 'test',
-      },
+      new RecordValue(RecordValueType.String, 1, 'test'),
+      new RecordValue(RecordValueType.String, 2, 'test'),
     ]);
     expect(record).to.have.property('appId', 1);
     expect(record).to.have.property('recordId', 2);
@@ -39,16 +32,8 @@ describe('Record', function () {
   it('should have an appId property', function () {
     expect(
       new Record(1, 2, [
-        {
-          type: RecordValueType.String,
-          fieldId: 1,
-          value: 'test',
-        },
-        {
-          type: RecordValueType.String,
-          fieldId: 2,
-          value: 'test',
-        },
+        new RecordValue(RecordValueType.String, 1, 'test'),
+        new RecordValue(RecordValueType.String, 2, 'test'),
       ])
     ).to.have.property('appId');
   });
@@ -56,16 +41,8 @@ describe('Record', function () {
   it('should have a recordId property', function () {
     expect(
       new Record(1, 2, [
-        {
-          type: RecordValueType.String,
-          fieldId: 1,
-          value: 'test',
-        },
-        {
-          type: RecordValueType.String,
-          fieldId: 2,
-          value: 'test',
-        },
+        new RecordValue(RecordValueType.String, 1, 'test'),
+        new RecordValue(RecordValueType.String, 2, 'test'),
       ])
     ).to.have.property('recordId');
   });
@@ -73,16 +50,8 @@ describe('Record', function () {
   it('should have a fieldData property', function () {
     expect(
       new Record(1, 2, [
-        {
-          type: RecordValueType.String,
-          fieldId: 1,
-          value: 'test',
-        },
-        {
-          type: RecordValueType.String,
-          fieldId: 2,
-          value: 'test',
-        },
+        new RecordValue(RecordValueType.String, 1, 'test'),
+        new RecordValue(RecordValueType.String, 2, 'test'),
       ])
     ).to.have.property('fieldData');
   });

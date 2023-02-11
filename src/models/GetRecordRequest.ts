@@ -1,4 +1,4 @@
-import { type DataFormat } from '../enums/DataFormat';
+import { DataFormat } from '../enums/DataFormat';
 
 /**
  * @class GetRecordRequest - A request to get a record.
@@ -35,8 +35,8 @@ export class GetRecordRequest {
   constructor(
     appId: number,
     recordId: number,
-    fieldIds: number[],
-    dataFormat: DataFormat
+    fieldIds: number[] = [],
+    dataFormat: DataFormat = DataFormat.Raw
   ) {
     this.appId = appId;
     this.recordId = recordId;

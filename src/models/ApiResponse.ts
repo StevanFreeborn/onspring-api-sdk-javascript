@@ -17,6 +17,7 @@ import { ListField } from './ListField';
 import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
 import { Record } from './Record';
+import { RecordValue } from './RecordValue';
 import { ReferenceField } from './ReferenceField';
 import { Report } from './Report';
 import { ReportData } from './ReportData';
@@ -336,10 +337,18 @@ export class ApiResponse<T> {
   public asRecordType(): ApiResponse<Record> {
     const apiResponse = this as ApiResponse<any>;
 
+    const recordValues = apiResponse.data.fieldData.map((fieldData: any) => {
+      return new RecordValue(
+        fieldData.type,
+        fieldData.fieldId,
+        fieldData.value
+      );
+    });
+
     const record = new Record(
       apiResponse.data.appId,
       apiResponse.data.recordId,
-      apiResponse.data.fieldData
+      recordValues
     );
 
     return new ApiResponse<Record>(

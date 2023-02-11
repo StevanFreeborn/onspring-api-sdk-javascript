@@ -78,18 +78,17 @@ export class RecordValue {
    */
   public asAttachmentArray(): Attachment[] {
     this.validateType([RecordValueType.AttachmentList]);
-
-    const storageLocation = FileStorageSite[this.value.storageLocation];
-
-    if (storageLocation === undefined) {
-      throw new Error(
-        `${
-          this.value.storageLocation as string
-        } is not a valid FileStorageSite.`
-      );
-    }
-
     return this.value.map((attachment: any) => {
+      const storageLocation = FileStorageSite[attachment.storageLocation];
+
+      if (storageLocation === undefined) {
+        throw new Error(
+          `${
+            this.value.storageLocation as string
+          } is not a valid FileStorageSite.`
+        );
+      }
+
       const hasNotes =
         attachment.notes !== null && attachment.notes !== undefined;
 
@@ -177,7 +176,7 @@ export class RecordValue {
           scoringGroup.listValueId,
           scoringGroup.name,
           scoringGroup.score,
-          scoringGroup.maximunScore
+          scoringGroup.maximumScore
         )
     );
   }

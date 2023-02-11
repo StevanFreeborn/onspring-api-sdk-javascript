@@ -25,6 +25,9 @@ import { ReportData } from '../src/models/ReportData';
 import fs from 'fs';
 import path from 'path';
 import * as sinon from 'sinon';
+import { GetRecordRequest } from '../src/models/GetRecordRequest';
+import { Record } from '../src/models/Record';
+import { RecordValue } from '../src/models/RecordValue';
 
 describe('OnspringClient', function () {
   const baseUrl = 'https://api.onspring.dev';
@@ -2814,6 +2817,180 @@ describe('OnspringClient', function () {
       sinon.stub(client, '_client' as any).value(mockAxiosClient);
 
       const result = await client.getReportById(1);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 404);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', 'Not Found');
+      expect(result).to.have.property('data', null);
+    });
+  });
+
+  describe('getRecordById', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getRecordById).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getRecordById).to.be.a('function');
+    });
+
+    it('should return a promise', function () {
+      expect(
+        new OnspringClient(baseUrl, apiKey).getRecordById(
+          new GetRecordRequest(1, 1)
+        )
+      ).to.be.instanceOf(Promise);
+    });
+
+    it('should return a promise that resolves to an api response when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'Text',
+                fieldId: 1,
+                value: 'Test',
+              },
+              {
+                type: 'Text',
+                fieldId: 2,
+                value: 'Test',
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getRecordById(new GetRecordRequest(1, 1));
+
+      expect(result).to.be.instanceOf(ApiResponse<Record>);
+      expect(result).to.have.property('statusCode', 200);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data');
+      expect(result.data).to.be.instanceOf(Record);
+      expect(result.data).to.have.property('appId', 1);
+      expect(result.data).to.have.property('recordId', 1);
+      expect(result.data).to.have.property('fieldData');
+
+      if (result.data != null) {
+        expect(result.data.fieldData).to.be.an('array').that.has.lengthOf(2);
+        result.data.fieldData.forEach((recordValue) => {
+          expect(recordValue).to.be.instanceOf(RecordValue);
+          expect(recordValue).to.have.property('type');
+          expect(recordValue).to.have.property('fieldId');
+          expect(recordValue).to.have.property('value');
+        });
+      }
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getRecordById(new GetRecordRequest(1, 1));
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', undefined);
+      expect(result).to.have.property('data', null);
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: { message: 'Forbidden' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getRecordById(new GetRecordRequest(1, 1));
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', 'Forbidden');
+      expect(result).to.have.property('data', null);
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 404 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 404,
+          statusText: 'Not Found',
+          data: { message: 'Not Found' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.getRecordById(new GetRecordRequest(1, 1));
 
       expect(result).to.be.instanceOf(ApiResponse);
       expect(result).to.have.property('statusCode', 404);
