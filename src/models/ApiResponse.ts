@@ -12,6 +12,7 @@ import { FileInfo } from './FileInfo';
 import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
+import { GetPagedRecordsResponse } from './GetPagedRecordsResponse';
 import { GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { ListField } from './ListField';
 import { ListItemResponse } from './ListItemResponse';
@@ -327,6 +328,39 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       reportData
+    );
+  }
+
+  /**
+   * @method asGetPagedRecordsResponseType - Converts the ApiResponse to an ApiResponse<GetPagedRecordsResponse>.
+   * @returns {ApiResponse<GetPagedRecordsResponse>} - An ApiResponse<GetPagedRecordsResponse>.
+   */
+  public asGetPagedRecordsResponseType(): ApiResponse<GetPagedRecordsResponse> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const records = apiResponse.data.items.map((item: any) => {
+      const recordValues = item.fieldData.map((fieldData: any) => {
+        return new RecordValue(
+          fieldData.type,
+          fieldData.fieldId,
+          fieldData.value
+        );
+      });
+      return new Record(item.appId, item.recordId, recordValues);
+    });
+
+    const getPagedRecordsResponse = new GetPagedRecordsResponse(
+      records,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
+
+    return new ApiResponse<GetPagedRecordsResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      getPagedRecordsResponse
     );
   }
 

@@ -22,6 +22,8 @@ import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { type ReportData } from './ReportData';
 import { type Record } from './Record';
 import { type GetRecordRequest } from './GetRecordRequest';
+import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest';
+import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -311,6 +313,30 @@ export class OnspringClient {
   }
 
   /**
+   * @method getRecordByAppId - Gets records by an app id.
+   * @param {GetRecordsByAppIdRequest} request - The request that will be used to get the records.
+   * @returns {Promise<ApiResponse<GetPagedRecordsResponse>>} - A promise that resolves to an ApiResponse of type GetPagedRecordsResponse.
+   */
+  public async getRecordByAppId(
+    request: GetRecordsByAppIdRequest
+  ): Promise<ApiResponse<GetPagedRecordsResponse>> {
+    const { appId, pagingRequest, fieldIds, dataFormat } = request;
+    const endpoint = EndpointFactory.getRecordsByAppIdEndpoint(appId);
+    const params = {
+      ...pagingRequest,
+      fieldIds: fieldIds.join(','),
+      dataFormat,
+    };
+    const apiResponse = await this.get<any>(endpoint, { params });
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asGetPagedRecordsResponseType();
+  }
+
+  /**
    * @method getRecordById - Gets a record by its id.
    * @param {GetRecordRequest} request - The request that will be used to get the record.
    * @returns {Promise<ApiResponse<Record>>} - A promise that resolves to an ApiResponse of type Record.
@@ -320,9 +346,8 @@ export class OnspringClient {
   ): Promise<ApiResponse<Record>> {
     const { appId, recordId, fieldIds, dataFormat } = request;
     const endpoint = EndpointFactory.getRecordByIdEndpoint(appId, recordId);
-    const apiResponse = await this.get<any>(endpoint, {
-      params: { fieldIds: fieldIds.join(','), dataFormat },
-    });
+    const params = { fieldIds: fieldIds.join(','), dataFormat };
+    const apiResponse = await this.get<any>(endpoint, { params });
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
