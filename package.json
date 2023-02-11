@@ -2,6 +2,30 @@
   "name": "onspring-api-sdk",
   "version": "1.0.0",
   "description": "A javascript SDK for interacting with version 2 of the Onspring API.",
+  "keywords": [
+    "onspring",
+    "api",
+    "sdk",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StevanFreeborn/onspring-api-sdk-javascript.git"
+  },
+  "homepage": "https://github.com/StevanFreeborn/onspring-api-sdk-javascript",
+  "bugs": {
+    "url": "https://github.com/StevanFreeborn/onspring-api-sdk-javascript/issues",
+    "email": "stevan.freeborn@gmail.com"
+  },
+  "author": {
+    "name": "Stevan Freeborn",
+    "email": "stevan.freeborn@gmail.com",
+    "url": "https://stevanfreeborn.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.14.0"
+  },
   "main": "dist/cjs/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -21,8 +45,6 @@
     "test-coverage": "nyc npm run tests",
     "prepare": "husky install"
   },
-  "author": "Stevan Freeborn",
-  "license": "MIT",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/chai": "^4.3.4",
