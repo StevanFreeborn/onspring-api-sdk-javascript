@@ -310,6 +310,11 @@ export class OnspringClient {
     return apiResponse;
   }
 
+  /**
+   * @method getRecordById - Gets a record by its id.
+   * @param {GetRecordRequest} request - The request that will be used to get the record.
+   * @returns {Promise<ApiResponse<Record>>} - A promise that resolves to an ApiResponse of type Record.
+   */
   public async getRecordById(
     request: GetRecordRequest
   ): Promise<ApiResponse<Record>> {
