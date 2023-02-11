@@ -313,11 +313,11 @@ export class OnspringClient {
   }
 
   /**
-   * @method getRecordByAppId - Gets records by an app id.
+   * @method getRecordsByAppId - Gets records by an app id.
    * @param {GetRecordsByAppIdRequest} request - The request that will be used to get the records.
    * @returns {Promise<ApiResponse<GetPagedRecordsResponse>>} - A promise that resolves to an ApiResponse of type GetPagedRecordsResponse.
    */
-  public async getRecordByAppId(
+  public async getRecordsByAppId(
     request: GetRecordsByAppIdRequest
   ): Promise<ApiResponse<GetPagedRecordsResponse>> {
     const { appId, pagingRequest, fieldIds, dataFormat } = request;

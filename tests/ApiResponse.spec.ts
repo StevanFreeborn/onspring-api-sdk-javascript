@@ -25,6 +25,7 @@ import { ReportData } from '../src/models/ReportData';
 import { Row } from '../src/models/Row';
 import { Record } from '../src/models/Record';
 import { RecordValue } from '../src/models/RecordValue';
+import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -1169,6 +1170,86 @@ describe('ApiResponse', function () {
           expect(recordValue).to.have.property('type');
           expect(recordValue).to.have.property('fieldId');
           expect(recordValue).to.have.property('value');
+        });
+      }
+    });
+  });
+
+  describe('asGetPagedRecordsResponseType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asGetPagedRecordsResponseType).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asGetPagedRecordsResponseType).to.be.a(
+        'function'
+      );
+    });
+
+    it('should have no parameters', function () {
+      expect(
+        ApiResponse.prototype.asGetPagedRecordsResponseType
+      ).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<GetPagedRecordsResponse>', function () {
+      const mockResponseData = {
+        pageSize: 2,
+        pageNumber: 1,
+        totalRecords: 2,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'Text',
+                fieldId: 'field 1',
+                value: 'field value 1',
+              },
+            ],
+          },
+          {
+            appId: 2,
+            recordId: 2,
+            fieldData: [
+              {
+                type: 'Text',
+                fieldId: 'field 1',
+                value: 'field value 1',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const getPagedRecordsResponse =
+        apiResponse.asGetPagedRecordsResponseType();
+
+      expect(getPagedRecordsResponse).to.be.an.instanceof(
+        ApiResponse<GetPagedRecordsResponse>
+      );
+      expect(getPagedRecordsResponse.data).to.be.an.instanceof(
+        GetPagedRecordsResponse
+      );
+      expect(getPagedRecordsResponse.data).to.have.property('pageSize', 2);
+      expect(getPagedRecordsResponse.data).to.have.property('pageNumber', 1);
+      expect(getPagedRecordsResponse.data).to.have.property('totalRecords', 2);
+      expect(getPagedRecordsResponse.data).to.have.property('totalPages', 1);
+
+      expect(getPagedRecordsResponse.data)
+        .to.have.property('items')
+        .to.be.an('array')
+        .that.has.lengthOf(2);
+
+      expect(getPagedRecordsResponse.data).to.not.be.null;
+
+      if (getPagedRecordsResponse.data != null) {
+        getPagedRecordsResponse.data.items.forEach((record) => {
+          expect(record).to.be.an.instanceof(Record);
         });
       }
     });
