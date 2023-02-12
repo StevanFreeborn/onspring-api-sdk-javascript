@@ -357,10 +357,22 @@ export class OnspringClient {
     return apiResponse.asRecordType();
   }
 
+  /**
+   * @method getRecordsByIds - Gets records by their ids.
+   * @param {GetRecordsRequest} request - The request that will be used to get the records.
+   * @returns {Promise<ApiResponse<CollectionResponse<Record>>>} - A promise that resolves to an ApiResponse of type CollectionResponse of type Record.
+   */
   public async getRecordsByIds(
     request: GetRecordsRequest
   ): Promise<ApiResponse<CollectionResponse<Record>>> {
-    throw new Error('Not implemented');
+    const endpoint = EndpointFactory.getRecordsByIdsEndpoint();
+    const apiResponse = await this.post<any>(endpoint, request);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asRecordCollectionType();
   }
 
   /**

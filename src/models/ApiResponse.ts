@@ -392,6 +392,32 @@ export class ApiResponse<T> {
     );
   }
 
+  public asRecordCollectionType(): ApiResponse<CollectionResponse<Record>> {
+    const apiResponse = this as ApiResponse<any>;
+
+    const records = apiResponse.data.items.map((item: any) => {
+      const recordValues = item.fieldData.map((fieldData: any) => {
+        return new RecordValue(
+          fieldData.type,
+          fieldData.fieldId,
+          fieldData.value
+        );
+      });
+      return new Record(item.appId, item.recordId, recordValues);
+    });
+
+    const collectionResponse = new CollectionResponse<Record>(
+      apiResponse.data.count,
+      records
+    );
+
+    return new ApiResponse<CollectionResponse<Record>>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      collectionResponse
+    );
+  }
+
   /**
    * @method asFileCollectionType - Converts the field item to the appropriate field object based upon the field item's type.
    * @param {any} fieldItem - The field item to convert.

@@ -1254,4 +1254,73 @@ describe('ApiResponse', function () {
       }
     });
   });
+
+  describe('asRecordCollectionType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asRecordCollectionType).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asRecordCollectionType).to.be.a('function');
+    });
+
+    it('should have no parameters', function () {
+      expect(ApiResponse.prototype.asRecordCollectionType).to.have.lengthOf(0);
+    });
+
+    it('should return an ApiResponse<CollectionResponse<Record>>', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'Text',
+                fieldId: 'field 1',
+                value: 'field value 1',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const recordCollection = apiResponse.asRecordCollectionType();
+
+      expect(recordCollection).to.be.an.instanceof(
+        ApiResponse<CollectionResponse<Record>>
+      );
+      expect(recordCollection.data).to.be.an.instanceof(
+        CollectionResponse<Record>
+      );
+      expect(recordCollection.data).to.have.property('count', 1);
+      expect(recordCollection.data)
+        .to.have.property('items')
+        .to.be.an('array')
+        .that.has.lengthOf(1);
+
+      expect(recordCollection.data).to.not.be.null;
+
+      if (recordCollection.data != null) {
+        recordCollection.data.items.forEach((record) => {
+          expect(record).to.be.an.instanceof(Record);
+          expect(record).to.have.property('appId', 1);
+          expect(record).to.have.property('recordId', 1);
+          expect(record).to.have.property('fieldData').that.is.an('array');
+          expect(record).to.not.be.null;
+
+          if (record != null) {
+            record.fieldData.forEach((recordValue) => {
+              expect(recordValue).to.be.an.instanceof(RecordValue);
+              expect(recordValue).to.have.property('type');
+              expect(recordValue).to.have.property('fieldId');
+              expect(recordValue).to.have.property('value');
+            });
+          }
+        });
+      }
+    });
+  });
 });
