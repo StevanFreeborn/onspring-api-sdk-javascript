@@ -1,5 +1,6 @@
 import { DataFormat } from '../enums/DataFormat';
 import { PagingRequest } from './PagingRequest';
+import { type QueryFilter } from './QueryFilter';
 
 /**
  * @class QueryRecordsRequest - Request to query for records.
@@ -11,9 +12,9 @@ export class QueryRecordsRequest {
   appId: number;
 
   /**
-   * @property {string} filter - The filter to use to query for records.
+   * @property {string | QueryFilter} filter - The filter to use to query for records.
    */
-  filter: string;
+  filter: string | QueryFilter;
 
   /**
    * @property {number[]} fieldIds - The ids of the fields to include in the response.
@@ -33,7 +34,7 @@ export class QueryRecordsRequest {
   /**
    * @constructor - Creates a new instance of QueryRecordsRequest
    * @param {number} appId - The id of the app the records belong to.
-   * @param {string} filter - The filter to use to query for records.
+   * @param {string | QueryFilter} filter - The filter to use to query for records.
    * @param {number[]} fieldIds - The ids of the fields to include in the response.
    * @param {DataFormat} dataFormat - The format of the data in the response.
    * @param {PagingRequest} pagingRequest - The paging request to use to query for records.
@@ -41,13 +42,13 @@ export class QueryRecordsRequest {
    */
   constructor(
     appId: number,
-    filter: string,
+    filter: string | QueryFilter,
     fieldIds: number[] = [],
     dataFormat: DataFormat = DataFormat.Raw,
     pagingRequest: PagingRequest = new PagingRequest(1, 50)
   ) {
     this.appId = appId;
-    this.filter = filter;
+    this.filter = filter.toString();
     this.fieldIds = fieldIds;
     this.dataFormat = dataFormat;
     this.pagingRequest = pagingRequest;
