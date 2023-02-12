@@ -24,6 +24,7 @@ import { type Record } from './Record';
 import { type GetRecordRequest } from './GetRecordRequest';
 import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest';
 import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse';
+import { type GetRecordsRequest } from './GetRecordsRequest';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -354,6 +355,12 @@ export class OnspringClient {
     }
 
     return apiResponse.asRecordType();
+  }
+
+  public async getRecordsByIds(
+    request: GetRecordsRequest
+  ): Promise<ApiResponse<CollectionResponse<Record>>> {
+    throw new Error('Not implemented');
   }
 
   /**
