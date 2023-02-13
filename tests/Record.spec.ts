@@ -120,4 +120,35 @@ describe('Record', function () {
         .with.lengthOf(4);
     });
   });
+
+  describe('convertToSaveRecordRequest', function () {
+    it('should be defined', function () {
+      expect(Record.prototype.convertToSaveRecordRequest).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(Record.prototype.convertToSaveRecordRequest).to.be.a('function');
+    });
+
+    it('should have a method that has 0 parameters', function () {
+      expect(Record.prototype.convertToSaveRecordRequest).to.have.lengthOf(0);
+    });
+
+    it('should return a SaveRecordRequest object', function () {
+      const record = new Record(1, 2, [
+        new RecordValue(RecordValueType.String, 1, 1),
+        new RecordValue(RecordValueType.String, 2, 'test'),
+      ]);
+      const saveRecordRequest = record.convertToSaveRecordRequest();
+      expect(saveRecordRequest).to.have.property('appId', 1);
+      expect(saveRecordRequest).to.have.property('recordId', 2);
+      expect(saveRecordRequest)
+        .to.have.property('fields')
+        .that.is.a('map')
+        .with.lengthOf(2);
+
+      expect(saveRecordRequest.fields.get(1)).to.equal(1);
+      expect(saveRecordRequest.fields.get(2)).to.equal('test');
+    });
+  });
 });

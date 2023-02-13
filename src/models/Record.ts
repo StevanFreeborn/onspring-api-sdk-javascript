@@ -1,4 +1,5 @@
 import { type RecordValue } from './RecordValue';
+import { SaveRecordRequest } from './SaveRecordRequest';
 
 /**
  * @class Record - A record in an app.
@@ -52,5 +53,14 @@ export class Record {
    */
   public addValues(fieldData: Array<RecordValue<any>>): void {
     this.fieldData = this.fieldData.concat(fieldData);
+  }
+
+  public convertToSaveRecordRequest(): SaveRecordRequest {
+    const fields = this.fieldData.reduce((acc, cur) => {
+      acc.set(cur.fieldId, cur.value);
+      return acc;
+    }, new Map<number, any>());
+
+    return new SaveRecordRequest(this.appId, this.recordId, fields);
   }
 }
