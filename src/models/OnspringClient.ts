@@ -25,6 +25,7 @@ import { type GetRecordRequest } from './GetRecordRequest';
 import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest';
 import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse';
 import { type GetRecordsRequest } from './GetRecordsRequest';
+import { type QueryRecordsRequest } from './QueryRecordsRequest';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -373,6 +374,22 @@ export class OnspringClient {
     }
 
     return apiResponse.asRecordCollectionType();
+  }
+
+  public async queryRecords(
+    request: QueryRecordsRequest
+  ): Promise<ApiResponse<GetPagedRecordsResponse>> {
+    const endpoint = EndpointFactory.getQueryRecordsEndpoint();
+    const { pagingRequest, ...data } = request;
+    const params = { ...pagingRequest };
+
+    const apiResponse = await this.post<any>(endpoint, data, { params });
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asGetPagedRecordsResponseType();
   }
 
   /**
