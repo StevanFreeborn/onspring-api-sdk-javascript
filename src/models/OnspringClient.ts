@@ -398,6 +398,24 @@ export class OnspringClient {
   }
 
   /**
+   * @method deleteRecordById - Deletes a record by its id.
+   * @param {number} appId - The id of the app that the record belongs to.
+   * @param {number} recordId - The id of the record to delete.
+   * @returns {Promise<ApiResponse<any>>} - A promise that resolves to an ApiResponse of type any.
+   */
+  public async deleteRecordById(
+    appId: number,
+    recordId: number
+  ): Promise<ApiResponse<any>> {
+    const endpoint = EndpointFactory.getDeleteRecordByIdEndpoint(
+      appId,
+      recordId
+    );
+    const apiResponse = await this.delete<any>(endpoint);
+    return apiResponse;
+  }
+
+  /**
    * @method getReportsByAppId - Gets a paged list of reports by the app id.
    * @param {number} appId - The id of the app to get the reports for.
    * @param {PagingRequest} pagingRequest - The paging request that will be used to get the reports.
