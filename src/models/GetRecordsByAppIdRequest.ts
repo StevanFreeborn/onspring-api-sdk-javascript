@@ -15,7 +15,7 @@ export class GetRecordsByAppIdRequest {
   /**
    * @property {DataFormat} dataFormat - The format of the data in the response.
    */
-  public dataFormat: DataFormat;
+  public dataFormat: DataFormat = DataFormat.Raw;
 
   /**
    * @property {PagingRequest} pagingRequest - The paging request.

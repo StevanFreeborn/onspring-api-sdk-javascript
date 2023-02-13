@@ -12,8 +12,8 @@ describe('Record', function () {
     expect(Record).to.have.property('constructor');
   });
 
-  it('should have a constructor that has 3 parameters', function () {
-    expect(Record).to.have.lengthOf(3);
+  it('should have a constructor that has 2 parameters', function () {
+    expect(Record).to.have.lengthOf(2);
   });
 
   it('should have a constructor that sets its properties correctly', function () {
@@ -27,6 +27,16 @@ describe('Record', function () {
       .to.have.property('fieldData')
       .that.is.an('array')
       .with.lengthOf(2);
+  });
+
+  it('should have a constructor that sets its properties correctly when no fieldData is provided', function () {
+    const record = new Record(1, 2);
+    expect(record).to.have.property('appId', 1);
+    expect(record).to.have.property('recordId', 2);
+    expect(record)
+      .to.have.property('fieldData')
+      .that.is.an('array')
+      .with.lengthOf(0);
   });
 
   it('should have an appId property', function () {

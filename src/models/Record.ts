@@ -26,7 +26,7 @@ export class Record {
    * @param {RecordValue[]} fieldData - The data for the fields in the record.
    * @returns {Record} - A new instance of Record.
    */
-  constructor(appId: number, recordId: number, fieldData: RecordValue[]) {
+  constructor(appId: number, recordId: number, fieldData: RecordValue[] = []) {
     this.appId = appId;
     this.recordId = recordId;
     this.fieldData = fieldData;
