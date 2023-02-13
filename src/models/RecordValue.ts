@@ -11,7 +11,7 @@ import { TimeSpanData } from './TimeSpanData';
 /**
  * @class RecordValue - A value for a field in a record.
  */
-export class RecordValue {
+export class RecordValue<T> {
   /**
    * @property {RecordValueType} type - The type of the record value.
    */
@@ -23,9 +23,9 @@ export class RecordValue {
   public fieldId: number;
 
   /**
-   * @property {any} value - The value of the field.
+   * @property {T | any} value - The value of the field.
    */
-  public value: any;
+  public value: T | any;
 
   /**
    * @constructor - Creates a new instance of RecordValue.
@@ -34,7 +34,7 @@ export class RecordValue {
    * @param {any} value - The value of the field.
    * @returns {RecordValue} - A new instance of RecordValue.
    */
-  constructor(type: RecordValueType, fieldId: number, value: any) {
+  constructor(type: RecordValueType, fieldId: number, value: T | any) {
     this.type = type;
     this.fieldId = fieldId;
     this.value = value;

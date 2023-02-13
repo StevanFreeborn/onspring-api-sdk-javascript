@@ -17,18 +17,40 @@ export class Record {
   /**
    * @property {RecordValue[]} fieldData - The data for the fields in the record.
    */
-  public fieldData: RecordValue[];
+  public fieldData: Array<RecordValue<any>>;
 
   /**
    * @constructor - Creates a new instance of Record.
    * @param {number} appId - The id of the app that the record belongs to.
    * @param {number} recordId - The id of the record.
-   * @param {RecordValue[]} fieldData - The data for the fields in the record.
+   * @param {RecordValue<any>[]} fieldData - The data for the fields in the record.
    * @returns {Record} - A new instance of Record.
    */
-  constructor(appId: number, recordId: number, fieldData: RecordValue[] = []) {
+  constructor(
+    appId: number,
+    recordId: number,
+    fieldData: Array<RecordValue<any>> = []
+  ) {
     this.appId = appId;
     this.recordId = recordId;
     this.fieldData = fieldData;
+  }
+
+  /**
+   * @method addValue - Adds a value to the record.
+   * @param {RecordValue<any>} fieldData - The value to add to the record.
+   * @returns {void}
+   */
+  public addValue(fieldData: RecordValue<any>): void {
+    this.fieldData.push(fieldData);
+  }
+
+  /**
+   * @method addValues - Adds values to the record.
+   * @param {Array<RecordValue<any>>} fieldData - The values to add to the record.
+   * @returns {void}
+   */
+  public addValues(fieldData: Array<RecordValue<any>>): void {
+    this.fieldData = this.fieldData.concat(fieldData);
   }
 }

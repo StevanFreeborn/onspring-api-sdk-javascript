@@ -65,4 +65,59 @@ describe('Record', function () {
       ])
     ).to.have.property('fieldData');
   });
+
+  describe('addValue', function () {
+    it('should be defined', function () {
+      expect(Record.prototype.addValue).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(Record.prototype.addValue).to.be.a('function');
+    });
+
+    it('should have a method that has 1 parameter', function () {
+      expect(Record.prototype.addValue).to.have.lengthOf(1);
+    });
+
+    it('should add a value to the fieldData array', function () {
+      const record = new Record(1, 2, [
+        new RecordValue(RecordValueType.String, 1, 'test'),
+        new RecordValue(RecordValueType.String, 2, 'test'),
+      ]);
+      record.addValue(new RecordValue(RecordValueType.String, 3, 'test'));
+      expect(record)
+        .to.have.property('fieldData')
+        .that.is.an('array')
+        .with.lengthOf(3);
+    });
+  });
+
+  describe('addValues', function () {
+    it('should be defined', function () {
+      expect(Record.prototype.addValues).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(Record.prototype.addValues).to.be.a('function');
+    });
+
+    it('should have a method that has 1 parameter', function () {
+      expect(Record.prototype.addValues).to.have.lengthOf(1);
+    });
+
+    it('should add values to the fieldData array', function () {
+      const record = new Record(1, 2, [
+        new RecordValue(RecordValueType.String, 1, 'test'),
+        new RecordValue(RecordValueType.String, 2, 'test'),
+      ]);
+      record.addValues([
+        new RecordValue(RecordValueType.String, 3, 'test'),
+        new RecordValue(RecordValueType.String, 4, 'test'),
+      ]);
+      expect(record)
+        .to.have.property('fieldData')
+        .that.is.an('array')
+        .with.lengthOf(4);
+    });
+  });
 });
