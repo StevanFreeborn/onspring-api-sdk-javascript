@@ -72,4 +72,10 @@ export enum RecordValueType {
    * @type {string}
    */
   FileList = 'FileList',
+
+  /**
+   * @constant DelegateList - The record value is a list of delegates.
+   * @type {string}
+   */
+  DelegateList = 'DelegateList',
 }

@@ -5,6 +5,10 @@ import { Attachment } from '../src/models/Attachment';
 import { Delegate } from '../src/models/Delegate';
 import { ScoringGroup } from '../src/models/ScoringGroup';
 import { TimeSpanData } from '../src/models/TimeSpanData';
+import { FileStorageSite } from '../src/enums/FileStorageSite';
+import { DelegateType } from '../src/enums/DelegateType';
+import { TimeSpanRecurrenceType } from '../src/enums/TimeSpanRecurrenceType';
+import { TimeSpanIncrement } from '../src/enums/TimeSpanIncrement';
 
 describe('RecordValue', function () {
   it('should be defined', function () {
@@ -112,9 +116,9 @@ describe('RecordValue', function () {
     });
 
     it('should return the value as a date for valid type', function () {
-      const value = new Date().toUTCString();
+      const value = new Date();
       expect(new RecordValue(RecordValueType.Date, 2, value).asDate())
-        .to.deep.equal(new Date(value))
+        .to.deep.equal(value)
         .and.to.be.a('date');
     });
 
@@ -136,23 +140,9 @@ describe('RecordValue', function () {
 
     it('should return the value as an array of attachments for valid type', function () {
       const value = [
-        {
-          fileId: 1,
-          fileName: 'test',
-          notes: 'test',
-          storageLocation: 'Internal',
-        },
-        {
-          fileId: 1,
-          fileName: 'test',
-          storageLocation: 'Internal',
-        },
-        {
-          fileId: 1,
-          fileName: 'test',
-          notes: null,
-          storageLocation: 'Internal',
-        },
+        new Attachment(1, 'test', 'test', FileStorageSite.Internal),
+        new Attachment(1, 'test', 'test', FileStorageSite.Internal),
+        new Attachment(1, 'test', null, FileStorageSite.Internal),
       ];
 
       const attachmentArray = new RecordValue(
@@ -170,25 +160,6 @@ describe('RecordValue', function () {
         expect(attachment).to.have.property('notes');
         expect(attachment).to.have.property('storageLocation');
       });
-    });
-
-    it('should throw an error if attachment has incorrect storage location', function () {
-      const value = [
-        {
-          fileId: 1,
-          fileName: 'test',
-          notes: 'test',
-          storageLocation: 'Invalid',
-        },
-      ];
-
-      expect(() =>
-        new RecordValue(
-          RecordValueType.AttachmentList,
-          2,
-          value
-        ).asAttachmentArray()
-      ).to.throw();
     });
 
     it('should throw an error if called on record value with incorrect type', function () {
@@ -272,29 +243,31 @@ describe('RecordValue', function () {
 
     it('should return the value as an array of delegates for valid type', function () {
       const value = [
-        {
-          delegateType: 'External',
-          name: 'test',
-          emailAddress: 'test@test.com',
-          delegationDateTime: '2019-01-01T00:00:00.000Z',
-          delegationCompletedDateTime: '2019-01-01T00:00:00.000Z',
-        },
-        {
-          delegateType: 'External',
-          name: null,
-          emailAddress: 'test@test.com',
-          delegationDateTime: '2019-01-01T00:00:00.000Z',
-          delegationCompletedDateTime: null,
-        },
-        {
-          delegateType: 'External',
-          emailAddress: 'test@test.com',
-          delegationDateTime: '2019-01-01T00:00:00.000Z',
-        },
+        new Delegate(
+          DelegateType.External,
+          'test',
+          'test@test.com',
+          new Date(),
+          new Date()
+        ),
+        new Delegate(
+          DelegateType.External,
+          null,
+          'test@test.com',
+          new Date(),
+          null
+        ),
+        new Delegate(
+          DelegateType.External,
+          'test',
+          'test@test.com',
+          new Date(),
+          new Date()
+        ),
       ];
 
       const recordValue = new RecordValue(
-        RecordValueType.ScoringGroupList,
+        RecordValueType.DelegateList,
         2,
         value
       ).asDelegateArray();
@@ -315,26 +288,6 @@ describe('RecordValue', function () {
         new RecordValue(RecordValueType.Integer, 2, []).asDelegateArray()
       ).to.throw();
     });
-
-    it('should throw an error if delegate has incorrect delegate type', function () {
-      const value = [
-        {
-          delegateType: 'Invalid',
-          name: 'test',
-          emailAddress: 'test@test.com',
-          delegationDateTime: '2019-01-01T00:00:00.000Z',
-          delegationCompletedDateTime: '2019-01-01T00:00:00.000Z',
-        },
-      ];
-
-      expect(() =>
-        new RecordValue(
-          RecordValueType.ScoringGroupList,
-          2,
-          value
-        ).asDelegateArray()
-      ).to.throw();
-    });
   });
 
   describe('asScoringGroupArray', function () {
@@ -347,14 +300,7 @@ describe('RecordValue', function () {
     });
 
     it('should return the value as an array of scoring groups for valid type', function () {
-      const value = [
-        {
-          listValueId: 'test',
-          name: 'test',
-          score: 1,
-          maximumScore: 1,
-        },
-      ];
+      const value = [new ScoringGroup('1', 'test', 1, 1)];
 
       const recordValue = new RecordValue(
         RecordValueType.ScoringGroupList,
@@ -391,24 +337,21 @@ describe('RecordValue', function () {
 
     it('should return the value as a TimeSpanData for valid type', function () {
       const cases = [
-        {
-          quantity: 1,
-          increment: 'Days',
-          recurrence: 'None',
-          endAfterOccurrences: 1,
-          endByDate: '2019-01-01T00:00:00.000Z',
-        },
-        {
-          quantity: 1,
-          increment: 'Days',
-          recurrence: null,
-          endAfterOccurrences: null,
-          endByDate: null,
-        },
-        {
-          quantity: 1,
-          increment: 'Days',
-        },
+        new TimeSpanData(
+          1,
+          TimeSpanIncrement.Days,
+          TimeSpanRecurrenceType.None,
+          1,
+          new Date()
+        ),
+        new TimeSpanData(1, TimeSpanIncrement.Days, null, null, null),
+        new TimeSpanData(
+          1,
+          TimeSpanIncrement.Days,
+          TimeSpanRecurrenceType.None,
+          1,
+          new Date()
+        ),
       ];
 
       cases.forEach((value) => {
@@ -430,34 +373,6 @@ describe('RecordValue', function () {
     it('should throw an error if called on record value with incorrect type', function () {
       expect(() =>
         new RecordValue(RecordValueType.Integer, 2, []).asTimeSpanData()
-      ).to.throw();
-    });
-
-    it('should throw an error if timespan has incorrect increment', function () {
-      const value = {
-        quantity: 1,
-        increment: 'Invalid',
-        recurrence: 'None',
-        endAfterOccurrences: 1,
-        endByDate: '2019-01-01T00:00:00.000Z',
-      };
-
-      expect(() =>
-        new RecordValue(RecordValueType.TimeSpan, 2, value).asTimeSpanData()
-      ).to.throw();
-    });
-
-    it('should throw an error if timespan has incorrect recurrence', function () {
-      const value = {
-        quantity: 1,
-        increment: 'Days',
-        recurrence: 'Invalid',
-        endAfterOccurrences: 1,
-        endByDate: '2019-01-01T00:00:00.000Z',
-      };
-
-      expect(() =>
-        new RecordValue(RecordValueType.TimeSpan, 2, value).asTimeSpanData()
       ).to.throw();
     });
   });

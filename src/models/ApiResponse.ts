@@ -1,28 +1,50 @@
 import { type AxiosResponse } from 'axios';
+import { DelegateType } from '../enums/DelegateType';
 import { FieldStatus } from '../enums/FieldStatus';
 import { FieldType } from '../enums/FieldType';
+import { FileStorageSite } from '../enums/FileStorageSite';
 import { FormulaOutputType } from '../enums/FormulaOutputType';
 import { Multiplicity } from '../enums/Multiplicity';
+import { RecordValueType } from '../enums/RecordValueType';
+import { TimeSpanIncrement } from '../enums/TimeSpanIncrement';
+import { TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType';
 import { App } from './App';
+import { Attachment } from './Attachment';
+import { AttachmentListRecordValue } from './AttachmentListRecordValue';
 import { CollectionResponse } from './CollectionResponse';
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
+import { DateRecordValue } from './DateRecordValue';
+import { DecimalRecordValue } from './DecimalRecordValue';
+import { Delegate } from './Delegate';
+import { DelegateListRecordValue } from './DelegateListRecordValue';
 import { Field } from './Field';
 import { File } from './File';
 import { FileInfo } from './FileInfo';
+import { FileListRecordValue } from './FileListRecordValue';
 import { FormulaField } from './FormulaField';
 import { GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
 import { GetPagedRecordsResponse } from './GetPagedRecordsResponse';
 import { GetPagedReportsResponse } from './GetPagedReportsResponse';
+import { GuidListRecordValue } from './GuidListRecordValue';
+import { GuidRecordValue } from './GuidRecordValue';
+import { IntegerListRecordValue } from './IntegerListRecordValue';
+import { IntegerRecordValue } from './IntegerRecordValue';
 import { ListField } from './ListField';
 import { ListItemResponse } from './ListItemResponse';
 import { ListValue } from './ListValue';
 import { Record } from './Record';
-import { RecordValue } from './RecordValue';
 import { ReferenceField } from './ReferenceField';
 import { Report } from './Report';
 import { ReportData } from './ReportData';
 import { Row } from './Row';
+import { ScoringGroup } from './ScoringGroup';
+import { ScoringGroupListRecordValue } from './ScoringGroupListRecordValue';
+import { StringListRecordValue } from './StringListRecordValue';
+import { StringRecordValue } from './StringRecordValue';
+import { TimeSpanData } from './TimeSpanData';
+import { TimeSpanRecordValue } from './TimeSpanRecordValue';
+import { type RecordValue } from './RecordValue';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -339,13 +361,10 @@ export class ApiResponse<T> {
     const apiResponse = this as ApiResponse<any>;
 
     const records = apiResponse.data.items.map((item: any) => {
-      const recordValues = item.fieldData.map((fieldData: any) => {
-        return new RecordValue(
-          fieldData.type,
-          fieldData.fieldId,
-          fieldData.value
-        );
-      });
+      const recordValues = item.fieldData.map((recordValueItem: any) =>
+        ApiResponse.getRecordValueByType(recordValueItem)
+      );
+
       return new Record(item.appId, item.recordId, recordValues);
     });
 
@@ -371,13 +390,10 @@ export class ApiResponse<T> {
   public asRecordType(): ApiResponse<Record> {
     const apiResponse = this as ApiResponse<any>;
 
-    const recordValues = apiResponse.data.fieldData.map((fieldData: any) => {
-      return new RecordValue(
-        fieldData.type,
-        fieldData.fieldId,
-        fieldData.value
-      );
-    });
+    const recordValues = apiResponse.data.fieldData.map(
+      (recordValueItem: any) =>
+        ApiResponse.getRecordValueByType(recordValueItem)
+    );
 
     const record = new Record(
       apiResponse.data.appId,
@@ -396,13 +412,10 @@ export class ApiResponse<T> {
     const apiResponse = this as ApiResponse<any>;
 
     const records = apiResponse.data.items.map((item: any) => {
-      const recordValues = item.fieldData.map((fieldData: any) => {
-        return new RecordValue(
-          fieldData.type,
-          fieldData.fieldId,
-          fieldData.value
-        );
-      });
+      const recordValues = item.fieldData.map((recordValueItem: any) =>
+        ApiResponse.getRecordValueByType(recordValueItem)
+      );
+
       return new Record(item.appId, item.recordId, recordValues);
     });
 
@@ -418,8 +431,113 @@ export class ApiResponse<T> {
     );
   }
 
+  private static getRecordValueByType(recordValueItem: any): RecordValue<any> {
+    const type = RecordValueType[recordValueItem.type];
+
+    switch (type) {
+      case RecordValueType.String: {
+        return new StringRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.Integer: {
+        return new IntegerRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.Decimal: {
+        return new DecimalRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.Date: {
+        const date = new Date(recordValueItem.value);
+        return new DateRecordValue(recordValueItem.fieldId, date);
+      }
+      case RecordValueType.TimeSpan: {
+        const timeSpan = ApiResponse.convertToTimeSpanData(
+          recordValueItem.value
+        );
+        return new TimeSpanRecordValue(recordValueItem.fieldId, timeSpan);
+      }
+      case RecordValueType.Guid: {
+        return new GuidRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.StringList: {
+        return new StringListRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.IntegerList: {
+        return new IntegerListRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.GuidList: {
+        return new GuidListRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      case RecordValueType.AttachmentList: {
+        const attachments = recordValueItem.value.map((attachmentItem: any) =>
+          ApiResponse.convertToAttachment(attachmentItem)
+        );
+
+        return new AttachmentListRecordValue(
+          recordValueItem.fieldId,
+          attachments
+        );
+      }
+      case RecordValueType.ScoringGroupList: {
+        const array = recordValueItem.value as any[];
+        const isDelegateList = array[0].delegateType !== undefined;
+
+        if (isDelegateList) {
+          const delegates = recordValueItem.value.map((delegateItem: any) =>
+            ApiResponse.convertToDelegate(delegateItem)
+          );
+
+          return new DelegateListRecordValue(
+            recordValueItem.fieldId,
+            delegates
+          );
+        }
+
+        const scoringGroups = recordValueItem.value.map(
+          (scoringGroupItem: any) =>
+            ApiResponse.convertToScoringGroup(scoringGroupItem)
+        );
+
+        return new ScoringGroupListRecordValue(
+          recordValueItem.fieldId,
+          scoringGroups
+        );
+      }
+      case RecordValueType.FileList: {
+        return new FileListRecordValue(
+          recordValueItem.fieldId,
+          recordValueItem.value
+        );
+      }
+      default: {
+        throw new Error(
+          `Unknown record value type: ${recordValueItem.type as string}`
+        );
+      }
+    }
+  }
+
   /**
-   * @method asFileCollectionType - Converts the field item to the appropriate field object based upon the field item's type.
+   * @method getFieldByType - Converts the field item to the appropriate field object based upon the field item's type.
    * @param {any} fieldItem - The field item to convert.
    * @returns {Field} - The converted field object.
    * @throws {Error} - If the field item's type is unknown.
@@ -493,6 +611,132 @@ export class ApiResponse<T> {
         );
       }
     }
+  }
+
+  private static convertToDelegate(delegateItem: any): Delegate {
+    const delegateType = DelegateType[delegateItem.delegateType];
+
+    if (delegateType === undefined) {
+      throw new Error(
+        `${delegateItem.delegateType as string} is not a valid DelegateType.`
+      );
+    }
+
+    const delegationDateTime = new Date(delegateItem.delegationDateTime);
+
+    const hasName =
+      delegateItem.name !== null && delegateItem.name !== undefined;
+    const name = hasName ? delegateItem.name : null;
+
+    const hasCompletionDate =
+      delegateItem.delegationCompletedDateTime !== null &&
+      delegateItem.delegationCompletedDateTime !== undefined;
+
+    const delegationCompletedDateTime = hasCompletionDate
+      ? new Date(delegateItem.delegationCompletedDateTime)
+      : null;
+
+    return new Delegate(
+      delegateItem.delegateType,
+      name,
+      delegateItem.emailAddress,
+      delegationDateTime,
+      delegationCompletedDateTime
+    );
+  }
+
+  /**
+   * @method convertToScoringGroup - Converts the scoring group item to the appropriate scoring group object.
+   * @param {any} scoringGroupItem - The scoring group item to convert.
+   * @returns {ScoringGroup} - The converted scoring group object.
+   */
+  private static convertToScoringGroup(scoringGroupItem: any): ScoringGroup {
+    return new ScoringGroup(
+      scoringGroupItem.id,
+      scoringGroupItem.name,
+      scoringGroupItem.score,
+      scoringGroupItem.maximumScore
+    );
+  }
+
+  /**
+   * @method convertToAttachment - Converts the attachment item to the appropriate attachment object.
+   * @param {any} attachmentItem - The attachment item to convert.
+   * @returns {Attachment} - The converted attachment object.
+   */
+  private static convertToAttachment(attachmentItem: any): Attachment {
+    const storageLocation = FileStorageSite[attachmentItem.storageLocation];
+
+    if (storageLocation === undefined) {
+      throw new Error(
+        `${
+          attachmentItem.storageLocation as string
+        } is not a valid FileStorageSite.`
+      );
+    }
+
+    const hasNotes =
+      attachmentItem.notes !== null && attachmentItem.notes !== undefined;
+
+    const notes = hasNotes ? attachmentItem.notes : null;
+
+    return new Attachment(
+      attachmentItem.fileId,
+      attachmentItem.fileName,
+      notes,
+      storageLocation
+    );
+  }
+
+  /**
+   * @method convertToTimeSpanData - Converts the time span item to the appropriate time span data object.
+   * @param {any} timeSpanItem - The time span item to convert.
+   * @returns {TimeSpanData} - The converted time span data object.
+   */
+  private static convertToTimeSpanData(timeSpanItem: any): TimeSpanData {
+    const increment = TimeSpanIncrement[timeSpanItem.increment];
+
+    const hasRecurrence =
+      timeSpanItem.recurrence !== null && timeSpanItem.recurrence !== undefined;
+
+    const recurrene = hasRecurrence
+      ? TimeSpanRecurrenceType[timeSpanItem.recurrence]
+      : null;
+
+    const hasEndAfterOccurrences =
+      timeSpanItem.endAfterOccurrences !== null &&
+      timeSpanItem.endAfterOccurrences !== undefined;
+
+    const endAfterOccurrences = hasEndAfterOccurrences
+      ? timeSpanItem.endAfterOccurrences
+      : null;
+
+    const hasEndByDate =
+      timeSpanItem.endByDate !== null && timeSpanItem.endByDate !== undefined;
+
+    const endByDate = hasEndByDate ? new Date(timeSpanItem.endByDate) : null;
+
+    if (increment === undefined) {
+      throw new Error(
+        `${timeSpanItem.increment as string} is not a valid TimeSpanIncrement.`
+      );
+    }
+
+    if (recurrene === undefined) {
+      throw new Error(
+        `${
+          timeSpanItem.recurrence as string
+        } is not a valid TimeSpanRecurrenceType.`
+      );
+    }
+
+    return new TimeSpanData(
+      timeSpanItem.quantity,
+      increment,
+      recurrene,
+      endAfterOccurrences,
+      endByDate
+    );
   }
 
   /**

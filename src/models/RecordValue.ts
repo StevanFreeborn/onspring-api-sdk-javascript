@@ -1,12 +1,12 @@
-import { DelegateType } from '../enums/DelegateType';
-import { FileStorageSite } from '../enums/FileStorageSite';
 import { RecordValueType } from '../enums/RecordValueType';
-import { TimeSpanIncrement } from '../enums/TimeSpanIncrement';
-import { TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType';
-import { Attachment } from './Attachment';
-import { Delegate } from './Delegate';
-import { ScoringGroup } from './ScoringGroup';
-import { TimeSpanData } from './TimeSpanData';
+import { type Attachment } from './Attachment';
+import { type AttachmentListRecordValue } from './AttachmentListRecordValue';
+import { type Delegate } from './Delegate';
+import { type DelegateListRecordValue } from './DelegateListRecordValue';
+import { type ScoringGroup } from './ScoringGroup';
+import { type ScoringGroupListRecordValue } from './ScoringGroupListRecordValue';
+import { type TimeSpanData } from './TimeSpanData';
+import { type TimeSpanRecordValue } from './TimeSpanRecordValue';
 
 /**
  * @class RecordValue - A value for a field in a record.
@@ -23,9 +23,9 @@ export class RecordValue<T> {
   public fieldId: number;
 
   /**
-   * @property {T | any} value - The value of the field.
+   * @property {T} value - The value of the field.
    */
-  public value: T | any;
+  public value: T;
 
   /**
    * @constructor - Creates a new instance of RecordValue.
@@ -34,7 +34,7 @@ export class RecordValue<T> {
    * @param {any} value - The value of the field.
    * @returns {RecordValue} - A new instance of RecordValue.
    */
-  constructor(type: RecordValueType, fieldId: number, value: T | any) {
+  constructor(type: RecordValueType, fieldId: number, value: T) {
     this.type = type;
     this.fieldId = fieldId;
     this.value = value;
@@ -47,7 +47,7 @@ export class RecordValue<T> {
    */
   public asString(): string {
     this.validateType([RecordValueType.String, RecordValueType.Guid]);
-    return this.value;
+    return this.value as string;
   }
 
   /**
@@ -57,7 +57,7 @@ export class RecordValue<T> {
    */
   public asNumber(): number {
     this.validateType([RecordValueType.Integer, RecordValueType.Decimal]);
-    return this.value;
+    return this.value as number;
   }
 
   /**
@@ -67,7 +67,7 @@ export class RecordValue<T> {
    */
   public asDate(): Date {
     this.validateType([RecordValueType.Date]);
-    return new Date(this.value);
+    return this.value as Date;
   }
 
   /**
@@ -78,29 +78,7 @@ export class RecordValue<T> {
    */
   public asAttachmentArray(): Attachment[] {
     this.validateType([RecordValueType.AttachmentList]);
-    return this.value.map((attachment: any) => {
-      const storageLocation = FileStorageSite[attachment.storageLocation];
-
-      if (storageLocation === undefined) {
-        throw new Error(
-          `${
-            this.value.storageLocation as string
-          } is not a valid FileStorageSite.`
-        );
-      }
-
-      const hasNotes =
-        attachment.notes !== null && attachment.notes !== undefined;
-
-      const notes = hasNotes ? attachment.notes : null;
-
-      return new Attachment(
-        attachment.fileId,
-        attachment.fileName,
-        notes,
-        storageLocation
-      );
-    });
+    return (this as AttachmentListRecordValue).value;
   }
 
   /**
@@ -110,7 +88,7 @@ export class RecordValue<T> {
    */
   public asNumberArray(): number[] {
     this.validateType([RecordValueType.FileList, RecordValueType.IntegerList]);
-    return this.value;
+    return this.value as number[];
   }
 
   /**
@@ -120,47 +98,17 @@ export class RecordValue<T> {
    */
   public asStringArray(): string[] {
     this.validateType([RecordValueType.StringList, RecordValueType.GuidList]);
-    return this.value;
+    return this.value as string[];
   }
 
   /**
    * @method asDelegateArray - Gets the value as an array of delegates.
    * @returns {Delegate[]} - The value as an array of delegates.
    * @throws {Error} - If the value is not an array of delegates.
-   * @throws {Error} - If a delegate type is not valid.
    */
   public asDelegateArray(): Delegate[] {
-    this.validateType([RecordValueType.ScoringGroupList]);
-    return this.value.map((delegate: any) => {
-      const delegateType = DelegateType[delegate.delegateType];
-
-      if (delegateType === undefined) {
-        throw new Error(
-          `${delegate.delegateType as string} is not a valid DelegateType.`
-        );
-      }
-
-      const delegationDateTime = new Date(delegate.delegationDateTime);
-
-      const hasName = delegate.name !== null && delegate.name !== undefined;
-      const name = hasName ? delegate.name : null;
-
-      const hasCompletionDate =
-        delegate.delegationCompletedDateTime !== null &&
-        delegate.delegationCompletedDateTime !== undefined;
-
-      const delegationCompletedDateTime = hasCompletionDate
-        ? new Date(delegate.delegationCompletedDateTime)
-        : null;
-
-      return new Delegate(
-        delegate.delegateType,
-        name,
-        delegate.emailAddress,
-        delegationDateTime,
-        delegationCompletedDateTime
-      );
-    });
+    this.validateType([RecordValueType.DelegateList]);
+    return (this as DelegateListRecordValue).value;
   }
 
   /**
@@ -170,70 +118,17 @@ export class RecordValue<T> {
    */
   public asScoringGroupArray(): ScoringGroup[] {
     this.validateType([RecordValueType.ScoringGroupList]);
-    return this.value.map(
-      (scoringGroup: any) =>
-        new ScoringGroup(
-          scoringGroup.listValueId,
-          scoringGroup.name,
-          scoringGroup.score,
-          scoringGroup.maximumScore
-        )
-    );
+    return (this as ScoringGroupListRecordValue).value;
   }
 
   /**
    * @method asTimeSpanData - Gets the value as a TimeSpanData object.
    * @returns {TimeSpanData} - The value as a TimeSpanData object.
    * @throws {Error} - If the value is not a TimeSpanData object.
-   * @throws {Error} - If the increment is not valid.
-   * @throws {Error} - If the recurrence is not valid.
    */
   public asTimeSpanData(): TimeSpanData {
     this.validateType([RecordValueType.TimeSpan]);
-
-    const increment = TimeSpanIncrement[this.value.increment];
-
-    const hasRecurrence =
-      this.value.recurrence !== null && this.value.recurrence !== undefined;
-
-    const recurrene = hasRecurrence
-      ? TimeSpanRecurrenceType[this.value.recurrence]
-      : null;
-
-    const hasEndAfterOccurrences =
-      this.value.endAfterOccurrences !== null &&
-      this.value.endAfterOccurrences !== undefined;
-
-    const endAfterOccurrences = hasEndAfterOccurrences
-      ? this.value.endAfterOccurrences
-      : null;
-
-    const hasEndByDate =
-      this.value.endByDate !== null && this.value.endByDate !== undefined;
-
-    const endByDate = hasEndByDate ? new Date(this.value.endByDate) : null;
-
-    if (increment === undefined) {
-      throw new Error(
-        `${this.value.increment as string} is not a valid TimeSpanIncrement.`
-      );
-    }
-
-    if (recurrene === undefined) {
-      throw new Error(
-        `${
-          this.value.recurrence as string
-        } is not a valid TimeSpanRecurrenceType.`
-      );
-    }
-
-    return new TimeSpanData(
-      this.value.quantity,
-      increment,
-      recurrene,
-      endAfterOccurrences,
-      endByDate
-    );
+    return (this as TimeSpanRecordValue).value;
   }
 
   /**

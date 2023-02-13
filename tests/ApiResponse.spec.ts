@@ -15,9 +15,6 @@ import { ReferenceField } from '../src/models/ReferenceField';
 import { Multiplicity } from '../src/enums/Multiplicity';
 import { ListField } from '../src/models/ListField';
 import { File } from '../src/models/File';
-import fs from 'fs';
-import { type AxiosResponse } from 'axios';
-import path from 'path';
 import { ListItemResponse } from '../src/models/ListItemResponse';
 import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
 import { Report } from '../src/models/Report';
@@ -26,6 +23,10 @@ import { Row } from '../src/models/Row';
 import { Record } from '../src/models/Record';
 import { RecordValue } from '../src/models/RecordValue';
 import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
+import { testFieldData } from './testData/testFieldData';
+import { type AxiosResponse } from 'axios';
+import path from 'path';
+import fs from 'fs';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -1142,36 +1143,172 @@ describe('ApiResponse', function () {
     });
 
     it('should return an ApiResponse<Record>', function () {
+      testFieldData.forEach((recordValue) => {
+        const mockResponseData = {
+          appId: 1,
+          recordId: 1,
+          fieldData: [recordValue],
+        };
+
+        const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+        const record = apiResponse.asRecordType();
+
+        expect(record).to.be.an.instanceof(ApiResponse<Record>);
+        expect(record.data).to.be.an.instanceof(Record);
+        expect(record.data).to.have.property('appId', 1);
+        expect(record.data).to.have.property('recordId', 1);
+        expect(record.data).to.have.property('fieldData').that.is.an('array');
+        expect(record.data).to.not.be.null;
+
+        if (record.data != null) {
+          record.data.fieldData.forEach((recordValue) => {
+            expect(recordValue).to.be.an.instanceof(RecordValue);
+            expect(recordValue).to.have.property('type');
+            expect(recordValue).to.have.property('fieldId');
+            expect(recordValue).to.have.property('value');
+          });
+        }
+      });
+    });
+
+    it('should throw an error if a record value contains an unknown type', function () {
       const mockResponseData = {
         appId: 1,
         recordId: 1,
         fieldData: [
           {
-            type: 'Text',
-            fieldId: 'field 1',
-            value: 'field value 1',
+            type: 'Unknown',
+            fieldId: 1,
+            value: 'value',
           },
         ],
       };
 
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
-      const record = apiResponse.asRecordType();
 
-      expect(record).to.be.an.instanceof(ApiResponse<Record>);
-      expect(record.data).to.be.an.instanceof(Record);
-      expect(record.data).to.have.property('appId', 1);
-      expect(record.data).to.have.property('recordId', 1);
-      expect(record.data).to.have.property('fieldData').that.is.an('array');
-      expect(record.data).to.not.be.null;
+      expect(() => {
+        apiResponse.asRecordType();
+      }).to.throw();
+    });
 
-      if (record.data != null) {
-        record.data.fieldData.forEach((recordValue) => {
-          expect(recordValue).to.be.an.instanceof(RecordValue);
-          expect(recordValue).to.have.property('type');
-          expect(recordValue).to.have.property('fieldId');
-          expect(recordValue).to.have.property('value');
-        });
-      }
+    it('should throw an error if a record value for a survey delegate field contains an unknown delegate type', function () {
+      const mockResponseData = {
+        appId: 1,
+        recordId: 1,
+        fieldData: [
+          {
+            type: 'ScoringGroupList',
+            fieldId: 12167,
+            value: [
+              {
+                delegateType: 'Unknown',
+                name: 'test_delegate',
+                emailAddress: 'test@test.com',
+                delegationType: 'AllPages',
+                pageIds: [],
+                answeredPageIds: [],
+                canReadOtherPages: false,
+                delegationDateTime: '2023-01-17T05:52:53.781Z',
+                delegationCompletedDateTime: '2023-01-17T05:53:12.617Z',
+                status: 'Pending',
+                isDeleted: false,
+                messagingDisplayText:
+                  'Delegate Name: test_delegate -- Delegate Completed On: 1/17/2023 5:53 AM',
+                guid: '00000000-0000-0000-0000-000000000000',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for an attachment field contains an unknown file storage site type', function () {
+      const mockResponseData = {
+        appId: 1,
+        recordId: 1,
+        fieldData: [
+          {
+            type: 'AttachmentList',
+            fieldId: 12888,
+            value: [
+              {
+                fileId: 1348,
+                fileName: 'onspring-api-playground.py',
+                notes: '',
+                storageLocation: 'Unknown',
+              },
+              {
+                fileId: 1349,
+                fileName: 'core_isolation_warning.png',
+                notes: '',
+                storageLocation: 'Internal',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown increment type', function () {
+      const mockResponseData = {
+        appId: 1,
+        recordId: 1,
+        fieldData: [
+          {
+            type: 'TimeSpan',
+            fieldId: 12893,
+            value: {
+              quantity: 10,
+              increment: 'Unknown',
+              recurrence: 'EndByDate',
+              endByDate: '2023-02-16T06:00:00Z',
+            },
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown recurrence type', function () {
+      const mockResponseData = {
+        appId: 1,
+        recordId: 1,
+        fieldData: [
+          {
+            type: 'TimeSpan',
+            fieldId: 12893,
+            value: {
+              quantity: 10,
+              increment: 'Days',
+              recurrence: 'Unknown',
+              endByDate: '2023-02-16T06:00:00Z',
+            },
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordType();
+      }).to.throw();
     });
   });
 
@@ -1203,24 +1340,12 @@ describe('ApiResponse', function () {
           {
             appId: 1,
             recordId: 1,
-            fieldData: [
-              {
-                type: 'Text',
-                fieldId: 'field 1',
-                value: 'field value 1',
-              },
-            ],
+            fieldData: testFieldData,
           },
           {
             appId: 2,
             recordId: 2,
-            fieldData: [
-              {
-                type: 'Text',
-                fieldId: 'field 1',
-                value: 'field value 1',
-              },
-            ],
+            fieldData: testFieldData,
           },
         ],
       };
@@ -1250,8 +1375,202 @@ describe('ApiResponse', function () {
       if (getPagedRecordsResponse.data != null) {
         getPagedRecordsResponse.data.items.forEach((record) => {
           expect(record).to.be.an.instanceof(Record);
+
+          expect(record).to.have.property('appId');
+          expect(record).to.have.property('recordId');
+          expect(record).to.have.property('fieldData').that.is.an('array');
+          expect(record).to.not.be.null;
+
+          if (record != null) {
+            record.fieldData.forEach((recordValue) => {
+              expect(recordValue).to.be.an.instanceof(RecordValue);
+              expect(recordValue).to.have.property('type');
+              expect(recordValue).to.have.property('fieldId');
+              expect(recordValue).to.have.property('value');
+            });
+          }
         });
       }
+    });
+
+    it('should throw an error if a record value contains an unknown type', function () {
+      const mockResponseData = {
+        pageSize: 1,
+        pageNumber: 1,
+        totalRecords: 1,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'Unknown',
+                fieldId: 1,
+                value: 'value',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asGetPagedRecordsResponseType();
+      }).to.throw();
+    });
+
+    it('should throw an error if a record value for a survey delegate field contains an unknown delegate type', function () {
+      const mockResponseData = {
+        pageSize: 1,
+        pageNumber: 1,
+        totalRecords: 1,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'ScoringGroupList',
+                fieldId: 12167,
+                value: [
+                  {
+                    delegateType: 'Unknown',
+                    name: 'test_delegate',
+                    emailAddress: 'test@test.com',
+                    delegationType: 'AllPages',
+                    pageIds: [],
+                    answeredPageIds: [],
+                    canReadOtherPages: false,
+                    delegationDateTime: '2023-01-17T05:52:53.781Z',
+                    delegationCompletedDateTime: '2023-01-17T05:53:12.617Z',
+                    status: 'Pending',
+                    isDeleted: false,
+                    messagingDisplayText:
+                      'Delegate Name: test_delegate -- Delegate Completed On: 1/17/2023 5:53 AM',
+                    guid: '00000000-0000-0000-0000-000000000000',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asGetPagedRecordsResponseType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for an attachment field contains an unknown file storage site type', function () {
+      const mockResponseData = {
+        pageSize: 1,
+        pageNumber: 1,
+        totalRecords: 1,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'AttachmentList',
+                fieldId: 12888,
+                value: [
+                  {
+                    fileId: 1348,
+                    fileName: 'onspring-api-playground.py',
+                    notes: '',
+                    storageLocation: 'Unknown',
+                  },
+                  {
+                    fileId: 1349,
+                    fileName: 'core_isolation_warning.png',
+                    notes: '',
+                    storageLocation: 'Internal',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asGetPagedRecordsResponseType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown increment type', function () {
+      const mockResponseData = {
+        pageSize: 1,
+        pageNumber: 1,
+        totalRecords: 1,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'TimeSpan',
+                fieldId: 12893,
+                value: {
+                  quantity: 10,
+                  increment: 'Unknown',
+                  recurrence: 'EndByDate',
+                  endByDate: '2023-02-16T06:00:00Z',
+                },
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asGetPagedRecordsResponseType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown recurrence type', function () {
+      const mockResponseData = {
+        pageSize: 1,
+        pageNumber: 1,
+        totalRecords: 1,
+        totalPages: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'TimeSpan',
+                fieldId: 12893,
+                value: {
+                  quantity: 10,
+                  increment: 'Days',
+                  recurrence: 'Unknown',
+                  endByDate: '2023-02-16T06:00:00Z',
+                },
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asGetPagedRecordsResponseType();
+      }).to.throw();
     });
   });
 
@@ -1275,13 +1594,7 @@ describe('ApiResponse', function () {
           {
             appId: 1,
             recordId: 1,
-            fieldData: [
-              {
-                type: 'Text',
-                fieldId: 'field 1',
-                value: 'field value 1',
-              },
-            ],
+            fieldData: testFieldData,
           },
         ],
       };
@@ -1321,6 +1634,171 @@ describe('ApiResponse', function () {
           }
         });
       }
+    });
+
+    it('should throw an error if a record value contains an unknown type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'Unknown',
+                fieldId: 1,
+                value: 'value',
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordCollectionType();
+      }).to.throw();
+    });
+
+    it('should throw an error if a record value for a survey delegate field contains an unknown delegate type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'ScoringGroupList',
+                fieldId: 12167,
+                value: [
+                  {
+                    delegateType: 'Unknown',
+                    name: 'test_delegate',
+                    emailAddress: 'test@test.com',
+                    delegationType: 'AllPages',
+                    pageIds: [],
+                    answeredPageIds: [],
+                    canReadOtherPages: false,
+                    delegationDateTime: '2023-01-17T05:52:53.781Z',
+                    delegationCompletedDateTime: '2023-01-17T05:53:12.617Z',
+                    status: 'Pending',
+                    isDeleted: false,
+                    messagingDisplayText:
+                      'Delegate Name: test_delegate -- Delegate Completed On: 1/17/2023 5:53 AM',
+                    guid: '00000000-0000-0000-0000-000000000000',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordCollectionType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for an attachment field contains an unknown file storage site type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'AttachmentList',
+                fieldId: 12888,
+                value: [
+                  {
+                    fileId: 1348,
+                    fileName: 'onspring-api-playground.py',
+                    notes: '',
+                    storageLocation: 'Unknown',
+                  },
+                  {
+                    fileId: 1349,
+                    fileName: 'core_isolation_warning.png',
+                    notes: '',
+                    storageLocation: 'Internal',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordCollectionType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown increment type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'TimeSpan',
+                fieldId: 12893,
+                value: {
+                  quantity: 10,
+                  increment: 'Unknown',
+                  recurrence: 'EndByDate',
+                  endByDate: '2023-02-16T06:00:00Z',
+                },
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordCollectionType();
+      }).to.throw();
+    });
+
+    it('should throw an error if record value for a timespan field contains an unknown recurrence type', function () {
+      const mockResponseData = {
+        count: 1,
+        items: [
+          {
+            appId: 1,
+            recordId: 1,
+            fieldData: [
+              {
+                type: 'TimeSpan',
+                fieldId: 12893,
+                value: {
+                  quantity: 10,
+                  increment: 'Days',
+                  recurrence: 'Unknown',
+                  endByDate: '2023-02-16T06:00:00Z',
+                },
+              },
+            ],
+          },
+        ],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+
+      expect(() => {
+        apiResponse.asRecordCollectionType();
+      }).to.throw();
     });
   });
 });

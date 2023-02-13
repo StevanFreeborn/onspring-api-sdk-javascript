@@ -2867,12 +2867,12 @@ describe('OnspringClient', function () {
             recordId: 1,
             fieldData: [
               {
-                type: 'Text',
+                type: 'String',
                 fieldId: 1,
                 value: 'Test',
               },
               {
-                type: 'Text',
+                type: 'String',
                 fieldId: 2,
                 value: 'Test',
               },
@@ -3047,12 +3047,12 @@ describe('OnspringClient', function () {
                 recordId: 1,
                 fieldData: [
                   {
-                    type: 'Text',
+                    type: 'String',
                     fieldId: 1,
                     value: 'Test',
                   },
                   {
-                    type: 'Text',
+                    type: 'String',
                     fieldId: 2,
                     value: 'Test',
                   },
@@ -3250,12 +3250,12 @@ describe('OnspringClient', function () {
                 recordId: 1,
                 fieldData: [
                   {
-                    type: 'text',
+                    type: 'String',
                     fieldId: 1,
                     value: 'Test',
                   },
                   {
-                    type: 'text',
+                    type: 'String',
                     fieldId: 2,
                     value: 'Test',
                   },
@@ -3450,12 +3450,12 @@ describe('OnspringClient', function () {
                 recordId: 1,
                 fieldData: [
                   {
-                    type: 'text',
+                    type: 'String',
                     fieldId: 1,
                     value: 'value',
                   },
                   {
-                    type: 'text',
+                    type: 'String',
                     fieldId: 2,
                     value: 'value',
                   },
