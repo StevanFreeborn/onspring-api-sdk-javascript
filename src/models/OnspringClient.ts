@@ -376,6 +376,11 @@ export class OnspringClient {
     return apiResponse.asRecordCollectionType();
   }
 
+  /**
+   * @method getRecordsByQuery - Gets records by a query.
+   * @param {GetRecordsByQueryRequest} request - The request that will be used to query for records.
+   * @returns {Promise<ApiResponse<GetPagedRecordsResponse>>} - A promise that resolves to an ApiResponse of type GetPagedRecordsResponse.
+   */
   public async queryRecords(
     request: QueryRecordsRequest
   ): Promise<ApiResponse<GetPagedRecordsResponse>> {
