@@ -6,6 +6,7 @@ const envPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: envPath });
 
 describe('getApps', function () {
+  this.timeout('5s');
   let baseURL;
   let apiKey;
 
@@ -66,5 +67,25 @@ describe('getApps', function () {
         });
       }
     }
+  });
+
+  it('should return a 400 response when an invalid page size is used', async function () {
+    const client = new OnspringClient(baseURL, apiKey);
+    const response = await client.getApps({ pageNumber: 1, pageSize: 1001 });
+
+    expect(response.statusCode).to.equal(400);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.not.be.null;
+    expect(response.data).to.be.null;
+  });
+
+  it('should return a 401 response when an invalid api key is used', async function () {
+    const client = new OnspringClient(baseURL, 'invalid');
+    const response = await client.getApps();
+
+    expect(response.statusCode).to.equal(401);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.be.undefined;
+    expect(response.data).to.be.null;
   });
 });

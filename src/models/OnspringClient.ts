@@ -1,4 +1,8 @@
-import axios from 'axios';
+import axios, {
+  type CreateAxiosDefaults,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from 'axios';
 import { PagingRequest } from './PagingRequest';
 import { ArgumentValidator } from './ArgumentValidator';
 import { EndpointFactory } from './EndpointFactory';
@@ -6,7 +10,6 @@ import { ApiResponseFactory } from './ApiResponseFactory';
 import { DataFormat } from '../enums/DataFormat';
 import { ReportDataType } from '../enums/ReportDataType';
 import { Record } from './Record';
-import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { type ApiResponse } from './ApiResponse';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { type App } from './App';
@@ -48,7 +51,8 @@ export class OnspringClient {
    */
   constructor(
     baseUrl: string | undefined | null,
-    apiKey: string | undefined | null
+    apiKey: string | undefined | null,
+    config: CreateAxiosDefaults = {}
   ) {
     if (ArgumentValidator.isValidUrl(baseUrl) === false || baseUrl === null) {
       throw new Error('baseUrl must be an absolute and well-formed URI.');
@@ -58,10 +62,19 @@ export class OnspringClient {
       throw new Error('apiKey cannot be null/empty/whitespace.');
     }
 
-    this._client = axios.create({
+    const configDefaults: CreateAxiosDefaults = {
       baseURL: baseUrl,
       headers: { 'x-apikey': apiKey, 'x-api-version': '2' },
-    });
+      validateStatus: null,
+    };
+
+    // allow user to specify their own config, but
+    // makes sure to override the baseURL, headers,
+    // and validateStatus properties with necessary
+    // default values
+    config = { ...config, ...configDefaults };
+
+    this._client = axios.create(config);
   }
 
   /**
