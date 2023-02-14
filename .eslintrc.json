@@ -13,7 +13,7 @@
   ],
   "overrides": [
     {
-      "files": ["tests/**/*.spec.ts"],
+      "files": ["tests/**/*.spec.ts", "integrationTests/**/*.spec.ts"],
       "rules": {
         "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/consistent-type-assertions": "off",
