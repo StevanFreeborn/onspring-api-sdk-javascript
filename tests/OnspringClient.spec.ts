@@ -116,6 +116,16 @@ describe('OnspringClient', function () {
     expect(new OnspringClient(baseUrl, apiKey)).to.have.property('_client');
   });
 
+  it('should create a new instance of an onspring client when passed an axios config object', function () {
+    const config = {
+      validateStatus: function (status) {
+        return status >= 200 && status < 300;
+      },
+    };
+
+    expect(() => new OnspringClient(baseUrl, apiKey, config)).to.not.throw();
+  });
+
   describe('canConnect', function () {
     it('should be defined', function () {
       expect(new OnspringClient(baseUrl, apiKey).canConnect).to.not.be

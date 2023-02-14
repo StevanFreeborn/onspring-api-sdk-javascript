@@ -63,16 +63,20 @@ export class OnspringClient {
     }
 
     const configDefaults: CreateAxiosDefaults = {
-      baseURL: baseUrl,
       headers: { 'x-apikey': apiKey, 'x-api-version': '2' },
       validateStatus: null,
     };
 
-    // allow user to specify their own config, but
-    // makes sure to override the baseURL, headers,
-    // and validateStatus properties with necessary
-    // default values
-    config = { ...config, ...configDefaults };
+    // always set baseUrl to the value passed to the constructor
+    config.baseURL = baseUrl;
+
+    // merge the config passed to the constructor with the default config
+    // to make sure the necessary api headers are set.
+    config.headers = { ...config.headers, ...configDefaults.headers } as any;
+
+    // only set validateStatus if it is not already set
+    config.validateStatus =
+      config.validateStatus ?? configDefaults.validateStatus;
 
     this._client = axios.create(config);
   }
