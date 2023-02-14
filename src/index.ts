@@ -1,3 +1,4 @@
 import { OnspringClient } from './models/OnspringClient';
+import { PagingRequest } from './models/PagingRequest';
 
-export { OnspringClient };
+export { OnspringClient, PagingRequest };
