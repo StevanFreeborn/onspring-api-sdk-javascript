@@ -13,7 +13,7 @@ export class Record {
   /**
    * @property {number} recordId - The id of the record.
    */
-  public recordId: number;
+  public recordId: number | null;
 
   /**
    * @property {RecordValue[]} fieldData - The data for the fields in the record.
@@ -29,7 +29,7 @@ export class Record {
    */
   constructor(
     appId: number,
-    recordId: number,
+    recordId: number | null,
     fieldData: Array<RecordValue<any>> = []
   ) {
     this.appId = appId;

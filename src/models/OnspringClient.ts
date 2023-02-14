@@ -5,6 +5,7 @@ import { EndpointFactory } from './EndpointFactory';
 import { ApiResponseFactory } from './ApiResponseFactory';
 import { DataFormat } from '../enums/DataFormat';
 import { ReportDataType } from '../enums/ReportDataType';
+import { Record } from './Record';
 import { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { type ApiResponse } from './ApiResponse';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
@@ -20,12 +21,13 @@ import { type ListItemResponse } from './ListItemResponse';
 import { type ListItemRequest } from './ListItemRequest';
 import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
 import { type ReportData } from './ReportData';
-import { type Record } from './Record';
 import { type GetRecordRequest } from './GetRecordRequest';
 import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest';
 import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse';
 import { type GetRecordsRequest } from './GetRecordsRequest';
 import { type QueryRecordsRequest } from './QueryRecordsRequest';
+import { type SaveRecordResponse } from './SaveRecordResponse';
+import { type SaveRecordRequest } from './SaveRecordRequest';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -395,6 +397,24 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedRecordsResponseType();
+  }
+
+  public async saveRecord(
+    request: Record | SaveRecordRequest
+  ): Promise<ApiResponse<SaveRecordResponse>> {
+    request =
+      request instanceof Record
+        ? request.convertToSaveRecordRequest()
+        : request;
+
+    const endpoint = EndpointFactory.getAddOrUpdateRecordEndpoint();
+    const apiResponse = await this.put<any>(endpoint, request);
+
+    if (apiResponse.isSuccessful === false) {
+      return apiResponse;
+    }
+
+    return apiResponse.asSaveRecordResponseType();
   }
 
   /**

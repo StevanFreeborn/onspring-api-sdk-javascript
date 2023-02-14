@@ -45,6 +45,7 @@ import { StringRecordValue } from './StringRecordValue';
 import { TimeSpanData } from './TimeSpanData';
 import { TimeSpanRecordValue } from './TimeSpanRecordValue';
 import { type RecordValue } from './RecordValue';
+import { SaveRecordResponse } from './SaveRecordResponse';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -428,6 +429,19 @@ export class ApiResponse<T> {
       apiResponse.statusCode,
       apiResponse.message,
       collectionResponse
+    );
+  }
+
+  public asSaveRecordResponseType(): ApiResponse<SaveRecordResponse> {
+    const apiResponse = this as ApiResponse<any>;
+    const response = new SaveRecordResponse(
+      apiResponse.data.id,
+      apiResponse.data.warnings
+    );
+    return new ApiResponse<SaveRecordResponse>(
+      apiResponse.statusCode,
+      apiResponse.message,
+      response
     );
   }
 

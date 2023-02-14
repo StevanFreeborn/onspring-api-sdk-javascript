@@ -27,6 +27,7 @@ import { testFieldData } from './testData/testFieldData';
 import { type AxiosResponse } from 'axios';
 import path from 'path';
 import fs from 'fs';
+import { SaveRecordResponse } from '../src/models/SaveRecordResponse';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -1799,6 +1800,45 @@ describe('ApiResponse', function () {
       expect(() => {
         apiResponse.asRecordCollectionType();
       }).to.throw();
+    });
+  });
+
+  describe('asSaveRecordResponseType', function () {
+    it('should be defined', function () {
+      expect(ApiResponse.prototype.asSaveRecordResponseType).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(ApiResponse.prototype.asSaveRecordResponseType).to.be.a(
+        'function'
+      );
+    });
+
+    it('should take no parameters', function () {
+      expect(ApiResponse.prototype.asSaveRecordResponseType).to.have.lengthOf(
+        0
+      );
+    });
+
+    it('should return a SaveRecordResponse', function () {
+      const mockResponseData = {
+        id: 1,
+        warnings: ['warning 1', 'warning 2'],
+      };
+
+      const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
+      const saveRecordResponse = apiResponse.asSaveRecordResponseType();
+
+      expect(saveRecordResponse).to.be.an.instanceof(
+        ApiResponse<SaveRecordResponse>
+      );
+      expect(saveRecordResponse.data).to.be.an.instanceof(SaveRecordResponse);
+      expect(saveRecordResponse.data).to.have.property('id', 1);
+      expect(saveRecordResponse.data)
+        .to.have.property('warnings')
+        .that.is.an('array')
+        .that.has.lengthOf(2);
     });
   });
 });
