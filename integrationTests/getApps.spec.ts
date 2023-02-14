@@ -6,10 +6,11 @@ const envPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: envPath });
 
 describe('getApps', function () {
-  const baseURL = 'https://api.onspring.com';
+  let baseURL;
   let apiKey;
 
   before(function () {
+    baseURL = process.env.API_BASE_URL;
     apiKey = process.env.SANDBOX_API_KEY;
   });
 
