@@ -44,7 +44,7 @@
     "test:integration": "mocha -r ts-node/register -r integrationTests/mochaRootHooks.ts",
     "tests:unit": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts",
     "tests:integration": "mocha -R progress -r ts-node/register -r integrationTests/mochaRootHooks.ts ./integrationTests/**/*.spec.ts",
-    "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts -r ts-node/register -r integrationTests/mochaRootHooks.ts ./integrationTests/**/*.spec.ts",
+    "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts && mocha -R progress -r ts-node/register -r integrationTests/mochaRootHooks.ts ./integrationTests/**/*.spec.ts",
     "test-coverage": "nyc npm run tests",
     "prepare": "husky install"
   },
