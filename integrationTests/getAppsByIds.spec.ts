@@ -1,20 +1,8 @@
 import { OnspringClient } from '../src/index';
 import { expect } from 'chai';
-import * as dotenv from 'dotenv';
-import path from 'path';
-const envPath = path.resolve(__dirname, '.env');
-dotenv.config({ path: envPath });
+import { baseURL, apiKey } from './mochaRootHooks';
 
 describe('getAppsByIds', function () {
-  this.timeout('30s');
-  let baseURL;
-  let apiKey;
-
-  before(function () {
-    baseURL = process.env.API_BASE_URL;
-    apiKey = process.env.SANDBOX_API_KEY;
-  });
-
   it('should return a collection of apps', async function () {
     const client = new OnspringClient(baseURL, apiKey);
     const appIds = process.env.TEST_APP_IDS;

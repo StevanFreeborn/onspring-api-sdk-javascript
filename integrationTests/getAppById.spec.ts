@@ -1,20 +1,8 @@
 import { OnspringClient } from '../src/index';
 import { expect } from 'chai';
-import * as dotenv from 'dotenv';
-import path from 'path';
-const envPath = path.resolve(__dirname, '.env');
-dotenv.config({ path: envPath });
+import { baseURL, apiKey } from './mochaRootHooks';
 
 describe('getAppById', function () {
-  this.timeout('30s');
-  let baseURL;
-  let apiKey;
-
-  before(function () {
-    baseURL = process.env.API_BASE_URL;
-    apiKey = process.env.SANDBOX_API_KEY;
-  });
-
   it('should return an app', async function () {
     const client = new OnspringClient(baseURL, apiKey);
 
@@ -69,7 +57,7 @@ describe('getAppById', function () {
 
     expect(response.statusCode).to.equal(404);
     expect(response.isSuccessful).to.be.false;
-    expect(response.message).to.not.be.undefined.and.not.be.null;
+    expect(response.message).to.be.undefined;
     expect(response.data).to.be.null;
   });
 });
