@@ -1,8 +1,11 @@
-import { OnspringClient, PagingRequest } from '../src/index';
+import { OnspringClient, PagingRequest } from '../../src/index';
 import { expect } from 'chai';
-import { baseURL, apiKey } from './mochaRootHooks';
+import { baseURL, apiKey } from '../mochaRootHooks';
 
 describe('getFieldsByAppId', function () {
+  this.timeout(30000);
+  this.retries(3);
+
   it('should return a paged list of fields', async function () {
     const client = new OnspringClient(baseURL, apiKey);
 

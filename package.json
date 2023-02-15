@@ -45,8 +45,7 @@
     "tests:unit": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts",
     "tests:integration": "mocha -R progress -r ts-node/register -r integrationTests/mochaRootHooks.ts ./integrationTests/**/*.spec.ts",
     "tests": "mocha -R progress -r ts-node/register ./tests/**/*.spec.ts -r ts-node/register -r integrationTests/mochaRootHooks.ts ./integrationTests/**/*.spec.ts",
-    "test-coverage": "nyc npm run tests:unit",
-    "test-coverage:ci": "nyc npm run tests",
+    "test-coverage": "nyc npm run tests",
     "prepare": "husky install"
   },
   "devDependencies": {

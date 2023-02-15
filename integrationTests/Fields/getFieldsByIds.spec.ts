@@ -1,8 +1,11 @@
-import { OnspringClient } from '../src/index';
+import { OnspringClient } from '../../src/index';
 import { expect } from 'chai';
-import { baseURL, apiKey } from './mochaRootHooks';
+import { baseURL, apiKey } from '../mochaRootHooks';
 
 describe('getFieldsByIds', function () {
+  this.timeout(30000);
+  this.retries(3);
+
   it('should return a collection of fields', async function () {
     const client = new OnspringClient(baseURL, apiKey);
 

@@ -1,4 +1,4 @@
-import { type Context } from 'mocha';
+import { type RootHookObject, type Context } from 'mocha';
 import { expect } from 'chai';
 import * as dotenv from 'dotenv';
 import path from 'path';
@@ -8,11 +8,9 @@ dotenv.config({ path: envPath });
 let baseURL: string | undefined;
 let apiKey: string | undefined;
 
-export const mochaHooks = (): Mocha.RootHookObject => {
+export const mochaHooks = (): RootHookObject => {
   return {
     beforeAll(this: Context) {
-      this.timeout('30s');
-
       baseURL = process.env.API_BASE_URL;
       apiKey = process.env.SANDBOX_API_KEY;
 
