@@ -5,7 +5,7 @@ import path from 'path';
 const envPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: envPath });
 
-describe('getApps', function () {
+describe('getFieldsByAppId', function () {
   this.timeout('30s');
   let baseURL;
   let apiKey;
@@ -15,9 +15,15 @@ describe('getApps', function () {
     apiKey = process.env.SANDBOX_API_KEY;
   });
 
-  it('should return a paged list of apps', async function () {
+  it('should return a paged list of fields', async function () {
     const client = new OnspringClient(baseURL, apiKey);
-    const response = await client.getApps();
+
+    if (process.env.TEST_SURVEY_ID === undefined) {
+      return expect.fail('TEST_SURVEY_ID is not defined');
+    }
+
+    const appId = parseInt(process.env.TEST_SURVEY_ID);
+    const response = await client.getFieldsByAppId(appId);
 
     expect(response.statusCode).to.equal(200);
     expect(response.isSuccessful).to.be.true;
@@ -36,15 +42,28 @@ describe('getApps', function () {
         response.data.items.forEach((item) => {
           expect(item.id).to.not.be.null;
           expect(item.name).to.not.be.null;
-          expect(item.href).to.not.be.null;
+          expect(item.appId).to.not.be.null;
+          expect(item.type).to.not.be.null;
+          expect(item.status).to.not.be.null;
+          expect(item.isRequired).to.not.be.null;
+          expect(item.isUnique).to.not.be.null;
         });
       }
     }
   });
 
-  it('should return a paged list of apps with with correct page size and number when passed paging request', async function () {
+  it('should return a paged list of fields with with correct page size and number when passed paging request', async function () {
     const client = new OnspringClient(baseURL, apiKey);
-    const response = await client.getApps(new PagingRequest(1, 1));
+
+    if (process.env.TEST_SURVEY_ID === undefined) {
+      return expect.fail('TEST_SURVEY_ID is not defined');
+    }
+
+    const appId = parseInt(process.env.TEST_SURVEY_ID);
+    const response = await client.getFieldsByAppId(
+      appId,
+      new PagingRequest(1, 1)
+    );
 
     expect(response.statusCode).to.equal(200);
     expect(response.isSuccessful).to.be.true;
@@ -63,7 +82,11 @@ describe('getApps', function () {
         response.data.items.forEach((item) => {
           expect(item.id).to.not.be.null;
           expect(item.name).to.not.be.null;
-          expect(item.href).to.not.be.null;
+          expect(item.appId).to.not.be.null;
+          expect(item.type).to.not.be.null;
+          expect(item.status).to.not.be.null;
+          expect(item.isRequired).to.not.be.null;
+          expect(item.isUnique).to.not.be.null;
         });
       }
     }
@@ -71,7 +94,16 @@ describe('getApps', function () {
 
   it('should return a 400 response when an invalid page size is used', async function () {
     const client = new OnspringClient(baseURL, apiKey);
-    const response = await client.getApps({ pageNumber: 1, pageSize: 1001 });
+
+    if (process.env.TEST_SURVEY_ID === undefined) {
+      return expect.fail('TEST_SURVEY_ID is not defined');
+    }
+
+    const appId = parseInt(process.env.TEST_SURVEY_ID);
+    const response = await client.getFieldsByAppId(appId, {
+      pageNumber: 1,
+      pageSize: 1001,
+    });
 
     expect(response.statusCode).to.equal(400);
     expect(response.isSuccessful).to.be.false;
@@ -81,11 +113,27 @@ describe('getApps', function () {
 
   it('should return a 401 response when an invalid api key is used', async function () {
     const client = new OnspringClient(baseURL, 'invalid');
-    const response = await client.getApps();
+    const response = await client.getFieldsByAppId(1);
 
     expect(response.statusCode).to.equal(401);
     expect(response.isSuccessful).to.be.false;
     expect(response.message).to.be.undefined;
+    expect(response.data).to.be.null;
+  });
+
+  it('should return a 403 response when api key does not have access to the app', async function () {
+    const client = new OnspringClient(baseURL, apiKey);
+
+    if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
+      return expect.fail('TEST_APP_ID_NO_ACCESS is not defined');
+    }
+
+    const appId = parseInt(process.env.TEST_APP_ID_NO_ACCESS);
+    const response = await client.getFieldsByAppId(appId);
+
+    expect(response.statusCode).to.equal(403);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.not.be.undefined.and.not.be.null;
     expect(response.data).to.be.null;
   });
 });

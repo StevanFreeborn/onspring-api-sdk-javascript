@@ -68,7 +68,7 @@ describe('getAppsByIds', function () {
 
     expect(response.statusCode).to.equal(403);
     expect(response.isSuccessful).to.be.false;
-    expect(response.message).to.not.be.null;
+    expect(response.message).to.not.be.undefined.and.not.be.null;
     expect(response.data).to.be.null;
   });
 });
