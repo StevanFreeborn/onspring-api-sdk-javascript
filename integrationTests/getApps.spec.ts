@@ -6,7 +6,7 @@ const envPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: envPath });
 
 describe('getApps', function () {
-  this.timeout('5s');
+  this.timeout('30s');
   let baseURL;
   let apiKey;
 
@@ -15,7 +15,7 @@ describe('getApps', function () {
     apiKey = process.env.SANDBOX_API_KEY;
   });
 
-  it('should return a list of apps', async function () {
+  it('should return a paged list of apps', async function () {
     const client = new OnspringClient(baseURL, apiKey);
     const response = await client.getApps();
 
@@ -42,7 +42,7 @@ describe('getApps', function () {
     }
   });
 
-  it('should return a list of apps with with correct page size and number when passed paging request', async function () {
+  it('should return a paged list of apps with with correct page size and number when passed paging request', async function () {
     const client = new OnspringClient(baseURL, apiKey);
     const response = await client.getApps(new PagingRequest(1, 1));
 
