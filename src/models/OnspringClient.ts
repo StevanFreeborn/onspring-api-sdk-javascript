@@ -252,7 +252,7 @@ export class OnspringClient {
       responseType: 'stream',
     });
 
-    const apiResponse = ApiResponseFactory.getApiResponse<any>(response);
+    const apiResponse = await ApiResponseFactory.getApiResponse<any>(response);
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -511,7 +511,7 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.get(endpoint, config);
-    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    const apiResponse = await ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
 
@@ -528,7 +528,7 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.post(endpoint, data, config);
-    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    const apiResponse = await ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
 
@@ -545,7 +545,7 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.put(endpoint, data, config);
-    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    const apiResponse = await ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
 
@@ -560,7 +560,7 @@ export class OnspringClient {
     config: AxiosRequestConfig = {}
   ): Promise<ApiResponse<T>> {
     const response = await this._client.delete(endpoint, config);
-    const apiResponse = ApiResponseFactory.getApiResponse<T>(response);
+    const apiResponse = await ApiResponseFactory.getApiResponse<T>(response);
     return apiResponse;
   }
 }

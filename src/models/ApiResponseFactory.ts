@@ -1,6 +1,7 @@
 import { type AxiosResponse } from 'axios';
 import { HttpStatusCode } from '../enums/HttpStatusCode';
 import { ApiResponse } from './ApiResponse';
+import { type Readable } from 'stream';
 
 /**
  * @class ApiResponseFactory - Factory class for creating ApiResponse objects
@@ -9,10 +10,12 @@ export class ApiResponseFactory {
   /**
    * @method getApiResponse - Creates an ApiResponse object from an AxiosResponse object
    * @param {AxiosResponse} response - The AxiosResponse object that will be used to create the ApiResponse object
-   * @returns {ApiResponse<T>} - An ApiResponse object of type T
+   * @returns {Promise<ApiResponse<T>>} - A promise that resolves to an ApiResponse object
    */
-  public static getApiResponse<T>(response: AxiosResponse): ApiResponse<T> {
-    const message = this.TryToGetMessage(response);
+  public static async getApiResponse<T>(
+    response: AxiosResponse
+  ): Promise<ApiResponse<T>> {
+    const message = await this.TryToGetMessage(response);
 
     if (this.isSuccessStatusCode(response.status) === true) {
       return new ApiResponse<T>(response.status, message, response.data);
@@ -24,22 +27,51 @@ export class ApiResponseFactory {
   /**
    * @method TryToGetMessage - Attempts to get the message from the response data
    * @param {AxiosResponse} response - The AxiosResponse object that will be used to get the message
-   * @returns {string} - The message from the response data
+   * @returns {Promise<string>} - A promise that resolves to the message
    */
-  private static TryToGetMessage(response: AxiosResponse): string {
+  private static async TryToGetMessage(
+    response: AxiosResponse
+  ): Promise<string> {
     if (
       response.status === HttpStatusCode.Unauthorized ||
       response.status === HttpStatusCode.Forbidden ||
       response.status === HttpStatusCode.NotFound
     ) {
+      if (response.config.responseType === 'stream') {
+        const dataString = await this.getStreamDataAsString(response.data);
+        const dataObject =
+          dataString.length > 0 ? JSON.parse(dataString) : '{}';
+        return dataObject.message;
+      }
+
       return response.data?.message;
     }
 
     if (this.isSuccessStatusCode(response.status) === false) {
+      if (response.config.responseType === 'stream') {
+        const data = response.data as Readable;
+        return await this.getStreamDataAsString(data);
+      }
+
       return JSON.stringify(response.data);
     }
 
     return '';
+  }
+
+  /**
+   *
+   */
+  private static async getStreamDataAsString(
+    stream: Readable
+  ): Promise<string> {
+    const chunks = [] as Buffer[];
+
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+    }
+
+    return Buffer.concat(chunks).toString('utf-8');
   }
 
   /**

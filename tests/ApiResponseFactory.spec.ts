@@ -16,7 +16,7 @@ describe('ApiResponseFactory', function () {
       expect(ApiResponseFactory.getApiResponse).to.have.lengthOf(1);
     });
 
-    it('should return an ApiResponse object when request is successful', function () {
+    it('should return an ApiResponse object when request is successful', async function () {
       const response: AxiosResponse = {
         data: null,
         status: 200,
@@ -25,7 +25,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -36,7 +36,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object without a message value when request is forbidden and the response does not contain a message property', function () {
+    it('should return an ApiResponse object without a message value when request is forbidden and the response does not contain a message property', async function () {
       const response: AxiosResponse = {
         data: null,
         status: 403,
@@ -45,7 +45,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -56,7 +56,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object when request is forbidden and the response contains a message property', function () {
+    it('should return an ApiResponse object when request is forbidden and the response contains a message property', async function () {
       const response: AxiosResponse = {
         data: {
           message: 'Does not have permission to access this resource.',
@@ -67,7 +67,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -80,7 +80,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object without a message value when request is not found and the response does not contain a message property', function () {
+    it('should return an ApiResponse object without a message value when request is not found and the response does not contain a message property', async function () {
       const response: AxiosResponse = {
         data: null,
         status: 404,
@@ -89,7 +89,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -100,7 +100,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object with a message value when request is not found and the response contains a message property', function () {
+    it('should return an ApiResponse object with a message value when request is not found and the response contains a message property', async function () {
       const response: AxiosResponse = {
         data: {
           message: 'Resource not found.',
@@ -111,7 +111,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -122,7 +122,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object without a message value when request is unauthorized and the response does not contain a message property', function () {
+    it('should return an ApiResponse object without a message value when request is unauthorized and the response does not contain a message property', async function () {
       const response: AxiosResponse = {
         data: null,
         status: 401,
@@ -131,7 +131,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -142,7 +142,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object with a message when request is unauthorized and the response contains a message property', function () {
+    it('should return an ApiResponse object with a message when request is unauthorized and the response contains a message property', async function () {
       const response: AxiosResponse = {
         data: {
           message: 'Unauthorized.',
@@ -153,7 +153,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
@@ -164,7 +164,7 @@ describe('ApiResponseFactory', function () {
       expect(apiResponse.data).to.equal(null);
     });
 
-    it('should return an ApiResponse object with a message when request is a bad request', function () {
+    it('should return an ApiResponse object with a message when request is a bad request', async function () {
       const response: AxiosResponse = {
         data: {
           field: 'Invalid input.',
@@ -175,7 +175,7 @@ describe('ApiResponseFactory', function () {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      const apiResponse = ApiResponseFactory.getApiResponse(response);
+      const apiResponse = await ApiResponseFactory.getApiResponse(response);
 
       expect(apiResponse).to.not.be.undefined;
       expect(apiResponse).to.have.property('statusCode');
