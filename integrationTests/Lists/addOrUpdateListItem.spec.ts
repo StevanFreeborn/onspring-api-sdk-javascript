@@ -92,13 +92,61 @@ describe('addOrUpdateListItem', function () {
     expect(updateResponse.data).to.not.be.null;
   });
 
-  // it('should return a 401 error when an invalid api key is used', async function () {});
+  it('should return a 401 error when an invalid api key is used', async function () {
+    const client = new OnspringClient(baseURL, 'invalid');
+    const request = new ListItemRequest(1, null, 'test', 1, '#000000');
+    const response = await client.addOrUpdateListItem(request);
 
-  // it('should return a 403 error when api key does not have access to the list', async function () {});
+    expect(response.statusCode).to.equal(401);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.be.undefined;
+    expect(response.data).to.be.null;
+  });
 
-  // it('should return a 404 error when the list does not exist', async function () {});
+  it('should return a 403 error when api key does not have access to the list', async function () {
+    const client = new OnspringClient(baseURL, apiKey);
+    const request = new ListItemRequest(1, null, 'test', 1, '#000000');
+    const response = await client.addOrUpdateListItem(request);
 
-  // it('should return a 404 error when the list item does not exist', async function () {});
+    expect(response.statusCode).to.equal(403);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.not.be.null.and.not.be.undefined;
+    expect(response.data).to.be.null;
+  });
+
+  it('should return a 404 error when the list does not exist', async function () {
+    const client = new OnspringClient(baseURL, apiKey);
+    const request = new ListItemRequest(0, null, 'test', 1, '#000000');
+    const response = await client.addOrUpdateListItem(request);
+
+    expect(response.statusCode).to.equal(404);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.not.be.null.and.not.be.undefined;
+    expect(response.data).to.be.null;
+  });
+
+  it('should return a 404 error when the list item does not exist', async function () {
+    const client = new OnspringClient(baseURL, apiKey);
+
+    if (process.env.TEST_LIST_ID === undefined) {
+      expect.fail('TEST_LIST_ID is not defined');
+    }
+
+    const request = new ListItemRequest(
+      parseInt(process.env.TEST_LIST_ID),
+      '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      'test',
+      1,
+      '#000000'
+    );
+
+    const response = await client.addOrUpdateListItem(request);
+
+    expect(response.statusCode).to.equal(404);
+    expect(response.isSuccessful).to.be.false;
+    expect(response.message).to.not.be.null.and.not.be.undefined;
+    expect(response.data).to.be.null;
+  });
 });
 
 async function deleteListItem(listItemIds: string): Promise<void> {
