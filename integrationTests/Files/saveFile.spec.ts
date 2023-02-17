@@ -1,4 +1,4 @@
-import { OnspringClient, SaveFileRequest } from '../../src/index';
+import { OnspringClient, SaveFileRequest } from '../../src';
 import { expect } from 'chai';
 import { baseURL, apiKey } from '../mochaRootHooks';
 import fs from 'fs';

@@ -1,4 +1,4 @@
-import { OnspringClient, PagingRequest } from '../../src/index';
+import { OnspringClient, PagingRequest } from '../../src';
 import { expect } from 'chai';
 import { baseURL, apiKey } from '../mochaRootHooks';
 
