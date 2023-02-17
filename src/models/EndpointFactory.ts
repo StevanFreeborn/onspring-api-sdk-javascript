@@ -88,7 +88,7 @@ export class EndpointFactory {
     fieldId: number,
     fileId: number
   ): string {
-    return `/Files/recordId/${recordId}/fieldId/${fieldId}/fileId/${fileId}/file`;
+    return `/Files/recordId/${recordId}/fieldId/${fieldId}/fileId/${fileId}`;
   }
 
   /**

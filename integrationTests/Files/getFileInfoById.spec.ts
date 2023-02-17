@@ -153,7 +153,7 @@ describe('getFileInfoById', function () {
     const client = new OnspringClient(baseURL, apiKey);
 
     if (process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP === undefined) {
-      expect.fail('EST_ATTACHMENT_FIELD_NO_ACCESS_APP is not defined');
+      expect.fail('TEST_ATTACHMENT_FIELD_NO_ACCESS_APP is not defined');
     }
 
     const fieldId = parseInt(process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP);

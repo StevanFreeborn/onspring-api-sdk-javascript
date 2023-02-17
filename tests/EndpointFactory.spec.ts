@@ -61,7 +61,7 @@ describe('EndpointFactory', function () {
   describe('getDeleteFileByIdEndpoint', function () {
     it('should return the correct delete file endpoint', function () {
       const result = EndpointFactory.getDeleteFileByIdEndpoint(1, 2, 3);
-      expect(result).to.equal('/Files/recordId/1/fieldId/2/fileId/3/file');
+      expect(result).to.equal('/Files/recordId/1/fieldId/2/fileId/3');
     });
   });
 
