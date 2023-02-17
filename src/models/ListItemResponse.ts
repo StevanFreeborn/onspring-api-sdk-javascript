@@ -1,15 +1,14 @@
 import { CreatedWithIdResponse } from './CreatedWithIdResponse';
-
 /**
  * @class ListItemResponse - Represents a respons when a list item is created or updated.
  */
-export class ListItemResponse extends CreatedWithIdResponse {
+export class ListItemResponse extends CreatedWithIdResponse<string> {
   /**
    * @constructor - Creates a new instance of ListItemResponse.
-   * @param {number} id - The id of the list item.
+   * @param {string} id - The id of the list item.
    * @returns {ListItemResponse} - A new instance of ListItemResponse.
    */
-  constructor(id: number) {
+  constructor(id: string) {
     super(id);
   }
 }

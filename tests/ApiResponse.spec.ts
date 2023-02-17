@@ -780,7 +780,7 @@ describe('ApiResponse', function () {
       const createdWithIdResponse = apiResponse.asCreatedWithIdResponseType();
 
       expect(createdWithIdResponse).to.be.instanceOf(
-        ApiResponse<CreatedWithIdResponse>
+        ApiResponse<CreatedWithIdResponse<any>>
       );
       expect(createdWithIdResponse.data).to.be.instanceOf(
         CreatedWithIdResponse

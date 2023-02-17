@@ -1,15 +1,15 @@
-export class CreatedWithIdResponse {
+export class CreatedWithIdResponse<T> {
   /**
-   * @property {number} id - The id of the created object.
+   * @property {T} id - The id of the created object.
    */
-  public id: number;
+  public id: T;
 
   /**
    * @constructor - Creates a new instance of the CreatedWithIdResponse class.
    * @param id - The id of the created object.
-   * @returns {CreatedWithIdResponse} - A new instance of the CreatedWithIdResponse class.
+   * @returns {CreatedWithIdResponse<T>} - A new instance of the CreatedWithIdResponse class.
    */
-  constructor(id: number) {
+  constructor(id: T) {
     this.id = id;
   }
 }

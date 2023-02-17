@@ -12,7 +12,7 @@ describe('ListItemResponse', function () {
   });
 
   it('should have a constructor that takes an id and sets the id property', function () {
-    const id = 1;
+    const id = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
     const listItemResponse = new ListItemResponse(id);
     expect(listItemResponse).to.have.property('id', id);
   });

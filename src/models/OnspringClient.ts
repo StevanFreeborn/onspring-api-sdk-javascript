@@ -264,11 +264,11 @@ export class OnspringClient {
   /**
    * @method saveFile - Saves a file to a record in Onspring.
    * @param {SaveFileRequest} request - The request that will be used to save the file.
-   * @returns {Promise<ApiResponse<CreatedWithIdResponse>>} - A promise that resolves to an ApiResponse of type CreatedWithIdResponse.
+   * @returns {Promise<ApiResponse<CreatedWithIdResponse<number>>>} - A promise that resolves to an ApiResponse of type CreatedWithIdResponse.
    */
   public async saveFile(
     request: SaveFileRequest
-  ): Promise<ApiResponse<CreatedWithIdResponse>> {
+  ): Promise<ApiResponse<CreatedWithIdResponse<number>>> {
     const endpoint = EndpointFactory.getSaveFileEndpoint();
     const formData = request.asFormData();
     const apiResponse = await this.post<any>(endpoint, formData, {
@@ -279,7 +279,7 @@ export class OnspringClient {
       return apiResponse;
     }
 
-    return apiResponse.asCreatedWithIdResponseType();
+    return apiResponse.asCreatedWithIdResponseType<number>();
   }
 
   public async deleteFileById(

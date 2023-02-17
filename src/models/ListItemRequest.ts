@@ -8,9 +8,9 @@ export class ListItemRequest {
   public listId: number;
 
   /**
-   * @property {string} id - The id for the list item.
+   * @property {string | null} id - The id for the list item.
    */
-  public id: string;
+  public id: string | null;
 
   /**
    * @property {string} name - The name of the list item.
@@ -18,30 +18,30 @@ export class ListItemRequest {
   public name: string;
 
   /**
-   * @property {number} numericValue - The numeric value of the list item.
+   * @property {number | null} numericValue - The numeric value of the list item.
    */
-  public numericValue: number;
+  public numericValue: number | null;
 
   /**
-   * @property {string} color - The color of the list item.
+   * @property {string | null} color - The color of the list item.
    */
-  public color: string;
+  public color: string | null;
 
   /**
    * @constructor - Creates a new instance of the ListItemRequest class.
    * @param {number} listId - The id for the list that the item belongs to.
-   * @param {string} id - The id for the list item.
+   * @param {string | null} id - The id for the list item.
    * @param {string} name - The name of the list item.
-   * @param {number} numericValue - The numeric value of the list item.
-   * @param {string} color - The color of the list item.
+   * @param {number | null} numericValue - The numeric value of the list item.
+   * @param {string | null} color - The color of the list item.
    * @returns {ListItemRequest} - A new instance of the ListItemRequest class.
    */
   constructor(
     listId: number,
-    id: string,
+    id: string | null,
     name: string,
-    numericValue: number,
-    color: string
+    numericValue: number | null,
+    color: string | null
   ) {
     this.listId = listId;
     this.id = id;
