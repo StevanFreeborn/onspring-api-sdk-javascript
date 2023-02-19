@@ -25,4 +25,12 @@ export class SaveRecordRequest {
     this.recordId = recordId;
     this.fields = fields;
   }
+
+  public toJSON(): any {
+    return {
+      appId: this.appId,
+      recordId: this.recordId,
+      fields: Object.fromEntries(this.fields),
+    };
+  }
 }

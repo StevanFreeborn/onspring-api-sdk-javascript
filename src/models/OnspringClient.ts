@@ -425,7 +425,7 @@ export class OnspringClient {
         : request;
 
     const endpoint = EndpointFactory.getAddOrUpdateRecordEndpoint();
-    const apiResponse = await this.put<any>(endpoint, request);
+    const apiResponse = await this.put<any>(endpoint, request.toJSON());
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;

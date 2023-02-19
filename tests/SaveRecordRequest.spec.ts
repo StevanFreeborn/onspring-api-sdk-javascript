@@ -54,4 +54,54 @@ describe('SaveRecordRequest', function () {
     expect(saveRecordRequest.fields).to.not.be.null.and.not.be.undefined;
     expect(saveRecordRequest.fields).to.have.lengthOf(2);
   });
+
+  describe('toJSON', function () {
+    it('should be defined', function () {
+      expect(SaveRecordRequest.prototype.toJSON).to.not.be.undefined;
+    });
+
+    it('should return an object', function () {
+      expect(new SaveRecordRequest(1).toJSON()).to.be.an('object');
+    });
+
+    it('should return an object with an appId property', function () {
+      expect(new SaveRecordRequest(1).toJSON()).to.have.property('appId');
+    });
+
+    it('should return an object with a recordId property', function () {
+      expect(new SaveRecordRequest(1).toJSON()).to.have.property('recordId');
+    });
+
+    it('should return an object with a fields property', function () {
+      expect(new SaveRecordRequest(1).toJSON()).to.have.property('fields');
+    });
+
+    it('should return an object with an appId property that is equal to the value of the appId property', function () {
+      expect(new SaveRecordRequest(1).toJSON()).to.have.property('appId', 1);
+    });
+
+    it('should return an object with a recordId property that is equal to the value of the recordId property', function () {
+      expect(new SaveRecordRequest(1, 2).toJSON()).to.have.property(
+        'recordId',
+        2
+      );
+    });
+
+    it('should return an object with a fields property that is equal to the value of the fields property', function () {
+      const map = new Map([
+        [1, 'test'],
+        [2, 'test'],
+      ]);
+
+      const obj = {
+        1: 'test',
+        2: 'test',
+      };
+
+      const saveRecordRequest = new SaveRecordRequest(1, 2, map);
+      const json = saveRecordRequest.toJSON();
+
+      expect(json.fields).to.deep.equal(obj);
+    });
+  });
 });
