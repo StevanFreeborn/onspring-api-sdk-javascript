@@ -1,6 +1,6 @@
 name: lint_test_format
 on:
-  - workflow_dispatch: {}
+  workflow_dispatch:
 jobs:
   lint:
     name: lint
