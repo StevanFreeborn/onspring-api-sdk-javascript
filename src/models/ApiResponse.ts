@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 import { DelegateType } from '../enums/DelegateType';
 import { FieldStatus } from '../enums/FieldStatus';
 import { FieldType } from '../enums/FieldType';
