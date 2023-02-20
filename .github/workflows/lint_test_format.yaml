@@ -31,9 +31,11 @@ jobs:
           commit: --no-verify
           message: 'fix: resolve linter errors'
           committer_name: GitHub Actions
-          committer_email: actions@github.com
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
   format:
     needs: lint
+    if: ${{ needs.lint.outputs.committed == false }}
     name: format
     runs-on: ubuntu-latest
     steps:
@@ -68,7 +70,7 @@ jobs:
         run: echo ${{ needs.format.outputs.committed }}
   test:
     needs: format
-    if: needs.format.outputs.committed == false
+    if: ${{ needs.format.outputs.committed == false }}
     name: test
     runs-on: ubuntu-latest
     strategy:
