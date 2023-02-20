@@ -32,18 +32,42 @@ jobs:
           message: 'fix: resolve linter errors'
           committer_name: GitHub Actions
           committer_email: actions@github.com
+  format:
+    needs: lint
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACTIONS_PAT }}
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: npm install
+      - name: Run format
+        run: npm run format
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          commit: --no-verify
+          message: 'fix: resolve formatting errors'
+          committer_name: GitHub Actions
+          committer_email: actions@github.com
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
   experiment:
-    needs: lint
+    needs: format
     name: experiment
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo needs.lint.outputs.committed 
+        run: echo ${{ needs.format.outputs.committed }}
   test:
-    needs: lint
-    if: needs.lint.outputs.committed == false
+    needs: format
+    if: ${{ needs.format.outputs.committed }} == false
     name: test
     runs-on: ubuntu-latest
     strategy:
@@ -98,27 +122,3 @@ jobs:
     steps:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
-  format:
-    needs: publish_test_coverage
-    name: format
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.ACTIONS_PAT }}
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-      - name: Install dependencies
-        run: npm install
-      - name: Run format
-        run: npm run format
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          commit: --no-verify
-          message: 'fix: resolve formatting errors'
-          committer_name: GitHub Actions
-          committer_email: actions@github.com
