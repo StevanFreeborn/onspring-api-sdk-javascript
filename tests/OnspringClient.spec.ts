@@ -3769,6 +3769,148 @@ describe('OnspringClient', function () {
     });
   });
 
+  describe('deleteRecordsByIds', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.deleteRecordsByIds).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.deleteRecordsByIds).to.be.a('function');
+    });
+
+    it('should return a promise', function () {
+      expect(
+        new OnspringClient(baseUrl, apiKey).deleteRecordsByIds(1, [1])
+      ).to.be.instanceOf(Promise);
+    });
+
+    it('should return a promise that resolves to an api response when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 204,
+          statusText: 'No Content',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.deleteRecordsByIds(1, [1]);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 204);
+      expect(result).to.have.property('isSuccessful', true);
+      expect(result).to.have.property('message', '');
+      expect(result).to.have.property('data', undefined);
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 400 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 400,
+          statusText: 'Bad Request',
+          data: { message: 'Bad Request' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.deleteRecordsByIds(1, []);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 400);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', '{"message":"Bad Request"}');
+      expect(result).to.have.property('data', null);
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 401 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.deleteRecordsByIds(1, [1]);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 401);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', undefined);
+      expect(result).to.have.property('data', null);
+    });
+
+    it('should return a promise that resolves to an api response when request receives a 403 response', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').returns(
+        Promise.resolve({
+          status: 403,
+          statusText: 'Forbidden',
+          data: { message: 'Forbidden' },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const result = await client.deleteRecordsByIds(1, [1]);
+
+      expect(result).to.be.instanceOf(ApiResponse);
+      expect(result).to.have.property('statusCode', 403);
+      expect(result).to.have.property('isSuccessful', false);
+      expect(result).to.have.property('message', 'Forbidden');
+      expect(result).to.have.property('data', null);
+    });
+  });
+
   describe('saveRecord', function () {
     it('should be defined', function () {
       expect(OnspringClient.prototype.saveRecord).to.not.be.undefined;
