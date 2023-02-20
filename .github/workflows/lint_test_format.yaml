@@ -41,7 +41,7 @@ jobs:
         run: npm run test-coverage
         env:
           API_BASE_URL: ${{ vars.API_BASE_URL }}
-          SANDBOX_API_KEY: ${{ vars.SANDBOX_API_KEY }}
+          SANDBOX_API_KEY: ${{ secrets.SANDBOX_API_KEY }}
           TEST_APP_ID: ${{ vars.TEST_APP_ID }}
           TEST_APP_IDS: ${{ vars.TEST_APP_IDS }}
           TEST_APP_IDS_NO_ACCESS: ${{ vars.TEST_APP_IDS_NO_ACCESS }}
@@ -69,3 +69,5 @@ jobs:
           TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
           TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
