@@ -1,6 +1,6 @@
 {
   "name": "onspring-api-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A javascript SDK for interacting with version 2 of the Onspring API.",
   "keywords": [
     "onspring",
