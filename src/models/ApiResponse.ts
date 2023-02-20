@@ -1,4 +1,4 @@
-import { type AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { DelegateType } from '../enums/DelegateType';
 import { FieldStatus } from '../enums/FieldStatus';
 import { FieldType } from '../enums/FieldType';
@@ -92,17 +92,17 @@ export class ApiResponse<T> {
   public asGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
-    const apps = apiResponse.data.items.map((item: any) => {
-      return new App(item.href, item.id, item.name);
-    });
+const apps = apiResponse.data.items.map((item: any) => {
+  return new App(item.href, item.id, item.name);
+});
 
-    const getAppsPagedResponse = new GetPagedAppsResponse(
-      apps,
-      apiResponse.data.pageNumber,
-      apiResponse.data.pageSize,
-      apiResponse.data.totalPages,
-      apiResponse.data.totalRecords
-    );
+const getAppsPagedResponse = new GetPagedAppsResponse(
+  apps,
+  apiResponse.data.pageNumber,
+  apiResponse.data.pageSize,
+  apiResponse.data.totalPages,
+  apiResponse.data.totalRecords
+);
 
     return new ApiResponse<GetPagedAppsResponse>(
       apiResponse.statusCode,
