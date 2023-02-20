@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-      - run: echo needs.lint.outputs.committed 
+        run: echo needs.lint.outputs.committed 
   test:
     needs: lint
     if: needs.lint.outputs.committed == false
