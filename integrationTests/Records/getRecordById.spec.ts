@@ -55,13 +55,13 @@ describe('getRecordById', function () {
       expect.fail('TEST_SURVEY_RECORD_ID is not defined');
     }
 
-    if (process.env.TEST_FIELD_ID === undefined) {
-      expect.fail('TEST_FIELD_ID is not defined');
+    if (process.env.TEST_TEXT_FIELD === undefined) {
+      expect.fail('TEST_TEXT_FIELD is not defined');
     }
 
     const appId = parseInt(process.env.TEST_SURVEY_ID);
     const recordId = parseInt(process.env.TEST_SURVEY_RECORD_ID);
-    const fieldId = parseInt(process.env.TEST_FIELD_ID);
+    const fieldId = parseInt(process.env.TEST_TEXT_FIELD);
     const request = new GetRecordRequest(
       appId,
       recordId,

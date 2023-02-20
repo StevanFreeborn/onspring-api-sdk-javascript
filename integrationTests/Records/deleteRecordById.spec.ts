@@ -10,13 +10,13 @@ describe('deleteRecordById', function () {
   it('should delete a record', async function () {
     const client = new OnspringClient(baseURL, apiKey);
 
-    if (process.env.TEST_APP_ID === undefined) {
-      expect.fail('TEST_APP_ID is not defined');
+    if (process.env.TEST_SURVEY_ID === undefined) {
+      expect.fail('TEST_SURVEY_ID is not defined');
     }
 
     const recordId = await addRecord();
     const response = await client.deleteRecordById(
-      parseInt(process.env.TEST_APP_ID),
+      parseInt(process.env.TEST_SURVEY_ID),
       recordId
     );
 
@@ -76,15 +76,15 @@ describe('deleteRecordById', function () {
 async function addRecord(): Promise<number> {
   const client = new OnspringClient(baseURL, apiKey);
 
-  if (process.env.TEST_APP_ID === undefined) {
-    expect.fail('TEST_APP_ID is not defined');
+  if (process.env.TEST_SURVEY_ID === undefined) {
+    expect.fail('TEST_SURVEY_ID is not defined');
   }
 
   if (process.env.TEST_TEXT_FIELD === undefined) {
     expect.fail('TEST_TEXT_FIELD is not defined');
   }
 
-  const request = new Record(parseInt(process.env.TEST_APP_ID), null);
+  const request = new Record(parseInt(process.env.TEST_SURVEY_ID), null);
 
   request.addValue(
     new StringRecordValue(parseInt(process.env.TEST_TEXT_FIELD), 'test')
