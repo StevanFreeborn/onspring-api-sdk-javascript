@@ -2,8 +2,27 @@ name: lint_test_format
 on:
   workflow_dispatch:
 jobs:
-  lint:
-    name: lint
+  # lint:
+  #   name: lint
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [14.x, 16.x, 18.x]
+  #   steps:
+  #     - name: Check out repository
+  #       uses: actions/checkout@v3
+  #     - name: Setup node ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - name: Install dependencies
+  #       run: npm install
+  #     - name: Run lint-fix
+  #       run: npm run lint-fix
+  #     - name: Commit changes
+  #       uses: EndBug/add-and-commit@v9
+  test:
+    name: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,7 +36,35 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
-      - name: Run lint-fix
-        run: npm run lint-fix
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+      - name: Run test-coverage and tests
+        run: npm run test-coverage
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+          SANDBOX_API_KEY: ${{ vars.SANDBOX_API_KEY }}
+          TEST_APP_ID: ${{ vars.TEST_APP_ID }}
+          TEST_APP_IDS: ${{ vars.TEST_APP_IDS }}
+          TEST_APP_IDS_NO_ACCESS: ${{ vars.TEST_APP_IDS_NO_ACCESS }}
+          TEST_APP_ID_NO_ACCESS: ${{ vars.TEST_APP_ID_NO_ACCESS }}
+          TEST_ATTACHMENT: ${{ vars.TEST_ATTACHMENT }}
+          TEST_ATTACHMENT_FIELD: ${{ vars.TEST_ATTACHMENT_FIELD }}
+          TEST_ATTACHMENT_FIELD_NO_ACCESS_APP: ${{ vars.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP }}
+          TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD: ${{ vars.TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD }}
+          TEST_FIELD_ID: ${{ vars.TEST_FIELD_ID }}
+          TEST_FIELD_IDS: ${{ vars.TEST_FIELD_IDS }}
+          TEST_FIELD_IDS_NO_ACCESS: ${{ vars.TEST_FIELD_IDS_NO_ACCESS }}
+          TEST_FIELD_ID_NO_ACCESS: ${{ vars.TEST_FIELD_ID_NO_ACCESS }}
+          TEST_IMAGE: ${{ vars.TEST_IMAGE }}
+          TEST_IMAGE_FIELD: ${{ vars.TEST_IMAGE_FIELD }}
+          TEST_LIST_FIELD: ${{ vars.TEST_LIST_FIELD }}
+          TEST_LIST_FIELD_NO_ACCESS: ${{ vars.TEST_LIST_FIELD_NO_ACCESS }}
+          TEST_LIST_ID: ${{ vars.TEST_LIST_ID }}
+          TEST_LIST_ID_NO_ACCESS: ${{ vars.TEST_LIST_ID_NO_ACCESS }}
+          TEST_LIST_ITEM_ID_NO_ACCESS: ${{ vars.TEST_LIST_ITEM_ID_NO_ACCESS }}
+          TEST_RECORD: ${{ vars.TEST_RECORD }}
+          TEST_REPORT: ${{ vars.TEST_REPORT }}
+          TEST_REPORT_NO_ACCESS: ${{ vars.TEST_REPORT_NO_ACCESS }}
+          TEST_REPORT_WITH_CHART_DATA: ${{ vars.TEST_REPORT_WITH_CHART_DATA }}
+          TEST_SURVEY_AUTO_NUMBER_FIELD: ${{ vars.TEST_SURVEY_AUTO_NUMBER_FIELD }}
+          TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
+          TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
+          TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
