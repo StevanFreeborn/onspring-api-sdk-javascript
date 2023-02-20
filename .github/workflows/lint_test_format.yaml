@@ -50,6 +50,7 @@ jobs:
       - name: Run format
         run: npm run format
       - name: Commit changes
+        id: commit
         uses: EndBug/add-and-commit@v9
         with:
           commit: --no-verify
