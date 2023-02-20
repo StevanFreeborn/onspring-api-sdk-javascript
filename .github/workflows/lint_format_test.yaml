@@ -1,4 +1,4 @@
-name: lint_test_format
+name: lint_format_test
 on:
   workflow_dispatch:
   push:
