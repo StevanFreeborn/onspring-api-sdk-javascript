@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build package
-        run: npm build
+        run: npm run build
       - name: Upload build artificat
         uses: actions/upload-artifact@v3.1.2
         with:
