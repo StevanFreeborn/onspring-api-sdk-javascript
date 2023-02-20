@@ -5,23 +5,23 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Setup node ${{ matrix.node-version }}
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18.x
       - name: Install dependencies
         run: npm install
       - name: Run lint-fix
         run: npm run lint-fix
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
+        with:
+          commit: --no-verify
   test:
+    needs: lint
     name: test
     runs-on: ubuntu-latest
     strategy:
