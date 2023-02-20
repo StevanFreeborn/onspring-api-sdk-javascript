@@ -1250,7 +1250,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
       expect(client.saveFile(saveFileRequest)).to.be.instanceOf(Promise);
     });
@@ -1287,7 +1291,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
@@ -1333,7 +1341,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
@@ -1378,7 +1390,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
@@ -1423,7 +1439,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
@@ -1469,7 +1489,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
@@ -1510,7 +1534,11 @@ describe('OnspringClient', function () {
         new Date(),
         'file name',
         'content type',
-        new Readable()
+        new Readable({
+          read() {
+            return null;
+          },
+        })
       );
 
       const result = await client.saveFile(saveFileRequest);
