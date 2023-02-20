@@ -9,7 +9,6 @@ on:
       - master
 jobs:
   lint:
-    id: lint
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -36,9 +35,8 @@ jobs:
     outputs:
       committed: ${{ steps.commit.committed }}
   test:
-    if: ${{ jobs.lint.outputs.committed == false }}
     needs: lint
-    id: test
+    if: ${{ needs.lint.outputs.committed == false }}
     name: test
     runs-on: ubuntu-latest
     strategy:
@@ -88,7 +86,6 @@ jobs:
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
   publish_test_coverage:
     needs: test
-    id: publish_test_coverage
     name: publish_test_coverage
     runs-on: ubuntu-latest
     steps:
