@@ -70,6 +70,8 @@ jobs:
           TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
   publish_test_coverage:
+    name: publish_test_coverage
+    runs-on: ubuntu-latest
     steps:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
