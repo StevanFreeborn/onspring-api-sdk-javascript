@@ -10,7 +10,7 @@ import { ApiResponseFactory } from './ApiResponseFactory';
 import { DataFormat } from '../enums/DataFormat';
 import { ReportDataType } from '../enums/ReportDataType';
 import { Record } from './Record';
-import { ApiResponse } from './ApiResponse';
+import { type ApiResponse } from './ApiResponse';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { type App } from './App';
 import { type CollectionResponse } from './CollectionResponse';
