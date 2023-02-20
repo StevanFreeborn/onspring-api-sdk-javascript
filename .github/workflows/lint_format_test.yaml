@@ -80,7 +80,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run test coverage and tests
-        run: npm run test-coverage
+        run: npm run test-coverage:ci
         env:
           API_BASE_URL: ${{ vars.API_BASE_URL }}
           SANDBOX_API_KEY: ${{ secrets.SANDBOX_API_KEY }}
