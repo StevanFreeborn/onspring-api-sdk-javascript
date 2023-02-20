@@ -2,31 +2,32 @@ name: lint_test_format
 on:
   workflow_dispatch:
 jobs:
-  # lint:
-  #   name: lint
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [14.x, 16.x, 18.x]
-  #   steps:
-  #     - name: Check out repository
-  #       uses: actions/checkout@v3
-  #     - name: Setup node ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Run lint-fix
-  #       run: npm run lint-fix
-  #     - name: Commit changes
-  #       uses: EndBug/add-and-commit@v9
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Setup node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run lint-fix
+        run: npm run lint-fix
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
   test:
     name: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
+      fail-fast: false
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
