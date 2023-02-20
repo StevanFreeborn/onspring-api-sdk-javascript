@@ -20,6 +20,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           commit: --no-verify
+          push: --force
   test:
     needs: lint
     name: test
