@@ -7,6 +7,7 @@ on:
       - src/**
     branches:
       - master
+      - beta
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -69,8 +70,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: npm install
-      - name: Install semantic-release extra plugins
-        run: npm install --save-dev @semantic-release/changelog
       - name: Download build artifact
         uses: actions/download-artifact@v3.0.2
         with:
