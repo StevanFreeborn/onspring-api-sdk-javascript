@@ -37,7 +37,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
-      - name: Run test-coverage and tests
+      - name: Run test coverage and tests
         run: npm run test-coverage
         env:
           API_BASE_URL: ${{ vars.API_BASE_URL }}
@@ -69,5 +69,25 @@ jobs:
           TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
           TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
+  publish_test_coverage:
+    steps:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+  format:
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: npm install
+      - name: Run format
+        run: npm run format
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          commit: --no-verify
