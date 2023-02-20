@@ -68,7 +68,7 @@ jobs:
         run: echo ${{ needs.format.outputs.committed }}
   test:
     needs: format
-    if: ${{ needs.format.outputs.committed }} == false
+    if: needs.format.outputs.committed == false
     name: test
     runs-on: ubuntu-latest
     strategy:
