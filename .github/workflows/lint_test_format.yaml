@@ -9,6 +9,7 @@ on:
       - master
 jobs:
   lint:
+    id: lint
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -25,15 +26,19 @@ jobs:
       - name: Run lint-fix
         run: npm run lint-fix
       - name: Commit changes
+        id: commit
         uses: EndBug/add-and-commit@v9
         with:
           commit: --no-verify
           message: 'fix: resolve linter errors'
           committer_name: GitHub Actions
           committer_email: actions@github.com
+    outputs:
+      committed: ${{ steps.commit.committed }}
   test:
-    if: ${{ jobs.lint.committed == false }}
+    if: ${{ jobs.lint.outputs.committed == false }}
     needs: lint
+    id: test
     name: test
     runs-on: ubuntu-latest
     strategy:
@@ -83,6 +88,7 @@ jobs:
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
   publish_test_coverage:
     needs: test
+    id: publish_test_coverage
     name: publish_test_coverage
     runs-on: ubuntu-latest
     steps:
