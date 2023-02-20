@@ -1,13 +1,6 @@
 name: lint_format_test
 on:
   workflow_dispatch:
-  push:
-    paths-ignore:
-      - .github/**
-      - .husky/**
-      - '**/README.md'
-    branches:
-      - master
   pull_request:
     paths-ignore:
       - .github/**
