@@ -61,13 +61,6 @@ jobs:
           committer_email: actions@github.com
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
-  experiment:
-    needs: format
-    name: experiment
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        run: echo ${{ needs.format.outputs.committed }}
   test:
     needs: format
     if: needs.format.outputs.committed == 'false'
