@@ -5,12 +5,14 @@ on:
     paths-ignore:
       - .github/**
       - .husky/**
+      - ./README.md
     branches:
       - master
   pull_request:
     paths-ignore:
       - .github/**
       - .husky/**
+      - ./README.md
     branches:
       - master
 jobs:
