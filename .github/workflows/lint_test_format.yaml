@@ -1,6 +1,12 @@
 name: lint_test_format
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
   lint:
     name: lint
