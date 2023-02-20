@@ -35,7 +35,7 @@ jobs:
       committed: ${{ steps.commit.outputs.committed }}
   format:
     needs: lint
-    if: ${{ needs.lint.outputs.committed == false }}
+    if: ${{ needs.lint.outputs.committed }} == false
     name: format
     runs-on: ubuntu-latest
     steps:
