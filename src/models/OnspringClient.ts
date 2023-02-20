@@ -10,7 +10,7 @@ import { ApiResponseFactory } from './ApiResponseFactory';
 import { DataFormat } from '../enums/DataFormat';
 import { ReportDataType } from '../enums/ReportDataType';
 import { Record } from './Record';
-import { type ApiResponse } from './ApiResponse';
+import { ApiResponse } from './ApiResponse';
 import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
 import { type App } from './App';
 import { type CollectionResponse } from './CollectionResponse';
@@ -49,11 +49,7 @@ export class OnspringClient {
    * @throws {Error} - Thrown when the apiKey is null/undefined/empty/whitespace.
    * @returns {OnspringClient} - A new instance of the OnspringClient class.
    */
-  constructor(
-    baseUrl: string | undefined | null,
-    apiKey: string | undefined | null,
-    config: CreateAxiosDefaults = {}
-  ) {
+  constructor(baseUrl: string | undefined | null, apiKey: string | undefined | null, config: CreateAxiosDefaults = {}) {
     if (ArgumentValidator.isValidUrl(baseUrl) === false || baseUrl === null) {
       throw new Error('baseUrl must be an absolute and well-formed URI.');
     }

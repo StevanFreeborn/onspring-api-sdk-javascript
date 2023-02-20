@@ -22,7 +22,9 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           commit: --no-verify
-          push: --force
+          message: 'fix: resolve linter errors'
+          committer_name: GitHub Actions
+          committer_email: actions@github.com
   test:
     needs: lint
     name: test
@@ -86,6 +88,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACTIONS_PAT }}
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -98,3 +102,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           commit: --no-verify
+          message: 'fix: resolve formatting errors'
+          committer_name: GitHub Actions
+          committer_email: actions@github.com
