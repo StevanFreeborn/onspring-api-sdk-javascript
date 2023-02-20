@@ -425,7 +425,7 @@ export class OnspringClient {
         : request;
 
     const endpoint = EndpointFactory.getAddOrUpdateRecordEndpoint();
-    const apiResponse = await this.put<any>(endpoint, request);
+    const apiResponse = await this.put<any>(endpoint, request.toJSON());
 
     if (apiResponse.isSuccessful === false) {
       return apiResponse;
@@ -449,6 +449,24 @@ export class OnspringClient {
       recordId
     );
     const apiResponse = await this.delete<any>(endpoint);
+    return apiResponse;
+  }
+
+  /**
+   * @method deleteRecordsByIds - Deletes records by their ids.
+   * @param {number} appId - The id of the app that the records belong to.
+   * @param {number[]} recordIds - The ids of the records to delete.
+   * @returns {Promise<ApiResponse<any>>} - A promise that resolves to an ApiResponse of type any.
+   */
+  public async deleteRecordsByIds(
+    appId: number,
+    recordIds: number[]
+  ): Promise<ApiResponse<any>> {
+    const endpoint = EndpointFactory.getDeleteRecordsByIdsEndpoint();
+    const apiResponse = await this.post<any>(endpoint, {
+      appId,
+      recordIds,
+    });
     return apiResponse;
   }
 

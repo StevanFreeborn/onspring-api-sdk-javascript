@@ -1,9 +1,7 @@
 import { type RootHookObject, type Context } from 'mocha';
 import { expect } from 'chai';
 import * as dotenv from 'dotenv';
-import path from 'path';
-const envPath = path.resolve(__dirname, '.env');
-dotenv.config({ path: envPath });
+dotenv.config();
 
 let baseURL: string | undefined;
 let apiKey: string | undefined;
