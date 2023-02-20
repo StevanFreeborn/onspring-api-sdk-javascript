@@ -12,7 +12,7 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogFile": "CHANGELOG.md"
+        "changelogFile": "docs/CHANGELOG.md"
       }
     ],
     "@semantic-release/npm",
@@ -20,13 +20,7 @@
     [
       "@semantic-release/git",
       {
-        "assets": [
-          "CHANGELOG.md",
-          "dist/**",
-          "package.json",
-          "README.md",
-          "License.txt"
-        ],
+        "assets": ["docs/CHANGELOG.md"],
         "message": "chore(release): set `package.json` to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]

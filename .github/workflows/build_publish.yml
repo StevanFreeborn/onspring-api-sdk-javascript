@@ -70,13 +70,13 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Install semantic-release extra plugins
-        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
+        run: npm install --save-dev @semantic-release/changelog
       - name: Download build artifact
         uses: actions/download-artifact@v3.0.2
         with:
           name: build
           path: ./dist
-      - name: Publish to npm registry
+      - name: Publish release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT }}
