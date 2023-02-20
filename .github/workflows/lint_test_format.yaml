@@ -33,7 +33,7 @@ jobs:
           committer_name: GitHub Actions
           committer_email: actions@github.com
     outputs:
-      committed: ${{ steps.commit.committed }}
+      committed: ${{ steps.commit.outputs.committed }}
   test:
     needs: lint
     if: ${{ needs.lint.outputs.committed == false }}
