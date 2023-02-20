@@ -1,5 +1,5 @@
 import { StringRecordValue } from './../../src/models/StringRecordValue';
-import { OnspringClient, Record, RecordValue } from './../../src';
+import { OnspringClient, Record } from './../../src';
 import { expect } from 'chai';
 import { baseURL, apiKey } from '../mochaRootHooks';
 
