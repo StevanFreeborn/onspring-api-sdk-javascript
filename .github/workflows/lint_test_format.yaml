@@ -32,6 +32,7 @@ jobs:
           committer_name: GitHub Actions
           committer_email: actions@github.com
   test:
+    if: ${{ jobs.lint.committed == false }}
     needs: lint
     name: test
     runs-on: ubuntu-latest
