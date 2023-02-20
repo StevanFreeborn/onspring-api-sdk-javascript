@@ -36,7 +36,7 @@ jobs:
       committed: ${{ steps.commit.outputs.committed }}
   test:
     needs: lint
-    if: ${{ needs.lint.outputs.committed == false }}
+    if: needs.lint.outputs.committed == false
     name: test
     runs-on: ubuntu-latest
     strategy:
