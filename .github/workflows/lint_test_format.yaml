@@ -36,7 +36,6 @@ jobs:
         run: echo ${{ steps.commit.outputs.committed }}
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
-    run: echo
   test:
     needs: lint
     if: needs.lint.outputs.committed == false
