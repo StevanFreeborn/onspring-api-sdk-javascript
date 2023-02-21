@@ -1,6 +1,9 @@
 import { DataFormat } from '../enums/DataFormat';
 import { PagingRequest } from './PagingRequest';
 
+/**
+ * @class GetRecordsByAppIdRequest - Represents a request to get records by app id.
+ */
 export class GetRecordsByAppIdRequest {
   /**
    * @property {number} appId - The id of the app that the records belong to.

@@ -49,7 +49,11 @@ export class OnspringClient {
    * @throws {Error} - Thrown when the apiKey is null/undefined/empty/whitespace.
    * @returns {OnspringClient} - A new instance of the OnspringClient class.
    */
-  constructor(baseUrl: string | undefined | null, apiKey: string | undefined | null, config: CreateAxiosDefaults = {}) {
+  constructor(
+    baseUrl: string | undefined | null,
+    apiKey: string | undefined | null,
+    config: CreateAxiosDefaults = {}
+  ) {
     if (ArgumentValidator.isValidUrl(baseUrl) === false || baseUrl === null) {
       throw new Error('baseUrl must be an absolute and well-formed URI.');
     }
@@ -278,6 +282,13 @@ export class OnspringClient {
     return apiResponse.asCreatedWithIdResponseType<number>();
   }
 
+  /**
+   * @method deleteFileById - Deletes a file by its id.
+   * @param {number} recordId - The id of the record that the file is held on.
+   * @param {number} fieldId - The id of the field that the file is held in.
+   * @param {number} fileId - The id of the file to delete.
+   * @returns {Promise<ApiResponse<any>>} - A promise that resolves to an ApiResponse of type any.
+   */
   public async deleteFileById(
     recordId: number,
     fieldId: number,
@@ -412,6 +423,11 @@ export class OnspringClient {
     return apiResponse.asGetPagedRecordsResponseType();
   }
 
+  /**
+   * @method saveRecord - Saves a record.
+   * @param {Record | SaveRecordRequest} request - The record or request that will be used to save the record.
+   * @returns {Promise<ApiResponse<SaveRecordResponse>>} - A promise that resolves to an ApiResponse of type SaveRecordResponse.
+   */
   public async saveRecord(
     request: Record | SaveRecordRequest
   ): Promise<ApiResponse<SaveRecordResponse>> {

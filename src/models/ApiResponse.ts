@@ -92,17 +92,17 @@ export class ApiResponse<T> {
   public asGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
-const apps = apiResponse.data.items.map((item: any) => {
-  return new App(item.href, item.id, item.name);
-});
+    const apps = apiResponse.data.items.map((item: any) => {
+      return new App(item.href, item.id, item.name);
+    });
 
-const getAppsPagedResponse = new GetPagedAppsResponse(
-  apps,
-  apiResponse.data.pageNumber,
-  apiResponse.data.pageSize,
-  apiResponse.data.totalPages,
-  apiResponse.data.totalRecords
-);
+    const getAppsPagedResponse = new GetPagedAppsResponse(
+      apps,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
 
     return new ApiResponse<GetPagedAppsResponse>(
       apiResponse.statusCode,
@@ -238,6 +238,10 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     );
   }
 
+  /**
+   * @method asFileInfoType - Converts the ApiResponse to an ApiResponse<FileInfo>.
+   * @returns {ApiResponse<FileInfo>} - An ApiResponse<FileInfo>.
+   */
   public asFileInfoType(): ApiResponse<FileInfo> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -259,6 +263,10 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     );
   }
 
+  /**
+   * @method asFileType - Converts the ApiResponse to an ApiResponse<File>.
+   * @returns {ApiResponse<File>} - An ApiResponse<File>.
+   */
   public asFileType(response: AxiosResponse): ApiResponse<File> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -411,6 +419,10 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     );
   }
 
+  /**
+   * @method asRecordCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<Record>>.
+   * @returns {ApiResponse<CollectionResponse<Record>>} - An ApiResponse<CollectionResponse<Record>>.
+   */
   public asRecordCollectionType(): ApiResponse<CollectionResponse<Record>> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -434,6 +446,10 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     );
   }
 
+  /**
+   * @method asSaveRecordResponseType - Converts the ApiResponse to an ApiResponse<SaveRecordResponse>.
+   * @returns {ApiResponse<SaveRecordResponse>} - An ApiResponse<SaveRecordResponse>.
+   */
   public asSaveRecordResponseType(): ApiResponse<SaveRecordResponse> {
     const apiResponse = this as ApiResponse<any>;
     const response = new SaveRecordResponse(
@@ -447,6 +463,11 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     );
   }
 
+  /**
+   * @method getRecordValueByType - Gets the RecordValue by by type.
+   * @param {RecordValue} recordValueItem - The record value item.
+   * @returns {RecordValue} - The RecordValue.
+   */
   private static getRecordValueByType(recordValueItem: any): RecordValue<any> {
     const type = RecordValueType[recordValueItem.type];
 
@@ -629,6 +650,11 @@ const getAppsPagedResponse = new GetPagedAppsResponse(
     }
   }
 
+  /**
+   * @method convertToDelegate - Converts the delegate item to a Delegate object.
+   * @param {any} delegateItem - The delegate item to convert.
+   * @returns {Delegate} - The converted Delegate object.
+   */
   private static convertToDelegate(delegateItem: any): Delegate {
     const delegateType = DelegateType[delegateItem.delegateType];
 

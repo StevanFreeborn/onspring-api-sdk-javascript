@@ -60,7 +60,9 @@ export class ApiResponseFactory {
   }
 
   /**
-   *
+   * @method getStreamDataAsString - Gets the data from a stream as a string
+   * @param {Readable} stream - The stream that will be used to get the data
+   * @returns {Promise<string>} - A promise that resolves to the data from the stream as a string
    */
   private static async getStreamDataAsString(
     stream: Readable

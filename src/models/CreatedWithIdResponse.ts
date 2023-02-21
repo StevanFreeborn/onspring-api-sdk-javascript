@@ -1,3 +1,6 @@
+/**
+ * @class CreatedWithIdResponse<T> - Represents a response to a request to create a resource.
+ */
 export class CreatedWithIdResponse<T> {
   /**
    * @property {T} id - The id of the created object.

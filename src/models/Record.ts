@@ -55,6 +55,10 @@ export class Record {
     this.fieldData = this.fieldData.concat(fieldData);
   }
 
+  /**
+   * @method convertToSaveRecordRequest - Converts the record to a SaveRecordRequest.
+   * @returns {SaveRecordRequest} - A SaveRecordRequest.
+   */
   public convertToSaveRecordRequest(): SaveRecordRequest {
     const fields = this.fieldData.reduce((acc, cur) => {
       acc.set(cur.fieldId, cur.value);
