@@ -1,5 +1,5 @@
-import { type RecordValue } from './RecordValue';
-import { SaveRecordRequest } from './SaveRecordRequest';
+import { type RecordValue } from './RecordValue.js';
+import { SaveRecordRequest } from './SaveRecordRequest.js';
 
 /**
  * @class Record - A record in an app.

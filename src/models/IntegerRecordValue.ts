@@ -1,5 +1,5 @@
-import { RecordValueType } from '../enums/RecordValueType';
-import { RecordValue } from './RecordValue';
+import { RecordValueType } from '../enums/RecordValueType.js';
+import { RecordValue } from './RecordValue.js';
 
 /**
  * @class IntegerRecordValue - A record value represented by an integer.

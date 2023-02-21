@@ -1,51 +1,51 @@
 import { type AxiosResponse } from 'axios';
-import { DelegateType } from '../enums/DelegateType';
-import { FieldStatus } from '../enums/FieldStatus';
-import { FieldType } from '../enums/FieldType';
-import { FileStorageSite } from '../enums/FileStorageSite';
-import { FormulaOutputType } from '../enums/FormulaOutputType';
-import { Multiplicity } from '../enums/Multiplicity';
-import { RecordValueType } from '../enums/RecordValueType';
-import { TimeSpanIncrement } from '../enums/TimeSpanIncrement';
-import { TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType';
-import { App } from './App';
-import { Attachment } from './Attachment';
-import { AttachmentListRecordValue } from './AttachmentListRecordValue';
-import { CollectionResponse } from './CollectionResponse';
-import { CreatedWithIdResponse } from './CreatedWithIdResponse';
-import { DateRecordValue } from './DateRecordValue';
-import { DecimalRecordValue } from './DecimalRecordValue';
-import { Delegate } from './Delegate';
-import { DelegateListRecordValue } from './DelegateListRecordValue';
-import { Field } from './Field';
-import { File } from './File';
-import { FileInfo } from './FileInfo';
-import { FileListRecordValue } from './FileListRecordValue';
-import { FormulaField } from './FormulaField';
-import { GetPagedAppsResponse } from './GetPagedAppsResponse';
-import { GetPagedFieldsResponse } from './GetPagedFieldsResponse';
-import { GetPagedRecordsResponse } from './GetPagedRecordsResponse';
-import { GetPagedReportsResponse } from './GetPagedReportsResponse';
-import { GuidListRecordValue } from './GuidListRecordValue';
-import { GuidRecordValue } from './GuidRecordValue';
-import { IntegerListRecordValue } from './IntegerListRecordValue';
-import { IntegerRecordValue } from './IntegerRecordValue';
-import { ListField } from './ListField';
-import { ListItemResponse } from './ListItemResponse';
-import { ListValue } from './ListValue';
-import { Record } from './Record';
-import { ReferenceField } from './ReferenceField';
-import { Report } from './Report';
-import { ReportData } from './ReportData';
-import { Row } from './Row';
-import { ScoringGroup } from './ScoringGroup';
-import { ScoringGroupListRecordValue } from './ScoringGroupListRecordValue';
-import { StringListRecordValue } from './StringListRecordValue';
-import { StringRecordValue } from './StringRecordValue';
-import { TimeSpanData } from './TimeSpanData';
-import { TimeSpanRecordValue } from './TimeSpanRecordValue';
-import { type RecordValue } from './RecordValue';
-import { SaveRecordResponse } from './SaveRecordResponse';
+import { DelegateType } from '../enums/DelegateType.js';
+import { FieldStatus } from '../enums/FieldStatus.js';
+import { FieldType } from '../enums/FieldType.js';
+import { FileStorageSite } from '../enums/FileStorageSite.js';
+import { FormulaOutputType } from '../enums/FormulaOutputType.js';
+import { Multiplicity } from '../enums/Multiplicity.js';
+import { RecordValueType } from '../enums/RecordValueType.js';
+import { TimeSpanIncrement } from '../enums/TimeSpanIncrement.js';
+import { TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType.js';
+import { App } from './App.js';
+import { Attachment } from './Attachment.js';
+import { AttachmentListRecordValue } from './AttachmentListRecordValue.js';
+import { CollectionResponse } from './CollectionResponse.js';
+import { CreatedWithIdResponse } from './CreatedWithIdResponse.js';
+import { DateRecordValue } from './DateRecordValue.js';
+import { DecimalRecordValue } from './DecimalRecordValue.js';
+import { Delegate } from './Delegate.js';
+import { DelegateListRecordValue } from './DelegateListRecordValue.js';
+import { Field } from './Field.js';
+import { File } from './File.js';
+import { FileInfo } from './FileInfo.js';
+import { FileListRecordValue } from './FileListRecordValue.js';
+import { FormulaField } from './FormulaField.js';
+import { GetPagedAppsResponse } from './GetPagedAppsResponse.js';
+import { GetPagedFieldsResponse } from './GetPagedFieldsResponse.js';
+import { GetPagedRecordsResponse } from './GetPagedRecordsResponse.js';
+import { GetPagedReportsResponse } from './GetPagedReportsResponse.js';
+import { GuidListRecordValue } from './GuidListRecordValue.js';
+import { GuidRecordValue } from './GuidRecordValue.js';
+import { IntegerListRecordValue } from './IntegerListRecordValue.js';
+import { IntegerRecordValue } from './IntegerRecordValue.js';
+import { ListField } from './ListField.js';
+import { ListItemResponse } from './ListItemResponse.js';
+import { ListValue } from './ListValue.js';
+import { Record } from './Record.js';
+import { type RecordValue } from './RecordValue.js';
+import { ReferenceField } from './ReferenceField.js';
+import { Report } from './Report.js';
+import { ReportData } from './ReportData.js';
+import { Row } from './Row.js';
+import { SaveRecordResponse } from './SaveRecordResponse.js';
+import { ScoringGroup } from './ScoringGroup.js';
+import { ScoringGroupListRecordValue } from './ScoringGroupListRecordValue.js';
+import { StringListRecordValue } from './StringListRecordValue.js';
+import { StringRecordValue } from './StringRecordValue.js';
+import { TimeSpanData } from './TimeSpanData.js';
+import { TimeSpanRecordValue } from './TimeSpanRecordValue.js';
 
 /**
  * @class ApiResponse - A generic response object for API requests.
@@ -92,17 +92,17 @@ export class ApiResponse<T> {
   public asGetPagedAppsResponseType(): ApiResponse<GetPagedAppsResponse> {
     const apiResponse = this as ApiResponse<any>;
 
-const apps = apiResponse.data.items.map((item: any) => {
-  return new App(item.href, item.id, item.name);
-});
+    const apps = apiResponse.data.items.map((item: any) => {
+      return new App(item.href, item.id, item.name);
+    });
 
-const getAppsPagedResponse = new GetPagedAppsResponse(
-  apps,
-  apiResponse.data.pageNumber,
-  apiResponse.data.pageSize,
-  apiResponse.data.totalPages,
-  apiResponse.data.totalRecords
-);
+    const getAppsPagedResponse = new GetPagedAppsResponse(
+      apps,
+      apiResponse.data.pageNumber,
+      apiResponse.data.pageSize,
+      apiResponse.data.totalPages,
+      apiResponse.data.totalRecords
+    );
 
     return new ApiResponse<GetPagedAppsResponse>(
       apiResponse.statusCode,

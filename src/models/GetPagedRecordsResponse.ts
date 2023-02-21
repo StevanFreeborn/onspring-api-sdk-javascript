@@ -1,5 +1,5 @@
-import { type Record } from './Record';
-import { PagedResponse } from './PagedResponse';
+import { PagedResponse } from './PagedResponse.js';
+import { type Record } from './Record.js';
 
 /**
  * @class GetPagedRecordsResponse - A response containing a paged collection of records.

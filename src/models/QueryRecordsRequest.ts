@@ -1,6 +1,6 @@
-import { DataFormat } from '../enums/DataFormat';
-import { PagingRequest } from './PagingRequest';
-import { type QueryFilter } from './QueryFilter';
+import { DataFormat } from '../enums/DataFormat.js';
+import { PagingRequest } from './PagingRequest.js';
+import { type QueryFilter } from './QueryFilter.js';
 
 /**
  * @class QueryRecordsRequest - Request to query for records.

@@ -1,6 +1,6 @@
-import { RecordValueType } from '../enums/RecordValueType';
-import { type Attachment } from './Attachment';
-import { RecordValue } from './RecordValue';
+import { RecordValueType } from '../enums/RecordValueType.js';
+import { type Attachment } from './Attachment.js';
+import { RecordValue } from './RecordValue.js';
 
 /**
  * @class AttachmentListRecordValue - A record value represented by a list of attachments.

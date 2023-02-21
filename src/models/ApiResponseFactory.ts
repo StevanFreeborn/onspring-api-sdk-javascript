@@ -1,7 +1,7 @@
 import { type AxiosResponse } from 'axios';
-import { HttpStatusCode } from '../enums/HttpStatusCode';
-import { ApiResponse } from './ApiResponse';
 import { type Readable } from 'stream';
+import { HttpStatusCode } from '../enums/HttpStatusCode.js';
+import { ApiResponse } from './ApiResponse.js';
 
 /**
  * @class ApiResponseFactory - Factory class for creating ApiResponse objects

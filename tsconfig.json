@@ -13,6 +13,7 @@
       "module": "commonjs",
       "target": "ES6"
     },
+    "experimentalResolver": true,
     "moduleTypes": {
       "*.ts": "cjs"
     }

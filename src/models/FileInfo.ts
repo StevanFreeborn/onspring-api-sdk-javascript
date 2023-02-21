@@ -1,4 +1,4 @@
-import { FieldType } from '../enums/FieldType';
+import { FieldType } from '../enums/FieldType.js';
 
 /**
  * @class FileInfo - Represents a file info.

@@ -1,4 +1,4 @@
-import { DataFormat } from '../enums/DataFormat';
+import { DataFormat } from '../enums/DataFormat.js';
 
 /**
  * @class GetRecordRequest - A request to get a record.

@@ -1,4 +1,4 @@
-import { type Row } from './Row';
+import { type Row } from './Row.js';
 
 /**
  * @class ReportData - Represents the data for a report.

@@ -1,36 +1,36 @@
 import axios, {
-  type CreateAxiosDefaults,
   type AxiosInstance,
   type AxiosRequestConfig,
+  type CreateAxiosDefaults,
 } from 'axios';
-import { PagingRequest } from './PagingRequest';
-import { ArgumentValidator } from './ArgumentValidator';
-import { EndpointFactory } from './EndpointFactory';
-import { ApiResponseFactory } from './ApiResponseFactory';
-import { DataFormat } from '../enums/DataFormat';
-import { ReportDataType } from '../enums/ReportDataType';
-import { Record } from './Record';
-import { type ApiResponse } from './ApiResponse';
-import { type GetPagedAppsResponse } from './GetPagedAppsResponse';
-import { type App } from './App';
-import { type CollectionResponse } from './CollectionResponse';
-import { type Field } from './Field';
-import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse';
-import { type SaveFileRequest } from './SaveFileRequest';
-import { type CreatedWithIdResponse } from './CreatedWithIdResponse';
-import { type FileInfo } from './FileInfo';
-import { type File } from './File';
-import { type ListItemResponse } from './ListItemResponse';
-import { type ListItemRequest } from './ListItemRequest';
-import { type GetPagedReportsResponse } from './GetPagedReportsResponse';
-import { type ReportData } from './ReportData';
-import { type GetRecordRequest } from './GetRecordRequest';
-import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest';
-import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse';
-import { type GetRecordsRequest } from './GetRecordsRequest';
-import { type QueryRecordsRequest } from './QueryRecordsRequest';
-import { type SaveRecordResponse } from './SaveRecordResponse';
-import { type SaveRecordRequest } from './SaveRecordRequest';
+import { DataFormat } from '../enums/DataFormat.js';
+import { ReportDataType } from '../enums/ReportDataType.js';
+import { type ApiResponse } from './ApiResponse.js';
+import { ApiResponseFactory } from './ApiResponseFactory.js';
+import { type App } from './App.js';
+import { ArgumentValidator } from './ArgumentValidator.js';
+import { type CollectionResponse } from './CollectionResponse.js';
+import { type CreatedWithIdResponse } from './CreatedWithIdResponse.js';
+import { EndpointFactory } from './EndpointFactory.js';
+import { type Field } from './Field.js';
+import { type File } from './File.js';
+import { type FileInfo } from './FileInfo.js';
+import { type GetPagedAppsResponse } from './GetPagedAppsResponse.js';
+import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse.js';
+import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse.js';
+import { type GetPagedReportsResponse } from './GetPagedReportsResponse.js';
+import { type GetRecordRequest } from './GetRecordRequest.js';
+import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest.js';
+import { type GetRecordsRequest } from './GetRecordsRequest.js';
+import { type ListItemRequest } from './ListItemRequest.js';
+import { type ListItemResponse } from './ListItemResponse.js';
+import { PagingRequest } from './PagingRequest.js';
+import { type QueryRecordsRequest } from './QueryRecordsRequest.js';
+import { Record } from './Record.js';
+import { type ReportData } from './ReportData.js';
+import { type SaveFileRequest } from './SaveFileRequest.js';
+import { type SaveRecordRequest } from './SaveRecordRequest.js';
+import { type SaveRecordResponse } from './SaveRecordResponse.js';
 
 /**
  * @class OnspringClient - A client that can communicate with the Onspring API.
@@ -49,7 +49,11 @@ export class OnspringClient {
    * @throws {Error} - Thrown when the apiKey is null/undefined/empty/whitespace.
    * @returns {OnspringClient} - A new instance of the OnspringClient class.
    */
-  constructor(baseUrl: string | undefined | null, apiKey: string | undefined | null, config: CreateAxiosDefaults = {}) {
+  constructor(
+    baseUrl: string | undefined | null,
+    apiKey: string | undefined | null,
+    config: CreateAxiosDefaults = {}
+  ) {
     if (ArgumentValidator.isValidUrl(baseUrl) === false || baseUrl === null) {
       throw new Error('baseUrl must be an absolute and well-formed URI.');
     }

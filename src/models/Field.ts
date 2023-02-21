@@ -1,5 +1,5 @@
-import { type FieldStatus } from '../enums/FieldStatus';
-import { type FieldType } from '../enums/FieldType';
+import { type FieldStatus } from '../enums/FieldStatus.js';
+import { type FieldType } from '../enums/FieldType.js';
 
 /**
  * @class Field - Represents a Field.

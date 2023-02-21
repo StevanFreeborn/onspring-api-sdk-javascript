@@ -1,5 +1,5 @@
-import { type Field } from './Field';
-import { PagedResponse } from './PagedResponse';
+import { type Field } from './Field.js';
+import { PagedResponse } from './PagedResponse.js';
 
 /**
  * @class GetPagedFieldsResponse - A response containing a paged collection of fields.

@@ -1,4 +1,4 @@
-import { CreatedWithIdResponse } from './CreatedWithIdResponse';
+import { CreatedWithIdResponse } from './CreatedWithIdResponse.js';
 /**
  * @class ListItemResponse - Represents a respons when a list item is created or updated.
  */
