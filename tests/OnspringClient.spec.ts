@@ -1,37 +1,37 @@
-import { OnspringClient } from '../src/models/OnspringClient';
-import { ApiResponse } from '../src/models/ApiResponse';
 import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios';
 import { expect } from 'chai';
-import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
-import { App } from '../src/models/App';
-import { CollectionResponse } from '../src/models/CollectionResponse';
-import { Field } from '../src/models/Field';
-import { FieldStatus } from '../src/enums/FieldStatus';
-import { FieldType } from '../src/enums/FieldType';
-import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
-import { SaveFileRequest } from '../src/models/SaveFileRequest';
-import { Readable } from 'stream';
-import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
-import { FileInfo } from '../src/models/FileInfo';
-import { File } from '../src/models/File';
-import { ListItemRequest } from '../src/models/ListItemRequest';
-import { ListItemResponse } from '../src/models/ListItemResponse';
-import { Report } from '../src/models/Report';
-import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
-import { ReportData } from '../src/models/ReportData';
-import { GetRecordRequest } from '../src/models/GetRecordRequest';
-import { Record } from '../src/models/Record';
-import { RecordValue } from '../src/models/RecordValue';
-import { GetRecordsByAppIdRequest } from '../src/models/GetRecordsByAppIdRequest';
-import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
-import { GetRecordsRequest } from '../src/models/GetRecordsRequest';
 import fs from 'fs';
 import path from 'path';
 import * as sinon from 'sinon';
+import { Readable } from 'stream';
+import { FieldStatus } from '../src/enums/FieldStatus';
+import { FieldType } from '../src/enums/FieldType';
+import { ApiResponse } from '../src/models/ApiResponse';
+import { App } from '../src/models/App';
+import { CollectionResponse } from '../src/models/CollectionResponse';
+import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
+import { Field } from '../src/models/Field';
+import { File } from '../src/models/File';
+import { FileInfo } from '../src/models/FileInfo';
+import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
+import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
+import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
+import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
+import { GetRecordRequest } from '../src/models/GetRecordRequest';
+import { GetRecordsByAppIdRequest } from '../src/models/GetRecordsByAppIdRequest';
+import { GetRecordsRequest } from '../src/models/GetRecordsRequest';
+import { ListItemRequest } from '../src/models/ListItemRequest';
+import { ListItemResponse } from '../src/models/ListItemResponse';
+import { OnspringClient } from '../src/models/OnspringClient';
 import { QueryRecordsRequest } from '../src/models/QueryRecordsRequest';
+import { Record } from '../src/models/Record';
+import { RecordValue } from '../src/models/RecordValue';
+import { Report } from '../src/models/Report';
+import { ReportData } from '../src/models/ReportData';
+import { SaveFileRequest } from '../src/models/SaveFileRequest';
 import { SaveRecordRequest } from '../src/models/SaveRecordRequest';
 
 describe('OnspringClient', function () {
@@ -1796,7 +1796,8 @@ describe('OnspringClient', function () {
           statusText: 'OK',
           data: file,
           headers: {
-            'content-disposition': 'attachment; filename="test-attachment.txt"',
+            'content-disposition':
+              "attachment; filename=test-attachment.txt; filename*=UTF-8''test-attachment.txt",
             'content-length': 14,
             'content-type': 'text/plain',
           },

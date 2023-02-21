@@ -261,12 +261,9 @@ export class ApiResponse<T> {
 
   public asFileType(response: AxiosResponse): ApiResponse<File> {
     const apiResponse = this as ApiResponse<any>;
-
-    let fileName = response.headers['content-disposition']
+    const fileName = response.headers['content-disposition']
       .split(';')[1]
       .split('=')[1];
-
-    fileName = fileName.substring(1, fileName.length - 1);
 
     const contentType =
       response.headers['content-type'] ??

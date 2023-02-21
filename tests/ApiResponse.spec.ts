@@ -1,33 +1,33 @@
-import { ApiResponse } from '../src/models/ApiResponse';
+import { type AxiosResponse } from 'axios';
 import { expect } from 'chai';
-import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
-import { App } from '../src/models/App';
-import { CollectionResponse } from '../src/models/CollectionResponse';
-import { Field } from '../src/models/Field';
+import fs from 'fs';
+import path from 'path';
 import { FieldStatus } from '../src/enums/FieldStatus';
 import { FieldType } from '../src/enums/FieldType';
-import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
-import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
-import { FormulaField } from '../src/models/FormulaField';
 import { FormulaOutputType } from '../src/enums/FormulaOutputType';
-import { ListValue } from '../src/models/ListValue';
-import { ReferenceField } from '../src/models/ReferenceField';
 import { Multiplicity } from '../src/enums/Multiplicity';
-import { ListField } from '../src/models/ListField';
+import { ApiResponse } from '../src/models/ApiResponse';
+import { App } from '../src/models/App';
+import { CollectionResponse } from '../src/models/CollectionResponse';
+import { CreatedWithIdResponse } from '../src/models/CreatedWithIdResponse';
+import { Field } from '../src/models/Field';
 import { File } from '../src/models/File';
-import { ListItemResponse } from '../src/models/ListItemResponse';
+import { FormulaField } from '../src/models/FormulaField';
+import { GetPagedAppsResponse } from '../src/models/GetPagedAppsResponse';
+import { GetPagedFieldsResponse } from '../src/models/GetPagedFieldsResponse';
+import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
 import { GetPagedReportsResponse } from '../src/models/GetPagedReportsResponse';
+import { ListField } from '../src/models/ListField';
+import { ListItemResponse } from '../src/models/ListItemResponse';
+import { ListValue } from '../src/models/ListValue';
+import { Record } from '../src/models/Record';
+import { RecordValue } from '../src/models/RecordValue';
+import { ReferenceField } from '../src/models/ReferenceField';
 import { Report } from '../src/models/Report';
 import { ReportData } from '../src/models/ReportData';
 import { Row } from '../src/models/Row';
-import { Record } from '../src/models/Record';
-import { RecordValue } from '../src/models/RecordValue';
-import { GetPagedRecordsResponse } from '../src/models/GetPagedRecordsResponse';
-import { testFieldData } from './testData/testFieldData';
-import { type AxiosResponse } from 'axios';
-import path from 'path';
-import fs from 'fs';
 import { SaveRecordResponse } from '../src/models/SaveRecordResponse';
+import { testFieldData } from './testData/testFieldData';
 
 describe('ApiResponse', function () {
   it('should be defined', function () {
@@ -807,7 +807,8 @@ describe('ApiResponse', function () {
       const mockResponse = {
         headers: {
           'content-type': 'text/plain',
-          'content-disposition': 'attachment; filename="test-attachment.txt"',
+          'content-disposition':
+            "attachment; filename=test-attachment.txt; filename*=UTF-8''test-attachment.txt",
           'Content-Length': '13',
         } as AxiosResponse['headers'],
       } as AxiosResponse;
@@ -837,7 +838,8 @@ describe('ApiResponse', function () {
       const mockResponse = {
         headers: {
           'content-type': 'image/jpeg',
-          'content-disposition': 'attachment; filename="test-image.jpeg"',
+          'content-disposition':
+            "attachment; filename=test-image.jpeg; filename*=UTF-8''test-image.jpeg",
           'Content-Length': '98897',
         } as AxiosResponse['headers'],
       } as AxiosResponse;
