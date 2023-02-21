@@ -117,7 +117,10 @@ You may wish to refer to the full [Onspring API documentation](https://software.
 #### Verify connectivity
 
 ```js
+import { client } from './onspringClient.mjs';
 
+const res = await client.canConnect();
+console.log(res); // true or false
 ```
 
 ### Apps
@@ -127,13 +130,29 @@ You may wish to refer to the full [Onspring API documentation](https://software.
 Returns a paged collection of apps and/or surveys that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
+const res = await client.getApps();
+const apps = res.data.items;
 
+for (const app of apps) {
+  console.log(app.name);
+  console.log(app.id);
+  console.log(app.href);
+}
 ```
 
 You can set your own page size and page number (max is 1,000) as well.
 
 ```js
+import { PagingRequest } from 'onspring-api-sdk';
 
+const res = await client.getApps(new PagingRequest(1, 1));
+const apps = res.data.items;
+
+for (const app of apps) {
+  console.log(app.name);
+  console.log(app.id);
+  console.log(app.href);
+}
 ```
 
 #### Get App By Id
@@ -141,7 +160,12 @@ You can set your own page size and page number (max is 1,000) as well.
 Returns an Onspring app or survey according to provided id.
 
 ```js
+const res = await client.getAppById(130);
+const app = res.data;
 
+console.log(app.name);
+console.log(app.id);
+console.log(app.href);
 ```
 
 #### Get Apps By Ids
@@ -149,7 +173,14 @@ Returns an Onspring app or survey according to provided id.
 Returns a collection of Onspring apps and/or surveys according to provided ids.
 
 ```js
+const res = await client.getAppsByIds([130, 131]);
+const apps = res.data.items;
 
+for (const app of apps) {
+  console.log(app.name);
+  console.log(app.id);
+  console.log(app.href);
+}
 ```
 
 ### Fields
