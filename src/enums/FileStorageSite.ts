@@ -1,3 +1,6 @@
+/**
+ * @enum FileStorageSite - The site where the file is stored.
+ */
 export enum FileStorageSite {
   /**
    * @constant Internal - The file is stored in the internal file storage.
