@@ -74,8 +74,8 @@ const client = new OnspringClient(process.env.BASE_URL, process.env.API_KEY);
 `ES Module`
 
 ```js
-import { OnspringClient } from 'onspring-api-sdk';
 import dotenv from 'dotenv';
+import { OnspringClient } from 'onspring-api-sdk';
 dotenv.config();
 
 const client = new OnspringClient(process.env.BASE_URL, process.env.API_KEY);
@@ -88,7 +88,19 @@ By default when you construct an instance of the `OnspringClient` the a new `Axi
 You can though pass a third optional argument to the `OnspringClient` constructor that specifies additional configuration options for the `Axios` instance used to make requests.
 
 ```js
+import dotenv from 'dotenv';
+import { OnspringClient } from 'onspring-api-sdk';
+dotenv.config();
 
+const configs = {
+  timeout: 5000,
+};
+
+const client = new OnspringClient(
+  process.env.BASE_URL,
+  process.env.API_KEY,
+  configs
+);
 ```
 
 ### `ApiResponse`
@@ -106,7 +118,7 @@ There is support for using either CommonJS or ES Modules depending upon your pre
 
 ## Types
 
-The package is written in typescript and all types are exported and availabe for you to use if you prefer to use typescript.
+The package is written in typescript and all types are exported and available for you to use if you prefer to use typescript.
 
 ## Full API Documentation
 
@@ -117,8 +129,6 @@ You may wish to refer to the full [Onspring API documentation](https://software.
 #### Verify connectivity
 
 ```js
-import { client } from './onspringClient.mjs';
-
 const res = await client.canConnect();
 console.log(res); // true or false
 ```
@@ -134,9 +144,7 @@ const res = await client.getApps();
 const apps = res.data.items;
 
 for (const app of apps) {
-  console.log(app.name);
-  console.log(app.id);
-  console.log(app.href);
+  console.log(app);
 }
 ```
 
@@ -149,9 +157,7 @@ const res = await client.getApps(new PagingRequest(1, 1));
 const apps = res.data.items;
 
 for (const app of apps) {
-  console.log(app.name);
-  console.log(app.id);
-  console.log(app.href);
+  console.log(app);
 }
 ```
 
@@ -163,9 +169,7 @@ Returns an Onspring app or survey according to provided id.
 const res = await client.getAppById(130);
 const app = res.data;
 
-console.log(app.name);
-console.log(app.id);
-console.log(app.href);
+console.log(app);
 ```
 
 #### Get Apps By Ids
@@ -177,9 +181,7 @@ const res = await client.getAppsByIds([130, 131]);
 const apps = res.data.items;
 
 for (const app of apps) {
-  console.log(app.name);
-  console.log(app.id);
-  console.log(app.href);
+  console.log(app);
 }
 ```
 
@@ -190,7 +192,10 @@ for (const app of apps) {
 Returns an Onspring field according to provided id.
 
 ```js
+const res = await client.getFieldById(4793);
+const field = res.data;
 
+console.log(field);
 ```
 
 #### Get Fields By Ids
@@ -198,7 +203,12 @@ Returns an Onspring field according to provided id.
 Returns a collection of Onspring fields according to provided ids.
 
 ```js
+const res = await client.getFieldsByIds([4793, 4801]);
+const fields = res.data.items;
 
+for (const field of fields) {
+  console.log(field);
+}
 ```
 
 #### Get Fields By App Id
@@ -206,13 +216,25 @@ Returns a collection of Onspring fields according to provided ids.
 Returns a paged collection of fields that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
+const res = await client.getFieldsByAppId(132);
+const fields = res.data.items;
 
+for (const field of fields) {
+  console.log(field);
+}
 ```
 
 You can set your own page size and page number (max is 1,000) as well.
 
 ```js
+import { PagingRequest } from 'onspring-api-sdk';
 
+const res = await client.getFieldsByAppId(132, new PagingRequest(1, 1));
+const fields = res.data.items;
+
+for (const field of fields) {
+  console.log(field);
+}
 ```
 
 ### Files
@@ -222,7 +244,10 @@ You can set your own page size and page number (max is 1,000) as well.
 Returns the Onspring file's metadata.
 
 ```js
+const res = await client.getFileInfoById(1, 4806, 909);
+const fileInfo = res.data;
 
+console.log(fileInfo);
 ```
 
 #### Get File By Id
@@ -271,7 +296,7 @@ To update a list value provide an id value.
 
 #### Get Records By App Id
 
-Returns a paged colletion of records that can be paged through. By default the page size is 50 and page number is 1.
+Returns a paged collection of records that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
 
@@ -313,7 +338,7 @@ You can also specify what field values to return and in what format (Raw vs. For
 
 #### Query Records
 
-Returns a paged colletion of records based on a criteria that can be paged through. By default the page size is 50 and page number is 1.
+Returns a paged collection of records based on a criteria that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
 
