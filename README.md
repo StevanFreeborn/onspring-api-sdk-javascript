@@ -15,7 +15,7 @@ This SDK was developed independently using their existing C# SDK, their swagger 
 
 ### Node.js
 
-Requires use of Node 14.x or later.
+Requires use of [Node.js](https://nodejs.org/en/) 14.x or later.
 
 ### Axios
 
@@ -27,7 +27,7 @@ When it is necessary to send requests to the Onspring API using `multi-part/form
 
 ## Installation
 
-Install the SDK using npm:
+Install the SDK using [npm](https://www.npmjs.com/):
 
 `npm install onspring-api-sdk`
 
@@ -64,10 +64,28 @@ Example constructing `OnspringClient`:
 `CommonJS`
 
 ```js
+const { OnspringClient } = require('onspring-api-sdk');
+const dotenv = require('dotenv');
+dotenv.config();
 
+const client = new OnspringClient(process.env.BASE_URL, process.env.API_KEY);
 ```
 
 `ES Module`
+
+```js
+import { OnspringClient } from 'onspring-api-sdk';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const client = new OnspringClient(process.env.BASE_URL, process.env.API_KEY);
+```
+
+#### Axios Instance Configuration
+
+By default when you construct an instance of the `OnspringClient` the a new `Axios` instance will also be created. Its `baseURL` property will always be set to the `baseUrl` parameter based to the `OnspringClient`'s constructor and its headers will always contain the proper `x-api-key` header.
+
+You can though pass a third optional argument to the `OnspringClient` constructor that specifies additional configuration options for the `Axios` instance used to make requests.
 
 ```js
 
