@@ -1,3 +1,6 @@
+/**
+ * @enum FormulaOutputType - The type of the formula output.
+ */
 export enum FormulaOutputType {
   /**
    * @constant Text - The formula output is a text value.
