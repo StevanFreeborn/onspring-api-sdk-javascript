@@ -1,5 +1,5 @@
-import { DataFormat } from '../enums/DataFormat';
-import { PagingRequest } from './PagingRequest';
+import { DataFormat } from '../enums/DataFormat.js';
+import { PagingRequest } from './PagingRequest.js';
 
 export class GetRecordsByAppIdRequest {
   /**

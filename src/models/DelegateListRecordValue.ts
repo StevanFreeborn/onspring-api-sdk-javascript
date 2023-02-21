@@ -1,6 +1,6 @@
-import { RecordValue } from './RecordValue';
-import { RecordValueType } from '../enums/RecordValueType';
-import { type Delegate } from './Delegate';
+import { RecordValueType } from '../enums/RecordValueType.js';
+import { type Delegate } from './Delegate.js';
+import { RecordValue } from './RecordValue.js';
 
 export class DelegateListRecordValue extends RecordValue<Delegate[]> {
   constructor(fieldId: number, value: Delegate[]) {

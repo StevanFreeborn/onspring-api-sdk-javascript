@@ -1,4 +1,4 @@
-import { FilterOperators } from '../enums/FilterOperators';
+import { FilterOperators } from '../enums/FilterOperators.js';
 
 export class QueryFilter {
   public fieldId: number;

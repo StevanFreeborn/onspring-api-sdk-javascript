@@ -1,5 +1,5 @@
-import { type TimeSpanIncrement } from '../enums/TimeSpanIncrement';
-import { type TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType';
+import { type TimeSpanIncrement } from '../enums/TimeSpanIncrement.js';
+import { type TimeSpanRecurrenceType } from '../enums/TimeSpanRecurrenceType.js';
 
 export class TimeSpanData {
   /**

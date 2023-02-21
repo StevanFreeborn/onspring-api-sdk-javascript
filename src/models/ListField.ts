@@ -1,8 +1,8 @@
-import { type FieldStatus } from '../enums/FieldStatus';
-import { type FieldType } from '../enums/FieldType';
-import { type Multiplicity } from '../enums/Multiplicity';
-import { Field } from './Field';
-import { type ListValue } from './ListValue';
+import { type FieldStatus } from '../enums/FieldStatus.js';
+import { type FieldType } from '../enums/FieldType.js';
+import { type Multiplicity } from '../enums/Multiplicity.js';
+import { Field } from './Field.js';
+import { type ListValue } from './ListValue.js';
 
 /**
  * @class ListField - Represents a list field.

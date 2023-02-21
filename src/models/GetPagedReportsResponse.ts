@@ -1,5 +1,5 @@
-import { PagedResponse } from './PagedResponse';
-import { type Report } from './Report';
+import { PagedResponse } from './PagedResponse.js';
+import { type Report } from './Report.js';
 
 /**
  * @class GetPagedReportsResponse - Represents a response containing a paged list of reports.

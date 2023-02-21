@@ -1,4 +1,4 @@
-import { type FileStorageSite } from '../enums/FileStorageSite';
+import { type FileStorageSite } from '../enums/FileStorageSite.js';
 
 /**
  * @class Attachment - Represents an attachment.

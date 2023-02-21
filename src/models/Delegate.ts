@@ -1,4 +1,4 @@
-import { type DelegateType } from '../enums/DelegateType';
+import { type DelegateType } from '../enums/DelegateType.js';
 
 /**
  * @class Delegate - Represents a delegate.

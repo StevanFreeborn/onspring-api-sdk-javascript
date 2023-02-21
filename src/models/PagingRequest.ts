@@ -1,4 +1,4 @@
-import { ArgumentValidator } from './ArgumentValidator';
+import { ArgumentValidator } from './ArgumentValidator.js';
 
 /**
  * @class PagingRequest - Paging request model

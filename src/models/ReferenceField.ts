@@ -1,7 +1,7 @@
-import { type FieldStatus } from '../enums/FieldStatus';
-import { type FieldType } from '../enums/FieldType';
-import { type Multiplicity } from '../enums/Multiplicity';
-import { Field } from './Field';
+import { type FieldStatus } from '../enums/FieldStatus.js';
+import { type FieldType } from '../enums/FieldType.js';
+import { type Multiplicity } from '../enums/Multiplicity.js';
+import { Field } from './Field.js';
 
 /**
  * @class ReferenceField - Represents a reference field.

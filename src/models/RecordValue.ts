@@ -1,12 +1,12 @@
-import { RecordValueType } from '../enums/RecordValueType';
-import { type Attachment } from './Attachment';
-import { type AttachmentListRecordValue } from './AttachmentListRecordValue';
-import { type Delegate } from './Delegate';
-import { type DelegateListRecordValue } from './DelegateListRecordValue';
-import { type ScoringGroup } from './ScoringGroup';
-import { type ScoringGroupListRecordValue } from './ScoringGroupListRecordValue';
-import { type TimeSpanData } from './TimeSpanData';
-import { type TimeSpanRecordValue } from './TimeSpanRecordValue';
+import { RecordValueType } from '../enums/RecordValueType.js';
+import { type Attachment } from './Attachment.js';
+import { type AttachmentListRecordValue } from './AttachmentListRecordValue.js';
+import { type Delegate } from './Delegate.js';
+import { type DelegateListRecordValue } from './DelegateListRecordValue.js';
+import { type ScoringGroup } from './ScoringGroup.js';
+import { type ScoringGroupListRecordValue } from './ScoringGroupListRecordValue.js';
+import { type TimeSpanData } from './TimeSpanData.js';
+import { type TimeSpanRecordValue } from './TimeSpanRecordValue.js';
 
 /**
  * @class RecordValue - A value for a field in a record.

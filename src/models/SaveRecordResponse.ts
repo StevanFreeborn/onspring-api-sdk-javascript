@@ -1,4 +1,4 @@
-import { CreatedWithIdResponse } from './CreatedWithIdResponse';
+import { CreatedWithIdResponse } from './CreatedWithIdResponse.js';
 
 export class SaveRecordResponse extends CreatedWithIdResponse<number> {
   public warnings: string[];
