@@ -113,11 +113,21 @@ jobs:
           TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
           TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
+      - name: Upload test coverage artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: coverage
+          path: ./coverage
   publish_test_coverage:
     needs: test
     name: publish_test_coverage
     runs-on: ubuntu-latest
     steps:
+      - name: Download test coverage artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: coverage
+          path: ./coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
