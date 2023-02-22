@@ -738,7 +738,7 @@ export class ApiResponse<T> {
     const hasRecurrence =
       timeSpanItem.recurrence !== null && timeSpanItem.recurrence !== undefined;
 
-    const recurrene = hasRecurrence
+    const recurrence = hasRecurrence
       ? TimeSpanRecurrenceType[timeSpanItem.recurrence]
       : null;
 
@@ -761,7 +761,7 @@ export class ApiResponse<T> {
       );
     }
 
-    if (recurrene === undefined) {
+    if (recurrence === undefined) {
       throw new Error(
         `${
           timeSpanItem.recurrence as string
@@ -772,7 +772,7 @@ export class ApiResponse<T> {
     return new TimeSpanData(
       timeSpanItem.quantity,
       increment,
-      recurrene,
+      recurrence,
       endAfterOccurrences,
       endByDate
     );
