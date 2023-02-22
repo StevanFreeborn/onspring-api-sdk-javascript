@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/github/StevanFreeborn/onspring-api-sdk-javascript/branch/master/graph/badge.svg?token=G1L3GKE0LV)](https://codecov.io/github/StevanFreeborn/onspring-api-sdk-javascript)
 [![build_publish](https://github.com/StevanFreeborn/onspring-api-sdk-javascript/actions/workflows/build_publish.yml/badge.svg?branch=master)](https://github.com/StevanFreeborn/onspring-api-sdk-javascript/actions/workflows/build_publish.yml)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+[![NPM](https://img.shields.io/npm/l/onspring-api-sdk)](License.txt)
+![npm](https://img.shields.io/npm/v/onspring-api-sdk)
 
 The javascript SDK for the Onspring API is meant to simplify development in Javascript for Onspring customers who want to build integrations with their Onspring instance.
 
@@ -15,13 +17,19 @@ This SDK was developed independently using their existing C# SDK, their swagger 
 
 ### Node.js
 
+![node-current](https://img.shields.io/node/v/onspring-api-sdk)
+
 Requires use of [Node.js](https://nodejs.org/en/) 14.x or later.
 
 ### Axios
 
+![npm (prod) dependency version](https://img.shields.io/npm/dependency-version/onspring-api-sdk/axios)
+
 All methods for the `OnspringClient` make use of the [Axios](https://axios-http.com/) http client to interact with the Onspring API.
 
 ### Form-Data
+
+![npm (prod) dependency version](https://img.shields.io/npm/dependency-version/onspring-api-sdk/form-data)
 
 When it is necessary to send requests to the Onspring API using `multi-part/form-data` the [Form-Data](https://www.npmjs.com/package/form-data) package is used.
 
@@ -118,11 +126,15 @@ There is support for using either CommonJS or ES Modules depending upon your pre
 
 ## Types
 
-The package is written in typescript and all types are exported and available for you to use if you prefer to use typescript.
+The package is written in typescript and all types are exported and available for you to use.
 
 ## Full API Documentation
 
 You may wish to refer to the full [Onspring API documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf) when determining which values to pass as parameters to some of the `OnspringClient` methods. There is also a [swagger page](https://api.onspring.com/swagger/index.html) that you can use for making exploratory requests.
+
+## Examples
+
+Note the following code snippets assume you've already instantiated an `OnspringClient` as shown in the [Start Coding](#start-coding) section.
 
 ### Connectivity
 
@@ -255,19 +267,47 @@ console.log(fileInfo);
 Returns the file itself.
 
 ```js
+import fs from 'fs';
 
+const res = await client.getFileById(1, 4806, 909);
+const file = res.data;
+
+console.log(file.contentLength);
+console.log(file.contentType);
+console.log(file.fileName);
+file.stream.pipe(fs.createWriteStream(file.fileName));
 ```
 
 #### Save File
 
 ```js
+import fs from 'fs';
+import { SaveFileRequest } from 'onspring-api-sdk';
 
+const request = new SaveFileRequest(
+  1,
+  4806,
+  'notes',
+  new Date(),
+  'test-attachment.txt',
+  'text/plain',
+  fs.createReadStream('test-attachment.txt')
+);
+
+const res = await client.saveFile(request);
+const fileId = res.data.id;
+
+console.log(fileId);
 ```
 
 #### Delete File By Id
 
 ```js
+const res = await client.deleteFileById(1, 4806, 1505);
 
+res.statusCode === 204
+  ? console.log('File deleted')
+  : console.log('Error deleting file');
 ```
 
 ### Lists
@@ -277,19 +317,45 @@ Returns the file itself.
 To add a list value don't provide an id value.
 
 ```js
+import { ListItemRequest } from 'onspring-api-sdk';
 
+const request = new ListItemRequest(638, null, 'New Value', 1, '#000000');
+const res = await client.addOrUpdateListItem(request);
+const itemId = res.data.id;
+
+console.log(itemId);
 ```
 
 To update a list value provide an id value.
 
 ```js
+import { ListItemRequest } from 'onspring-api-sdk';
 
+const request = new ListItemRequest(
+  638,
+  '35c79a46-04b8-4069-bbc1-161a175f962c',
+  'Updated Value',
+  1,
+  '#000000'
+);
+
+const res = await client.addOrUpdateListItem(request);
+const itemId = res.data.id;
+
+console.log(itemId);
 ```
 
 #### Delete List Value
 
 ```js
+const res = await client.deleteListItemById(
+  638,
+  '35c79a46-04b8-4069-bbc1-161a175f962c'
+);
 
+res.statusCode === 204
+  ? console.log('List item deleted')
+  : console.log('Error deleting list item');
 ```
 
 ### Records
@@ -299,13 +365,39 @@ To update a list value provide an id value.
 Returns a paged collection of records that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
+import { GetRecordsByAppIdRequest } from 'onspring-api-sdk';
 
+const request = new GetRecordsByAppIdRequest(130);
+const res = await client.getRecordsByAppId(request);
+const apps = res.data.items;
+
+for (const app of apps) {
+  console.log(app);
+}
 ```
 
 You can set your own page size and page number (max is 1,000) as well. In addition to specifying what field values to return and in what format (Raw vs. Formatted) to return them.
 
 ```js
+import {
+  DataFormat,
+  GetRecordsByAppIdRequest,
+  PagingRequest,
+} from 'onspring-api-sdk';
 
+const request = new GetRecordsByAppIdRequest(
+  130,
+  [4804],
+  DataFormat.Raw,
+  new PagingRequest(1, 1)
+);
+
+const res = await client.getRecordsByAppId(request);
+const apps = res.data.items;
+
+for (const app of apps) {
+  console.log(app);
+}
 ```
 
 #### Get Record By Id
@@ -313,13 +405,25 @@ You can set your own page size and page number (max is 1,000) as well. In additi
 Returns an onspring record based on the provided app and record ids.
 
 ```js
+import { GetRecordRequest } from 'onspring-api-sdk';
 
+const request = new GetRecordRequest(130, 1);
+const res = await client.getRecordById(request);
+const record = res.data;
+
+console.log(record);
 ```
 
 You can also specify what field values to return and in what format (Raw vs. Formatted) to return them.
 
 ```js
+import { DataFormat, GetRecordRequest } from 'onspring-api-sdk';
 
+const request = new GetRecordRequest(130, 1, [4804], DataFormat.Raw);
+const res = await client.getRecordById(request);
+const record = res.data;
+
+console.log(record);
 ```
 
 #### Get Records By Ids
@@ -327,13 +431,29 @@ You can also specify what field values to return and in what format (Raw vs. For
 Returns a collection of Onspring records based on the provided appId and recordIds.
 
 ```js
+import { GetRecordsRequest } from 'onspring-api-sdk';
 
+const request = new GetRecordsRequest(130, [1]);
+const res = await client.getRecordsByIds(request);
+const records = res.data.items;
+
+for (const record of records) {
+  console.log(record);
+}
 ```
 
 You can also specify what field values to return and in what format (Raw vs. Formatted) to return them.
 
 ```js
+import { DataFormat, GetRecordsRequest } from 'onspring-api-sdk';
 
+const request = new GetRecordsRequest(130, [1], [4804], DataFormat.Formatted);
+const res = await client.getRecordsByIds(request);
+const records = res.data.items;
+
+for (const record of records) {
+  console.log(record);
+}
 ```
 
 #### Query Records
@@ -341,35 +461,106 @@ You can also specify what field values to return and in what format (Raw vs. For
 Returns a paged collection of records based on a criteria that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
+import {
+  FilterOperators,
+  QueryFilter,
+  QueryRecordsRequest,
+} from 'onspring-api-sdk';
 
+const filter = new QueryFilter(4745, FilterOperators.GreaterThan, 0);
+const request = new QueryRecordsRequest(130, filter);
+const res = await client.queryRecords(request);
+const records = res.data.items;
+
+for (const record of records) {
+  console.log(record);
+}
 ```
 
 You can set your own page size and page number (max is 1,000) as well. In addition to specifying what field values to return and in what format (Raw vs. Formatted) to return them.
 
 ```js
+import {
+  DataFormat,
+  FilterOperators,
+  PagingRequest,
+  QueryFilter,
+  QueryRecordsRequest,
+} from 'onspring-api-sdk';
 
+const filter = new QueryFilter(4745, FilterOperators.GreaterThan, 0);
+const request = new QueryRecordsRequest(
+  130,
+  filter,
+  [4804],
+  DataFormat.Formatted,
+  new PagingRequest(1, 1)
+);
+
+const res = await client.queryRecords(request);
+const records = res.data.items;
+
+for (const record of records) {
+  console.log(record);
+}
 ```
 
-For further details on constructing the `filter` parameter please refer to the [documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf) for v2 of the Onspring API.
+For further details on constructing the `filter` parameter please refer to the [documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf) for the Onspring API.
 
 #### Add or Update A Record
 
 You can add a record by not providing a record id value. If successful will return the id of the added record.
 
 ```js
+import { Record, StringRecordValue } from 'onspring-api-sdk';
 
+const record = new Record(130, null);
+const fieldValue = new StringRecordValue(4804, 'Test');
+record.addValue(fieldValue);
+
+const res = await client.saveRecord(record);
+const newRecordId = res.data.id;
+
+console.log(newRecordId);
 ```
 
 You can update a record by providing its id. If successful will return the id of record updated.
 
 ```js
+import { Record, StringRecordValue } from 'onspring-api-sdk';
 
+const record = new Record(130, 607);
+const fieldValue = new StringRecordValue(4804, 'Updated');
+record.addValue(fieldValue);
+
+const res = await client.saveRecord(record);
+const updatedRecordId = res.data.id;
+
+console.log(updatedRecordId);
+```
+
+#### Delete Record By Id
+
+Delete an individual record based upon its id.
+
+```js
+const res = await client.deleteRecordById(130, 607);
+
+res.statusCode === 204
+  ? console.log('Record deleted')
+  : console.log('Error deleting record');
 ```
 
 #### Delete Records By Ids
 
-```js
+Delete a batch of records based upon their ids.
 
+```js
+const res = await client.deleteRecordsByIds(130, [608, 609]);
+
+res.statusCode === 204
+  ? console.log('Records deleted')
+  : console.log('Error deleting records');
 ```
 
 ### Reports
@@ -379,13 +570,25 @@ You can update a record by providing its id. If successful will return the id of
 Returns the report for the provided id.
 
 ```js
+const res = await client.getReportById(408);
+const report = res.data;
 
+console.log(report);
 ```
 
 You can also specify the format of the data in the report as well as whether you are requesting the report's data or its chart data.
 
 ```js
+import { DataFormat, ReportDataType } from 'onspring-api-sdk';
 
+const res = await client.getReportById(
+  409,
+  DataFormat.Formatted,
+  ReportDataType.ChartData
+);
+const report = res.data;
+
+console.log(report);
 ```
 
 #### Get Reports By App Id
@@ -393,5 +596,23 @@ You can also specify the format of the data in the report as well as whether you
 Returns a paged collection of reports that can be paged through. By default the page size is 50 and page number is 1.
 
 ```js
+const res = await client.getReportsByAppId(130);
+const reports = res.data.items;
 
+for (const report of reports) {
+  console.log(report);
+}
+```
+
+You can set your own page size and page number (max is 1,000) as well.
+
+```js
+import { PagingRequest } from 'onspring-api-sdk';
+
+const res = await client.getReportsByAppId(130, new PagingRequest(1, 1));
+const reports = res.data.items;
+
+for (const report of reports) {
+  console.log(report);
+}
 ```
