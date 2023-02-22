@@ -8,6 +8,6 @@
   "all": true,
   "include": ["src/**/*.ts"],
   "exclude": ["src/index.ts", "**/*.spec.ts"],
-  "reporter": ["html", "lcov", "text", "text-summary"],
+  "reporter": ["html", "lcov", "text", "text-summary", "json"],
   "report-dir": "coverage"
 }
