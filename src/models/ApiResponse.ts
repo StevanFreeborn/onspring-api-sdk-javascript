@@ -238,6 +238,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asFileInfoType - Converts the ApiResponse to an ApiResponse<FileInfo>.
+   * @returns {ApiResponse<FileInfo>} - An ApiResponse<FileInfo>.
+   */
   public asFileInfoType(): ApiResponse<FileInfo> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -259,6 +263,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asFileType - Converts the ApiResponse to an ApiResponse<File>.
+   * @returns {ApiResponse<File>} - An ApiResponse<File>.
+   */
   public asFileType(response: AxiosResponse): ApiResponse<File> {
     const apiResponse = this as ApiResponse<any>;
     const fileName = response.headers['content-disposition']
@@ -408,6 +416,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asRecordCollectionType - Converts the ApiResponse to an ApiResponse<CollectionResponse<Record>>.
+   * @returns {ApiResponse<CollectionResponse<Record>>} - An ApiResponse<CollectionResponse<Record>>.
+   */
   public asRecordCollectionType(): ApiResponse<CollectionResponse<Record>> {
     const apiResponse = this as ApiResponse<any>;
 
@@ -431,6 +443,10 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method asSaveRecordResponseType - Converts the ApiResponse to an ApiResponse<SaveRecordResponse>.
+   * @returns {ApiResponse<SaveRecordResponse>} - An ApiResponse<SaveRecordResponse>.
+   */
   public asSaveRecordResponseType(): ApiResponse<SaveRecordResponse> {
     const apiResponse = this as ApiResponse<any>;
     const response = new SaveRecordResponse(
@@ -444,6 +460,11 @@ export class ApiResponse<T> {
     );
   }
 
+  /**
+   * @method getRecordValueByType - Gets the RecordValue by by type.
+   * @param {RecordValue} recordValueItem - The record value item.
+   * @returns {RecordValue} - The RecordValue.
+   */
   private static getRecordValueByType(recordValueItem: any): RecordValue<any> {
     const type = RecordValueType[recordValueItem.type];
 
@@ -626,6 +647,11 @@ export class ApiResponse<T> {
     }
   }
 
+  /**
+   * @method convertToDelegate - Converts the delegate item to a Delegate object.
+   * @param {any} delegateItem - The delegate item to convert.
+   * @returns {Delegate} - The converted Delegate object.
+   */
   private static convertToDelegate(delegateItem: any): Delegate {
     const delegateType = DelegateType[delegateItem.delegateType];
 
@@ -712,7 +738,7 @@ export class ApiResponse<T> {
     const hasRecurrence =
       timeSpanItem.recurrence !== null && timeSpanItem.recurrence !== undefined;
 
-    const recurrene = hasRecurrence
+    const recurrence = hasRecurrence
       ? TimeSpanRecurrenceType[timeSpanItem.recurrence]
       : null;
 
@@ -735,7 +761,7 @@ export class ApiResponse<T> {
       );
     }
 
-    if (recurrene === undefined) {
+    if (recurrence === undefined) {
       throw new Error(
         `${
           timeSpanItem.recurrence as string
@@ -746,7 +772,7 @@ export class ApiResponse<T> {
     return new TimeSpanData(
       timeSpanItem.quantity,
       increment,
-      recurrene,
+      recurrence,
       endAfterOccurrences,
       endByDate
     );
