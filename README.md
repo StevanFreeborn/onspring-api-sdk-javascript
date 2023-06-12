@@ -100,7 +100,7 @@ const client = new OnspringClient(process.env.BASE_URL, process.env.API_KEY);
 
 ### `Axios` Instance Configuration
 
-By default when you construct an instance of the `OnspringClient` the a new `Axios` instance will also be created. Its `baseURL` property will always be set to the `baseUrl` parameter based to the `OnspringClient`'s constructor and its headers will always contain the proper `x-api-key` header.
+By default when you construct an instance of the `OnspringClient` a new `Axios` instance will also be created. Its `baseURL` property will always be set to the `baseUrl` parameter based to the `OnspringClient`'s constructor and its headers will always contain the proper `x-api-key` header.
 
 You can though pass a third optional argument to the `OnspringClient` constructor that specifies additional configuration options for the `Axios` instance used to make requests.
 
@@ -378,10 +378,10 @@ import { GetRecordsByAppIdRequest } from 'onspring-api-sdk';
 
 const request = new GetRecordsByAppIdRequest(130);
 const res = await client.getRecordsByAppId(request);
-const apps = res.data.items;
+const records = res.data.items;
 
-for (const app of apps) {
-  console.log(app);
+for (const record of records) {
+  console.log(record);
 }
 ```
 
@@ -402,10 +402,10 @@ const request = new GetRecordsByAppIdRequest(
 );
 
 const res = await client.getRecordsByAppId(request);
-const apps = res.data.items;
+const records = res.data.items;
 
-for (const app of apps) {
-  console.log(app);
+for (const record of records) {
+  console.log(record);
 }
 ```
 
