@@ -6,6 +6,7 @@
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 [![NPM](https://img.shields.io/npm/l/onspring-api-sdk)](License.txt)
 ![npm](https://img.shields.io/npm/v/onspring-api-sdk)
+![npm](https://img.shields.io/npm/dt/onspring-api-sdk)
 
 The Javascript SDK for the Onspring API is meant to simplify development in Javascript for Onspring customers who want to build integrations with their Onspring instance.
 
