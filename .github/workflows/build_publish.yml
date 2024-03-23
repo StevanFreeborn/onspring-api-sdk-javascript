@@ -61,6 +61,28 @@ jobs:
         with:
           name: build
           path: ./dist
+  generate_docs:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+      - name: Install dependencies
+        run: npm install
+      - name: Generate docs
+        run: npm run generate-docs
+      - name: Commit generated docs
+        id: commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          commit: --no-verify
+          message: 'docs: update docs'
+          committer_name: GitHub Actions
+          committer_email: actions@github.com
   publish:
     needs: build
     runs-on: ubuntu-latest
