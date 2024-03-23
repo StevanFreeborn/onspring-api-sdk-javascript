@@ -1,0 +1,205 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>FieldType | onspring-api-sdk</title><meta name="description" content="Documentation for onspring-api-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-sys-color-primary: #adc6ff;
+    --md-sys-color-on-primary: #002e6a;
+    --md-sys-color-primary-container: #10448f;
+    --md-sys-color-on-primary-container: #d8e2ff;
+    --md-sys-color-secondary: #bfc6dc;
+    --md-sys-color-on-secondary: #293041;
+    --md-sys-color-secondary-container: #3f4759;
+    --md-sys-color-on-secondary-container: #dbe2f9;
+    --md-sys-color-tertiary: #debcdf;
+    --md-sys-color-on-tertiary: #402843;
+    --md-sys-color-tertiary-container: #583e5b;
+    --md-sys-color-on-tertiary-container: #fcd7fb;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-on-error-container: #ffb4ab;
+    --md-sys-color-background: #1b1b1f;
+    --md-sys-color-on-background: #e3e2e6;
+    --md-sys-color-surface: #1b1b1f;
+    --md-sys-color-on-surface: #e3e2e6;
+    --md-sys-color-surface-variant: #44474f;
+    --md-sys-color-on-surface-variant: #c4c6d0;
+    --md-sys-color-outline: #8e9099;
+    --md-sys-color-outline-variant: #44474f;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #e3e2e6;
+    --md-sys-color-inverse-on-surface: #303034;
+    --md-sys-color-inverse-primary: #325da8;
+    --md-sys-color-surface-dim: #121316;
+    --md-sys-color-surface-bright: #38393c;
+    --md-sys-color-surface-container-lowest: #0d0e11;
+    --md-sys-color-surface-container-low: #1b1b1f;
+    --md-sys-color-surface-container: #1f1f23;
+    --md-sys-color-surface-container-high: #292a2d;
+    --md-sys-color-surface-container-highest: #343538
+  }
+}
+:root[data-theme="dark"] {
+  --md-sys-color-primary: #adc6ff;
+  --md-sys-color-on-primary: #002e6a;
+  --md-sys-color-primary-container: #10448f;
+  --md-sys-color-on-primary-container: #d8e2ff;
+  --md-sys-color-secondary: #bfc6dc;
+  --md-sys-color-on-secondary: #293041;
+  --md-sys-color-secondary-container: #3f4759;
+  --md-sys-color-on-secondary-container: #dbe2f9;
+  --md-sys-color-tertiary: #debcdf;
+  --md-sys-color-on-tertiary: #402843;
+  --md-sys-color-tertiary-container: #583e5b;
+  --md-sys-color-on-tertiary-container: #fcd7fb;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffb4ab;
+  --md-sys-color-background: #1b1b1f;
+  --md-sys-color-on-background: #e3e2e6;
+  --md-sys-color-surface: #1b1b1f;
+  --md-sys-color-on-surface: #e3e2e6;
+  --md-sys-color-surface-variant: #44474f;
+  --md-sys-color-on-surface-variant: #c4c6d0;
+  --md-sys-color-outline: #8e9099;
+  --md-sys-color-outline-variant: #44474f;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #e3e2e6;
+  --md-sys-color-inverse-on-surface: #303034;
+  --md-sys-color-inverse-primary: #325da8;
+  --md-sys-color-surface-dim: #121316;
+  --md-sys-color-surface-bright: #38393c;
+  --md-sys-color-surface-container-lowest: #0d0e11;
+  --md-sys-color-surface-container-low: #1b1b1f;
+  --md-sys-color-surface-container: #1f1f23;
+  --md-sys-color-surface-container-high: #292a2d;
+  --md-sys-color-surface-container-highest: #343538
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --md-sys-color-primary: #325da8;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d8e2ff;
+    --md-sys-color-on-primary-container: #001a42;
+    --md-sys-color-secondary: #575e71;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #dbe2f9;
+    --md-sys-color-on-secondary-container: #141b2c;
+    --md-sys-color-tertiary: #715573;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #fcd7fb;
+    --md-sys-color-on-tertiary-container: #29132d;
+    --md-sys-color-error: #ba1a1a;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #ffdad6;
+    --md-sys-color-on-error-container: #410002;
+    --md-sys-color-background: #fefbff;
+    --md-sys-color-on-background: #1b1b1f;
+    --md-sys-color-surface: #fefbff;
+    --md-sys-color-on-surface: #1b1b1f;
+    --md-sys-color-surface-variant: #e1e2ec;
+    --md-sys-color-on-surface-variant: #44474f;
+    --md-sys-color-outline: #75777f;
+    --md-sys-color-outline-variant: #c4c6d0;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #303034;
+    --md-sys-color-inverse-on-surface: #f2f0f4;
+    --md-sys-color-inverse-primary: #adc6ff;
+    --md-sys-color-surface-dim: #dbd9dd;
+    --md-sys-color-surface-bright: #faf8fd;
+    --md-sys-color-surface-container-lowest: #ffffff;
+    --md-sys-color-surface-container-low: #f5f3f7;
+    --md-sys-color-surface-container: #efedf1;
+    --md-sys-color-surface-container-high: #e9e7ec;
+    --md-sys-color-surface-container-highest: #e3e2e6
+  }
+}
+:root[data-theme="light"] {
+  --md-sys-color-primary: #325da8;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d8e2ff;
+  --md-sys-color-on-primary-container: #001a42;
+  --md-sys-color-secondary: #575e71;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dbe2f9;
+  --md-sys-color-on-secondary-container: #141b2c;
+  --md-sys-color-tertiary: #715573;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #fcd7fb;
+  --md-sys-color-on-tertiary-container: #29132d;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #fefbff;
+  --md-sys-color-on-background: #1b1b1f;
+  --md-sys-color-surface: #fefbff;
+  --md-sys-color-on-surface: #1b1b1f;
+  --md-sys-color-surface-variant: #e1e2ec;
+  --md-sys-color-on-surface-variant: #44474f;
+  --md-sys-color-outline: #75777f;
+  --md-sys-color-outline-variant: #c4c6d0;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #303034;
+  --md-sys-color-inverse-on-surface: #f2f0f4;
+  --md-sys-color-inverse-primary: #adc6ff;
+  --md-sys-color-surface-dim: #dbd9dd;
+  --md-sys-color-surface-bright: #faf8fd;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f5f3f7;
+  --md-sys-color-surface-container: #efedf1;
+  --md-sys-color-surface-container-high: #e9e7ec;
+  --md-sys-color-surface-container-highest: #e3e2e6
+}
+</style><link rel="stylesheet" href="../assets/material-style.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">onspring-api-sdk</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><ul class="tsd-breadcrumb"><li><a href="../modules.html">onspring-api-sdk</a></li><li><a href="FieldType.html">FieldType</a></li></ul><h1>Enumeration FieldType</h1></div><section class="tsd-panel tsd-comment"><div class="tsd-comment tsd-typography"><p>FieldType - The type of field.</p>
+</div><div class="tsd-comment tsd-typography"></div></section><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L4">enums/FieldType.ts:4</a></li></ul></aside><section class="tsd-panel-group tsd-index-group"><section class="tsd-panel tsd-index-panel"><details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><h5 class="tsd-index-heading uppercase" role="button" aria-expanded="false" tabIndex="0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-chevronSmall"></use></svg> Index</h5></summary><div class="tsd-accordion-details"><section class="tsd-index-section"><h3 class="tsd-index-heading">Enumeration Members</h3><div class="tsd-index-list"><a href="FieldType.html#Attachment" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Attachment</span></a>
+<a href="FieldType.html#AutoNumber" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Auto<wbr/>Number</span></a>
+<a href="FieldType.html#Date" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Date</span></a>
+<a href="FieldType.html#Formula" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Formula</span></a>
+<a href="FieldType.html#Image" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Image</span></a>
+<a href="FieldType.html#List" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>List</span></a>
+<a href="FieldType.html#Number" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Number</span></a>
+<a href="FieldType.html#Reference" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Reference</span></a>
+<a href="FieldType.html#SurveyCampaign" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Campaign</span></a>
+<a href="FieldType.html#SurveyDelegation" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Delegation</span></a>
+<a href="FieldType.html#SurveyGroupScoring" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Group<wbr/>Scoring</span></a>
+<a href="FieldType.html#SurveyReference" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Reference</span></a>
+<a href="FieldType.html#SurveyUnifiedAnswer" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Unified<wbr/>Answer</span></a>
+<a href="FieldType.html#Text" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Text</span></a>
+<a href="FieldType.html#TimeSpan" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Time<wbr/>Span</span></a>
+</div></section></div></details></section></section><section class="tsd-panel-group tsd-member-group"><h2>Enumeration Members</h2><section class="tsd-panel tsd-member"><a id="Attachment" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Attachment</span><a href="#Attachment" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Attachment</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Attachment&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Attachment - The field is a attachment field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L80">enums/FieldType.ts:80</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="AutoNumber" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Auto<wbr/>Number</span><a href="#AutoNumber" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Auto<wbr/>Number</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;AutoNumber&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>AutoNumber - The field is a autonumber field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L21">enums/FieldType.ts:21</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Date" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Date</span><a href="#Date" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Date</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Date&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Date - The field is a date field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L27">enums/FieldType.ts:27</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Formula" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Formula</span><a href="#Formula" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Formula</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Formula&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Formula - The field is a formula field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L92">enums/FieldType.ts:92</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Image" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Image</span><a href="#Image" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Image</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Image&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Image - The field is a image field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L86">enums/FieldType.ts:86</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="List" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>List</span><a href="#List" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">List</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;List&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>List - The field is a list field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L39">enums/FieldType.ts:39</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Number" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Number</span><a href="#Number" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Number</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Number&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Number - The field is a number field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L15">enums/FieldType.ts:15</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Reference" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Reference</span><a href="#Reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Reference</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Reference&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Reference - The field is a reference field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L45">enums/FieldType.ts:45</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="SurveyCampaign" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Survey<wbr/>Campaign</span><a href="#SurveyCampaign" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Survey<wbr/>Campaign</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;SurveyCampaign&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>SurveyCampaign - The field is a survey campaign field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L63">enums/FieldType.ts:63</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="SurveyDelegation" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Survey<wbr/>Delegation</span><a href="#SurveyDelegation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Survey<wbr/>Delegation</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;SurveyDelegation&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>SurveyDelegation - The field is a survey delegation field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L74">enums/FieldType.ts:74</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="SurveyGroupScoring" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Survey<wbr/>Group<wbr/>Scoring</span><a href="#SurveyGroupScoring" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Survey<wbr/>Group<wbr/>Scoring</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;SurveyGroupScoring&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>SurveyGroupScoring - The field is a survey group scoring field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L57">enums/FieldType.ts:57</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="SurveyReference" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Survey<wbr/>Reference</span><a href="#SurveyReference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Survey<wbr/>Reference</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;SurveyReference&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>SurveyReference - The field is a survey reference field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L51">enums/FieldType.ts:51</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="SurveyUnifiedAnswer" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Survey<wbr/>Unified<wbr/>Answer</span><a href="#SurveyUnifiedAnswer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Survey<wbr/>Unified<wbr/>Answer</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;SurveyUnifiedAnswer&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>SurveyUnifiedAnswer - The field is a survey unified answer field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L69">enums/FieldType.ts:69</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="Text" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Text</span><a href="#Text" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Text</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;Text&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>Text - The field is a text field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L9">enums/FieldType.ts:9</a></li></ul></aside></section><section class="tsd-panel tsd-member"><a id="TimeSpan" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>Time<wbr/>Span</span><a href="#TimeSpan" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-enum-member">Time<wbr/>Span</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;TimeSpan&quot;</span></div><div class="tsd-comment tsd-typography"><h4>Constant</h4><p>TimeSpan - The field is a timespan field.</p>
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/StevanFreeborn/onspring-api-sdk-javascript/blob/90a559a/src/enums/FieldType.ts#L33">enums/FieldType.ts:33</a></li></ul></aside></section></section></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#Attachment" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Attachment</span></a><a href="#AutoNumber" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Auto<wbr/>Number</span></a><a href="#Date" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Date</span></a><a href="#Formula" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Formula</span></a><a href="#Image" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Image</span></a><a href="#List" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>List</span></a><a href="#Number" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Number</span></a><a href="#Reference" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Reference</span></a><a href="#SurveyCampaign" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Campaign</span></a><a href="#SurveyDelegation" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Delegation</span></a><a href="#SurveyGroupScoring" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Group<wbr/>Scoring</span></a><a href="#SurveyReference" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Reference</span></a><a href="#SurveyUnifiedAnswer" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Survey<wbr/>Unified<wbr/>Answer</span></a><a href="#Text" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Text</span></a><a href="#TimeSpan" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-16"></use></svg><span>Time<wbr/>Span</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-1"></use></svg><span>onspring-api-sdk</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".."><li>Loading...</li></ul></nav></div></div></div><div class="tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script>
+          try {
+            const generateLinkElement = document.querySelector(".tsd-generator a");
+            const link = document.createElement("a");
+            Object.assign(link, {
+              href: "https://github.com/dmnsgn/typedoc-material-theme",
+              target: "_blank",
+              rel: "noreferrer",
+              innerText: "typedoc-material-theme."
+            });
+            generateLinkElement.insertAdjacentElement("afterend", link);
+            generateLinkElement.insertAdjacentText("afterend", " with ");
+          } catch (error) {
+
+          }
+        </script></body></html>

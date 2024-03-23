@@ -43,6 +43,7 @@
     }
   },
   "scripts": {
+    "generate-docs": "typedoc src/index.ts --plugin typedoc-material-theme --themeColor '#194488' --gitRemote github",
     "clean": "rimraf dist",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint-fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts . --max-warnings=0",
@@ -85,6 +86,7 @@
     "sinon": "^15.0.1",
     "ts-node": "^10.9.1",
     "typedoc": "^0.25.12",
+    "typedoc-material-theme": "^1.0.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
