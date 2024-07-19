@@ -995,9 +995,11 @@ describe('ApiResponse', function () {
     it('should be a function', function () {
       expect(ApiResponse.prototype.asListItemResponseType).to.be.a('function');
     });
+
     it('should have no parameters', function () {
       expect(ApiResponse.prototype.asListItemResponseType.length).to.equal(0);
     });
+
     it('should return an ApiResponse<ListItemResponse>', function () {
       const apiResponse = new ApiResponse(200, 'OK', {
         id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
