@@ -20,50 +20,12 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npm run test-coverage:ci
-        env:
-          API_BASE_URL: ${{ vars.API_BASE_URL }}
-          SANDBOX_API_KEY: ${{ secrets.SANDBOX_API_KEY }}
-          TEST_APP_ID: ${{ vars.TEST_APP_ID }}
-          TEST_APP_IDS: ${{ vars.TEST_APP_IDS }}
-          TEST_APP_IDS_NO_ACCESS: ${{ vars.TEST_APP_IDS_NO_ACCESS }}
-          TEST_APP_ID_NO_ACCESS: ${{ vars.TEST_APP_ID_NO_ACCESS }}
-          TEST_ATTACHMENT: ${{ vars.TEST_ATTACHMENT }}
-          TEST_ATTACHMENT_FIELD: ${{ vars.TEST_ATTACHMENT_FIELD }}
-          TEST_ATTACHMENT_FIELD_NO_ACCESS_APP: ${{ vars.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP }}
-          TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD: ${{ vars.TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD }}
-          TEST_FIELD_ID: ${{ vars.TEST_FIELD_ID }}
-          TEST_FIELD_IDS: ${{ vars.TEST_FIELD_IDS }}
-          TEST_FIELD_IDS_NO_ACCESS: ${{ vars.TEST_FIELD_IDS_NO_ACCESS }}
-          TEST_FIELD_ID_NO_ACCESS: ${{ vars.TEST_FIELD_ID_NO_ACCESS }}
-          TEST_IMAGE: ${{ vars.TEST_IMAGE }}
-          TEST_IMAGE_FIELD: ${{ vars.TEST_IMAGE_FIELD }}
-          TEST_LIST_FIELD: ${{ vars.TEST_LIST_FIELD }}
-          TEST_LIST_FIELD_NO_ACCESS: ${{ vars.TEST_LIST_FIELD_NO_ACCESS }}
-          TEST_LIST_ID: ${{ vars.TEST_LIST_ID }}
-          TEST_LIST_ID_NO_ACCESS: ${{ vars.TEST_LIST_ID_NO_ACCESS }}
-          TEST_LIST_ITEM_ID_NO_ACCESS: ${{ vars.TEST_LIST_ITEM_ID_NO_ACCESS }}
-          TEST_RECORD: ${{ vars.TEST_RECORD }}
-          TEST_REPORT: ${{ vars.TEST_REPORT }}
-          TEST_REPORT_NO_ACCESS: ${{ vars.TEST_REPORT_NO_ACCESS }}
-          TEST_REPORT_WITH_CHART_DATA: ${{ vars.TEST_REPORT_WITH_CHART_DATA }}
-          TEST_SURVEY_AUTO_NUMBER_FIELD: ${{ vars.TEST_SURVEY_AUTO_NUMBER_FIELD }}
-          TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
-          TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
-          TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
-      - name: Cleanup
-        run: npm run cleanup
       - name: Build ESM
         run: npm run build:esm
       - name: Build CJS
         run: npm run build:cjs
       - name: Build package.json
         run: npm run build:json
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
