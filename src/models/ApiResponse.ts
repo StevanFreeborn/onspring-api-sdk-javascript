@@ -323,7 +323,7 @@ export class ApiResponse<T> {
     const apiResponse = this as ApiResponse<any>;
 
     const reports = apiResponse.data.items.map((item: any) => {
-      return new Report(item.id, item.appId, item.name, item.description);
+      return new Report(item.appId, item.id, item.name, item.description);
     });
 
     const getPagedReportsResponse = new GetPagedReportsResponse(
