@@ -20,8 +20,8 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm install
-      - name: Build package
-        run: npm run build
+      - name: Run tests
+        run: npm run test-coverage:ci
         env:
           API_BASE_URL: ${{ vars.API_BASE_URL }}
           SANDBOX_API_KEY: ${{ secrets.SANDBOX_API_KEY }}
@@ -52,6 +52,14 @@ jobs:
           TEST_SURVEY_ID: ${{ vars.TEST_SURVEY_ID }}
           TEST_SURVEY_RECORD_ID: ${{ vars.TEST_SURVEY_RECORD_ID }}
           TEST_TEXT_FIELD: ${{ vars.TEST_TEXT_FIELD }}
+      - name: Cleanup
+        run: npm run cleanup
+      - name: Build ESM
+        run: npm run build:esm
+      - name: Build CJS
+        run: npm run build:cjs
+      - name: Build package.json
+        run: npm run build:json
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
