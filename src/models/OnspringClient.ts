@@ -20,14 +20,16 @@ import { type GetPagedFieldsResponse } from './GetPagedFieldsResponse.js';
 import { type GetPagedRecordsResponse } from './GetPagedRecordsResponse.js';
 import { type GetPagedReportsResponse } from './GetPagedReportsResponse.js';
 import { type GetRecordRequest } from './GetRecordRequest.js';
-import { type GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest.js';
+import { GetRecordsByAppIdRequest } from './GetRecordsByAppIdRequest.js';
 import { type GetRecordsRequest } from './GetRecordsRequest.js';
 import { type ListItemRequest } from './ListItemRequest.js';
 import { type ListItemResponse } from './ListItemResponse.js';
 import { PagingRequest } from './PagingRequest.js';
-import { type QueryRecordsRequest } from './QueryRecordsRequest.js';
+import { type QueryFilter } from './QueryFilter.js';
+import { QueryRecordsRequest } from './QueryRecordsRequest.js';
 import { Record } from './Record.js';
 import { type ReportData } from './ReportData.js';
+import { type Report } from './Report.js';
 import { type SaveFileRequest } from './SaveFileRequest.js';
 import { type SaveRecordRequest } from './SaveRecordRequest.js';
 import { type SaveRecordResponse } from './SaveRecordResponse.js';
@@ -109,6 +111,39 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedAppsResponseType();
+  }
+
+  /**
+   * @method getAppsIterable - Gets an async iterable of apps that automatically pages through all results.
+   * @param {number} pageSize - The page size to use for each request. Default is 50.
+   * @returns {AsyncIterable<App>} - An async iterable of apps.
+   * @example
+   * ```typescript
+   * for await (const app of client.getAppsIterable()) {
+   *   console.log(app);
+   * }
+   * ```
+   */
+  public async *getAppsIterable(pageSize = 50): AsyncIterable<App> {
+    let pageNumber = 1;
+    let hasMorePages = true;
+
+    while (hasMorePages) {
+      const response = await this.getApps(
+        new PagingRequest(pageNumber, pageSize)
+      );
+
+      if (response.isSuccessful === false || response.data === null) {
+        break;
+      }
+
+      for (const app of response.data.items) {
+        yield app;
+      }
+
+      hasMorePages = pageNumber < response.data.totalPages;
+      pageNumber++;
+    }
   }
 
   /**
@@ -201,6 +236,44 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedFieldsResponseType();
+  }
+
+  /**
+   * @method getFieldsByAppIdIterable - Gets an async iterable of fields that automatically pages through all results.
+   * @param {number} appId - The id of the app to get the fields for.
+   * @param {number} pageSize - The page size to use for each request. Default is 50.
+   * @returns {AsyncIterable<Field>} - An async iterable of fields.
+   * @example
+   * ```typescript
+   * for await (const field of client.getFieldsByAppIdIterable(132)) {
+   *   console.log(field);
+   * }
+   * ```
+   */
+  public async *getFieldsByAppIdIterable(
+    appId: number,
+    pageSize = 50
+  ): AsyncIterable<Field> {
+    let pageNumber = 1;
+    let hasMorePages = true;
+
+    while (hasMorePages) {
+      const response = await this.getFieldsByAppId(
+        appId,
+        new PagingRequest(pageNumber, pageSize)
+      );
+
+      if (response.isSuccessful === false || response.data === null) {
+        break;
+      }
+
+      for (const field of response.data.items) {
+        yield field;
+      }
+
+      hasMorePages = pageNumber < response.data.totalPages;
+      pageNumber++;
+    }
   }
 
   /**
@@ -365,6 +438,51 @@ export class OnspringClient {
   }
 
   /**
+   * @method getRecordsByAppIdIterable - Gets an async iterable of records that automatically pages through all results.
+   * @param {number} appId - The id of the app to get the records for.
+   * @param {number[]} fieldIds - The ids of the fields to include in the response. Default is empty array (all fields).
+   * @param {DataFormat} dataFormat - The format of the data in the response. Default is Raw.
+   * @param {number} pageSize - The page size to use for each request. Default is 50.
+   * @returns {AsyncIterable<Record>} - An async iterable of records.
+   * @example
+   * ```typescript
+   * for await (const record of client.getRecordsByAppIdIterable(130)) {
+   *   console.log(record);
+   * }
+   * ```
+   */
+  public async *getRecordsByAppIdIterable(
+    appId: number,
+    fieldIds: number[] = [],
+    dataFormat: DataFormat = DataFormat.Raw,
+    pageSize = 50
+  ): AsyncIterable<Record> {
+    let pageNumber = 1;
+    let hasMorePages = true;
+
+    while (hasMorePages) {
+      const request = new GetRecordsByAppIdRequest(
+        appId,
+        fieldIds,
+        dataFormat,
+        new PagingRequest(pageNumber, pageSize)
+      );
+      const response = await this.getRecordsByAppId(request);
+
+      if (response.isSuccessful === false || response.data === null) {
+        break;
+      }
+
+      for (const record of response.data.items) {
+        yield record;
+      }
+
+      hasMorePages = pageNumber < response.data.totalPages;
+      pageNumber++;
+    }
+  }
+
+  /**
    * @method getRecordById - Gets a record by its id.
    * @param {GetRecordRequest} request - The request that will be used to get the record.
    * @returns {Promise<ApiResponse<Record>>} - A promise that resolves to an ApiResponse of type Record.
@@ -421,6 +539,54 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedRecordsResponseType();
+  }
+
+  /**
+   * @method queryRecordsIterable - Gets an async iterable of records from a query that automatically pages through all results.
+   * @param {number} appId - The id of the app to query records from.
+   * @param {string | QueryFilter} filter - The filter to use to query for records.
+   * @param {number[]} fieldIds - The ids of the fields to include in the response. Default is empty array (all fields).
+   * @param {DataFormat} dataFormat - The format of the data in the response. Default is Raw.
+   * @param {number} pageSize - The page size to use for each request. Default is 50.
+   * @returns {AsyncIterable<Record>} - An async iterable of records.
+   * @example
+   * ```typescript
+   * for await (const record of client.queryRecordsIterable(130, "status eq 'Active'")) {
+   *   console.log(record);
+   * }
+   * ```
+   */
+  public async *queryRecordsIterable(
+    appId: number,
+    filter: string | QueryFilter,
+    fieldIds: number[] = [],
+    dataFormat: DataFormat = DataFormat.Raw,
+    pageSize = 50
+  ): AsyncIterable<Record> {
+    let pageNumber = 1;
+    let hasMorePages = true;
+
+    while (hasMorePages) {
+      const request = new QueryRecordsRequest(
+        appId,
+        filter,
+        fieldIds,
+        dataFormat,
+        new PagingRequest(pageNumber, pageSize)
+      );
+      const response = await this.queryRecords(request);
+
+      if (response.isSuccessful === false || response.data === null) {
+        break;
+      }
+
+      for (const record of response.data.items) {
+        yield record;
+      }
+
+      hasMorePages = pageNumber < response.data.totalPages;
+      pageNumber++;
+    }
   }
 
   /**
@@ -501,6 +667,44 @@ export class OnspringClient {
     }
 
     return apiResponse.asGetPagedReportsResponseType();
+  }
+
+  /**
+   * @method getReportsByAppIdIterable - Gets an async iterable of reports that automatically pages through all results.
+   * @param {number} appId - The id of the app to get the reports for.
+   * @param {number} pageSize - The page size to use for each request. Default is 50.
+   * @returns {AsyncIterable<Report>} - An async iterable of reports.
+   * @example
+   * ```typescript
+   * for await (const report of client.getReportsByAppIdIterable(130)) {
+   *   console.log(report);
+   * }
+   * ```
+   */
+  public async *getReportsByAppIdIterable(
+    appId: number,
+    pageSize = 50
+  ): AsyncIterable<Report> {
+    let pageNumber = 1;
+    let hasMorePages = true;
+
+    while (hasMorePages) {
+      const response = await this.getReportsByAppId(
+        appId,
+        new PagingRequest(pageNumber, pageSize)
+      );
+
+      if (response.isSuccessful === false || response.data === null) {
+        break;
+      }
+
+      for (const report of response.data.items) {
+        yield report;
+      }
+
+      hasMorePages = pageNumber < response.data.totalPages;
+      pageNumber++;
+    }
   }
 
   /**
