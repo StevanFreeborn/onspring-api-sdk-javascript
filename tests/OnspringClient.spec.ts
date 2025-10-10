@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import * as sinon from 'sinon';
 import { Readable } from 'stream';
+import { DataFormat } from '../src/enums/DataFormat';
 import { FieldStatus } from '../src/enums/FieldStatus';
 import { FieldType } from '../src/enums/FieldType';
 import { ApiResponse } from '../src/models/ApiResponse';
@@ -4198,6 +4199,800 @@ describe('OnspringClient', function () {
       expect(result).to.have.property('isSuccessful', false);
       expect(result).to.have.property('message', 'Not Found');
       expect(result).to.have.property('data', null);
+    });
+  });
+
+  describe('getAppsIterable', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getAppsIterable).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getAppsIterable).to.be.a('function');
+    });
+
+    it('should yield all apps across multiple pages', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      let callCount = 0;
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        callCount++;
+        if (callCount === 1) {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 1,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                {
+                  href: 'https://api.onspring.dev/Apps/id/1',
+                  id: '1',
+                  name: 'App 1',
+                },
+                {
+                  href: 'https://api.onspring.dev/Apps/id/2',
+                  id: '2',
+                  name: 'App 2',
+                },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        } else {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 2,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                {
+                  href: 'https://api.onspring.dev/Apps/id/3',
+                  id: '3',
+                  name: 'App 3',
+                },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        }
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const apps: App[] = [];
+      for await (const app of client.getAppsIterable(2)) {
+        apps.push(app);
+      }
+
+      expect(apps).to.have.lengthOf(3);
+      expect(apps[0]).to.be.instanceOf(App);
+      expect(apps[0]).to.have.property('id', '1');
+      expect(apps[1]).to.have.property('id', '2');
+      expect(apps[2]).to.have.property('id', '3');
+    });
+
+    it('should stop iteration when request fails', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const apps: App[] = [];
+      for await (const app of client.getAppsIterable(2)) {
+        apps.push(app);
+      }
+
+      expect(apps).to.have.lengthOf(0);
+    });
+
+    it('should use default page size when not specified', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 50,
+            totalPages: 1,
+            totalRecords: 1,
+            items: [
+              {
+                href: 'https://api.onspring.dev/Apps/id/1',
+                id: '1',
+                name: 'App 1',
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const apps: App[] = [];
+      for await (const app of client.getAppsIterable()) {
+        apps.push(app);
+      }
+
+      expect(apps).to.have.lengthOf(1);
+    });
+  });
+
+  describe('getFieldsByAppIdIterable', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getFieldsByAppIdIterable).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getFieldsByAppIdIterable).to.be.a(
+        'function'
+      );
+    });
+
+    it('should yield all fields across multiple pages', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      let callCount = 0;
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        callCount++;
+        if (callCount === 1) {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 1,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                {
+                  id: 1,
+                  appId: 100,
+                  name: 'Field 1',
+                  type: FieldType.Text,
+                  status: FieldStatus.Enabled,
+                  isRequired: false,
+                  isUnique: false,
+                },
+                {
+                  id: 2,
+                  appId: 100,
+                  name: 'Field 2',
+                  type: FieldType.Text,
+                  status: FieldStatus.Enabled,
+                  isRequired: false,
+                  isUnique: false,
+                },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        } else {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 2,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                {
+                  id: 3,
+                  appId: 100,
+                  name: 'Field 3',
+                  type: FieldType.Text,
+                  status: FieldStatus.Enabled,
+                  isRequired: false,
+                  isUnique: false,
+                },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        }
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const fields: Field[] = [];
+      for await (const field of client.getFieldsByAppIdIterable(100, 2)) {
+        fields.push(field);
+      }
+
+      expect(fields).to.have.lengthOf(3);
+      expect(fields[0]).to.be.instanceOf(Field);
+      expect(fields[0]).to.have.property('id', 1);
+      expect(fields[1]).to.have.property('id', 2);
+      expect(fields[2]).to.have.property('id', 3);
+    });
+
+    it('should stop iteration when request fails', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const fields: Field[] = [];
+      for await (const field of client.getFieldsByAppIdIterable(100, 2)) {
+        fields.push(field);
+      }
+
+      expect(fields).to.have.lengthOf(0);
+    });
+
+    it('should use default page size when not specified', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 50,
+            totalPages: 1,
+            totalRecords: 1,
+            items: [
+              {
+                id: 1,
+                appId: 100,
+                name: 'Field 1',
+                type: FieldType.Text,
+                status: FieldStatus.Enabled,
+                isRequired: false,
+                isUnique: false,
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const fields: Field[] = [];
+      for await (const field of client.getFieldsByAppIdIterable(100)) {
+        fields.push(field);
+      }
+
+      expect(fields).to.have.lengthOf(1);
+    });
+  });
+
+  describe('getRecordsByAppIdIterable', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getRecordsByAppIdIterable).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getRecordsByAppIdIterable).to.be.a(
+        'function'
+      );
+    });
+
+    it('should yield all records across multiple pages', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      let callCount = 0;
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        callCount++;
+        if (callCount === 1) {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 1,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                { appId: 100, recordId: 1, fieldData: [] },
+                { appId: 100, recordId: 2, fieldData: [] },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        } else {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 2,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [{ appId: 100, recordId: 3, fieldData: [] }],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        }
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.getRecordsByAppIdIterable(
+        100,
+        [],
+        DataFormat.Raw,
+        2
+      )) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(3);
+      expect(records[0]).to.be.instanceOf(Record);
+      expect(records[0]).to.have.property('recordId', 1);
+      expect(records[1]).to.have.property('recordId', 2);
+      expect(records[2]).to.have.property('recordId', 3);
+    });
+
+    it('should stop iteration when request fails', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.getRecordsByAppIdIterable(
+        100,
+        [],
+        DataFormat.Raw,
+        2
+      )) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(0);
+    });
+
+    it('should use default parameters when not specified', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 50,
+            totalPages: 1,
+            totalRecords: 1,
+            items: [{ appId: 100, recordId: 1, fieldData: [] }],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.getRecordsByAppIdIterable(100)) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(1);
+    });
+  });
+
+  describe('queryRecordsIterable', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.queryRecordsIterable).to.not.be.undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.queryRecordsIterable).to.be.a('function');
+    });
+
+    it('should yield all records across multiple pages', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      let callCount = 0;
+      sinon.stub(mockAxiosClient, 'post').callsFake(async () => {
+        callCount++;
+        if (callCount === 1) {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 1,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                { appId: 100, recordId: 1, fieldData: [] },
+                { appId: 100, recordId: 2, fieldData: [] },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        } else {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 2,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [{ appId: 100, recordId: 3, fieldData: [] }],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        }
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.queryRecordsIterable(
+        100,
+        "status eq 'Active'",
+        [],
+        DataFormat.Raw,
+        2
+      )) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(3);
+      expect(records[0]).to.be.instanceOf(Record);
+      expect(records[0]).to.have.property('recordId', 1);
+      expect(records[1]).to.have.property('recordId', 2);
+      expect(records[2]).to.have.property('recordId', 3);
+    });
+
+    it('should stop iteration when request fails', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').callsFake(async () => {
+        return await Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.queryRecordsIterable(
+        100,
+        "status eq 'Active'",
+        [],
+        DataFormat.Raw,
+        2
+      )) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(0);
+    });
+
+    it('should use default parameters when not specified', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'post').callsFake(async () => {
+        return await Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 50,
+            totalPages: 1,
+            totalRecords: 1,
+            items: [{ appId: 100, recordId: 1, fieldData: [] }],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const records: Record[] = [];
+      for await (const record of client.queryRecordsIterable(
+        100,
+        "status eq 'Active'"
+      )) {
+        records.push(record);
+      }
+
+      expect(records).to.have.lengthOf(1);
+    });
+  });
+
+  describe('getReportsByAppIdIterable', function () {
+    it('should be defined', function () {
+      expect(OnspringClient.prototype.getReportsByAppIdIterable).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(OnspringClient.prototype.getReportsByAppIdIterable).to.be.a(
+        'function'
+      );
+    });
+
+    it('should yield all reports across multiple pages', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      let callCount = 0;
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        callCount++;
+        if (callCount === 1) {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 1,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                { appId: 100, id: 1, name: 'Report 1', description: 'Test' },
+                { appId: 100, id: 2, name: 'Report 2', description: 'Test' },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        } else {
+          return await Promise.resolve({
+            status: 200,
+            statusText: 'OK',
+            data: {
+              pageNumber: 2,
+              pageSize: 2,
+              totalPages: 2,
+              totalRecords: 3,
+              items: [
+                { appId: 100, id: 3, name: 'Report 3', description: 'Test' },
+              ],
+            },
+            headers: {},
+            config: {} as InternalAxiosRequestConfig,
+          } as AxiosResponse);
+        }
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const reports: Report[] = [];
+      for await (const report of client.getReportsByAppIdIterable(100, 2)) {
+        reports.push(report);
+      }
+
+      expect(reports).to.have.lengthOf(3);
+      expect(reports[0]).to.be.instanceOf(Report);
+      expect(reports[0]).to.have.property('id', 1);
+      expect(reports[1]).to.have.property('id', 2);
+      expect(reports[2]).to.have.property('id', 3);
+    });
+
+    it('should stop iteration when request fails', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 500,
+          statusText: 'Internal Server Error',
+          data: null,
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const reports: Report[] = [];
+      for await (const report of client.getReportsByAppIdIterable(100, 2)) {
+        reports.push(report);
+      }
+
+      expect(reports).to.have.lengthOf(0);
+    });
+
+    it('should use default page size when not specified', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').callsFake(async () => {
+        return await Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 50,
+            totalPages: 1,
+            totalRecords: 1,
+            items: [
+              { appId: 100, id: 1, name: 'Report 1', description: 'Test' },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse);
+      });
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const reports: Report[] = [];
+      for await (const report of client.getReportsByAppIdIterable(100)) {
+        reports.push(report);
+      }
+
+      expect(reports).to.have.lengthOf(1);
     });
   });
 });
