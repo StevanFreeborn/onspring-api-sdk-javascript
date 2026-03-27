@@ -232,6 +232,85 @@ describe('OnspringClient', function () {
     });
   });
 
+  describe('getAllApps', function () {
+    it('should be define', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAllApps).to.not.be
+        .undefined;
+    });
+
+    it('should be a function', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAllApps).to.be.a(
+        'function'
+      );
+    });
+
+    it('should have 0 parameter', function () {
+      expect(new OnspringClient(baseUrl, apiKey).getAllApps).to.have.lengthOf(
+        0
+      );
+    });
+
+    it('should return a async generator', function () {
+      const result = new OnspringClient(baseUrl, apiKey).getAllApps();
+
+      expect(result).to.have.property(Symbol.asyncIterator);
+      expect(result[Symbol.asyncIterator]).to.be.a('function');
+
+      expect(result).to.have.property('next').that.is.a('function');
+      expect(result).to.have.property('return').that.is.a('function');
+      expect(result).to.have.property('throw').that.is.a('function');
+    });
+
+    it('should return a promise that resolves to an async iterable of paged response of apps when request is successful', async function () {
+      const client = new OnspringClient(baseUrl, apiKey);
+
+      const mockAxiosClient = axios.create({
+        baseURL: baseUrl,
+        headers: {
+          'x-apikey': apiKey,
+          'x-api-version': '2',
+        },
+      });
+
+      sinon.stub(mockAxiosClient, 'get').returns(
+        Promise.resolve({
+          status: 200,
+          statusText: 'OK',
+          data: {
+            pageNumber: 1,
+            pageSize: 2,
+            totalPages: 1,
+            totalRecords: 2,
+            items: [
+              {
+                href: 'https://api.onspring.dev/Apps/id/1',
+                id: '1',
+                name: 'Test App 1',
+              },
+              {
+                href: 'https://api.onspring.dev/Apps/id/2',
+                id: '2',
+                name: 'Test App 2',
+              },
+            ],
+          },
+          headers: {},
+          config: {} as InternalAxiosRequestConfig,
+        } as AxiosResponse)
+      );
+
+      sinon.stub(client, '_client' as any).value(mockAxiosClient);
+
+      const collectedPages: Array<ApiResponse<GetPagedAppsResponse>> = [];
+
+      for await (const page of client.getAllApps()) {
+        collectedPages.push(page);
+      }
+
+      expect(collectedPages.length).to.equal(1);
+    });
+  });
+
   describe('getApps', function () {
     it('should be defined', function () {
       expect(new OnspringClient(baseUrl, apiKey).getApps).to.not.be.undefined;

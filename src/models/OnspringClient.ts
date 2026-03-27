@@ -112,6 +112,33 @@ export class OnspringClient {
   }
 
   /**
+   * @method getAllApps - Gets an iterable that can be used to page through all.
+   * @param {PagingRequest} pagingRequest - The paging request that will be used to get the apps.
+   * @returns
+   **/
+  public async *getAllApps(
+    pagingRequest: PagingRequest = new PagingRequest(1, 50)
+  ): AsyncGenerator<ApiResponse<GetPagedAppsResponse>, void, unknown> {
+    // TODO: We need to actually honor the page request
+    // the caller gave us. We will use the page number
+    // as our starting page number and we will use the
+    // page size as our page size
+    for await (const page of this.getAllPagesAsync<GetPagedAppsResponse>(
+      async (pr) => await this.getApps(pr)
+    )) {
+      yield page;
+    }
+  }
+
+  private async *getAllPagesAsync<T>(
+    callback: (pagingRequest: PagingRequest) => Promise<ApiResponse<T>>
+  ): AsyncGenerator<ApiResponse<T>, void, unknown> {
+    const pagingRequest = new PagingRequest(1, 50);
+    const initialResponse = await callback(pagingRequest);
+    yield initialResponse;
+  }
+
+  /**
    * @method getAppById - Gets an app by its id.
    * @param {number} appId - The id of the app to get.
    * @returns {Promise<ApiResponse<App>>} - A promise that resolves to an ApiResponse of type App.
