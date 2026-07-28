@@ -921,7 +921,7 @@ describe('ApiResponse', function () {
       const apiResponse = new ApiResponse(200, 'OK', mockResponseData);
       const fileResponse = apiResponse.asFileType(mockResponse);
 
-      expect(fileResponse.data).to.have.property('contentType', null);
+      expect(fileResponse.data).to.have.property('contentType', '');
     });
 
     it('should return an ApiResponse<file> with proper contentLength value when header is Content-Length', function () {

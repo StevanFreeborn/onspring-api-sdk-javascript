@@ -118,7 +118,7 @@ describe('OnspringClient', function () {
 
   it('should create a new instance of an onspring client when passed an axios config object', function () {
     const config = {
-      validateStatus: function (status) {
+      validateStatus: function (status: number) {
         return status >= 200 && status < 300;
       },
     };

@@ -45,7 +45,7 @@ describe('GetPagedRecordsResponse', function () {
   });
 
   it('should have a constructor that sets the items property', function () {
-    const items = [];
+    const items: any[] = [];
     const pageNumber = 1;
     const pageSize = 1;
     const totalPages = 1;

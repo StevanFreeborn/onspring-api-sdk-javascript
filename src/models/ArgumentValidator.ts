@@ -25,7 +25,7 @@ export class ArgumentValidator {
 
     try {
       url = new URL(value);
-    } catch (error) {
+    } catch {
       return false;
     }
 

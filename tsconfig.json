@@ -5,9 +5,10 @@
     "declarationDir": "./dist/types",
     "esModuleInterop": true,
     "target": "ES6",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "types": ["mocha", "node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*", "integrationTests/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs",
