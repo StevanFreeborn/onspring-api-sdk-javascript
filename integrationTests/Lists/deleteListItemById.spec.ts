@@ -1,13 +1,15 @@
 import { ListItemRequest, OnspringClient } from '../../src';
 import { expect } from 'chai';
-import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 
 describe('deleteListItemById', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should delete a list item', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_LIST_ID === undefined) {
       expect.fail('TEST_LIST_ID is not defined');
@@ -40,7 +42,7 @@ describe('deleteListItemById', function () {
   });
 
   it('should return a 401 error when deleting a list item and the API key is invalid', async function () {
-    const client = new OnspringClient(getBaseUrl(), 'invalid');
+    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
     const response = await client.deleteListItemById(1, '1');
 
     expect(response.statusCode).to.equal(401);
@@ -50,7 +52,10 @@ describe('deleteListItemById', function () {
   });
 
   it('should return a 403 error when deleting a list item and the api key does not have access to update the list', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_LIST_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_LIST_ID_NO_ACCESS is not defined');
@@ -72,7 +77,10 @@ describe('deleteListItemById', function () {
   });
 
   it('should return a 404 error when deleting a list item and its list does not exist', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
     const response = await client.deleteListItemById(
       0,
       '3fa85f64-5717-4562-b3fc-2c963f66afa6'
@@ -85,7 +93,10 @@ describe('deleteListItemById', function () {
   });
 
   it('should return a 404 error when deleting a list item that does not exist', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_LIST_ID === undefined) {
       expect.fail('TEST_LIST_ID is not defined');

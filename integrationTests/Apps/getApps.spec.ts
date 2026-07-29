@@ -1,13 +1,15 @@
 import { OnspringClient, PagingRequest } from '../../src';
 import { expect } from 'chai';
-import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 
 describe('getApps', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return a paged list of apps', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
     const response = await client.getApps();
 
     expect(response.statusCode).to.equal(200);
@@ -34,7 +36,10 @@ describe('getApps', function () {
   });
 
   it('should return a paged list of apps with with correct page size and number when passed paging request', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
     const response = await client.getApps(new PagingRequest(1, 1));
 
     expect(response.statusCode).to.equal(200);
@@ -61,7 +66,10 @@ describe('getApps', function () {
   });
 
   it('should return a 400 response when an invalid page size is used', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
     const response = await client.getApps({ pageNumber: 1, pageSize: 1001 });
 
     expect(response.statusCode).to.equal(400);
@@ -71,7 +79,7 @@ describe('getApps', function () {
   });
 
   it('should return a 401 response when an invalid api key is used', async function () {
-    const client = new OnspringClient(getBaseUrl(), 'invalid');
+    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
     const response = await client.getApps();
 
     expect(response.statusCode).to.equal(401);

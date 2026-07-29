@@ -1,13 +1,15 @@
 import { OnspringClient } from '../../src';
 import { expect } from 'chai';
-import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 
 describe('getAppById', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return an app', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_APP_ID === undefined) {
       return expect.fail('TEST_APP_ID is not defined');
@@ -29,7 +31,7 @@ describe('getAppById', function () {
   });
 
   it('should return a 401 error when an invalid api key is used', async function () {
-    const client = new OnspringClient(getBaseUrl(), 'invalid');
+    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
     const response = await client.getAppById(1);
 
     expect(response.statusCode).to.equal(401);
@@ -39,7 +41,10 @@ describe('getAppById', function () {
   });
 
   it('should return a 403 error when api key does not have access to the requested app', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       return expect.fail('TEST_APP_ID_NO_ACCESS is not defined');
@@ -55,7 +60,10 @@ describe('getAppById', function () {
   });
 
   it('should return a 404 error when an app id cannot be found', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
     const response = await client.getAppById(0);
 
     expect(response.statusCode).to.equal(404);

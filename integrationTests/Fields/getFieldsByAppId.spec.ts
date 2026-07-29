@@ -1,13 +1,15 @@
 import { OnspringClient, PagingRequest } from '../../src';
 import { expect } from 'chai';
-import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 
 describe('getFieldsByAppId', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return a paged list of fields', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       return expect.fail('TEST_SURVEY_ID is not defined');
@@ -44,7 +46,10 @@ describe('getFieldsByAppId', function () {
   });
 
   it('should return a paged list of fields with with correct page size and number when passed paging request', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       return expect.fail('TEST_SURVEY_ID is not defined');
@@ -84,7 +89,10 @@ describe('getFieldsByAppId', function () {
   });
 
   it('should return a 400 response when an invalid page size is used', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       return expect.fail('TEST_SURVEY_ID is not defined');
@@ -103,7 +111,7 @@ describe('getFieldsByAppId', function () {
   });
 
   it('should return a 401 response when an invalid api key is used', async function () {
-    const client = new OnspringClient(getBaseUrl(), 'invalid');
+    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
     const response = await client.getFieldsByAppId(1);
 
     expect(response.statusCode).to.equal(401);
@@ -113,7 +121,10 @@ describe('getFieldsByAppId', function () {
   });
 
   it('should return a 403 response when api key does not have access to the app', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       return expect.fail('TEST_APP_ID_NO_ACCESS is not defined');

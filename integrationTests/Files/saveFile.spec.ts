@@ -1,6 +1,5 @@
 import { OnspringClient, SaveFileRequest } from '../../src';
 import { expect } from 'chai';
-import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 import fs from 'fs';
 import path from 'path';
 
@@ -18,7 +17,10 @@ describe('saveFile', function () {
   });
 
   it('should save a file into an attachment field', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -57,7 +59,10 @@ describe('saveFile', function () {
   });
 
   it('should save a file into an image field', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -96,7 +101,10 @@ describe('saveFile', function () {
   });
 
   it('should return a 400 response when fieldId is not for a file field', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -130,7 +138,7 @@ describe('saveFile', function () {
   });
 
   it('should return a 401 response when the api key is invalid', async function () {
-    const client = new OnspringClient(getBaseUrl(), 'invalid');
+    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
 
     const currentDirectory = __dirname;
     const parentDirectory = path.resolve(currentDirectory, '..');
@@ -156,7 +164,10 @@ describe('saveFile', function () {
   });
 
   it('should return a 403 response when the api key does not have access to the field where the file is held', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD is not defined');
@@ -186,7 +197,10 @@ describe('saveFile', function () {
   });
 
   it('should return a 403 response when the api key does not have access to the app where the file is held', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD_NO_ACCESS_APP is not defined');
@@ -216,7 +230,10 @@ describe('saveFile', function () {
   });
 
   it('should return a 404 response when the file field cannot be found', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     const currentDirectory = __dirname;
     const parentDirectory = path.resolve(currentDirectory, '..');
@@ -242,7 +259,10 @@ describe('saveFile', function () {
   });
 
   it('should return a 404 response when the file record cannot be found', async function () {
-    const client = new OnspringClient(getBaseUrl(), getApiKey());
+    const client = new OnspringClient(
+      process.env.API_BASE_URL!,
+      process.env.SANDBOX_API_KEY!
+    );
 
     if (process.env.TEST_ATTACHMENT_FIELD === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD is not defined');
@@ -273,7 +293,10 @@ describe('saveFile', function () {
 });
 
 async function deleteFile(newFileId: number): Promise<void> {
-  const client = new OnspringClient(getBaseUrl(), getApiKey());
+  const client = new OnspringClient(
+    process.env.API_BASE_URL!,
+    process.env.SANDBOX_API_KEY!
+  );
 
   if (
     process.env.TEST_RECORD === undefined ||
