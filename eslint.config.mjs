@@ -8,7 +8,7 @@ const typeCheckedFiles = [
 ];
 
 export default [
-  { ignores: ['coverage/', 'docs/', 'scripts/', 'eslint.config.*'] },
+  { ignores: ['coverage/', 'docs/', 'scripts/', 'dist/', 'eslint.config.*'] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
