@@ -1,22 +1,19 @@
 import {
   DataFormat,
   FilterOperators,
-  OnspringClient,
   PagingRequest,
   QueryFilter,
   QueryRecordsRequest,
 } from '../../src';
 import { expect } from 'chai';
+import { getClient } from '../mochaRootHooks';
 
 describe('queryRecords', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return records', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -60,10 +57,7 @@ describe('queryRecords', function () {
   });
 
   it('should return records when data format, paging information, and fields are passed as parameters', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -114,10 +108,7 @@ describe('queryRecords', function () {
   });
 
   it('should return a 400 error if page size is invalid', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const request = new QueryRecordsRequest(1, '', [], DataFormat.Formatted, {
       pageNumber: 1,
       pageSize: 1001,
@@ -132,7 +123,7 @@ describe('queryRecords', function () {
   });
 
   it('should return a 401 error if the API key is invalid', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const request = new QueryRecordsRequest(1, '');
     const response = await client.queryRecords(request);
 
@@ -143,10 +134,7 @@ describe('queryRecords', function () {
   });
 
   it('should return a 403 error if the API key does not have access to the app', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');

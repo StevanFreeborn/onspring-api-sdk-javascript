@@ -1,6 +1,7 @@
 import { StringRecordValue } from './../../src/models/StringRecordValue';
-import { OnspringClient, Record } from './../../src';
+import { Record } from './../../src';
 import { expect } from 'chai';
+import { getClient } from '../mochaRootHooks';
 
 describe('saveRecord', function () {
   this.timeout(30000);
@@ -15,10 +16,7 @@ describe('saveRecord', function () {
   });
 
   it('should add a record when no record id is passed', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -52,10 +50,7 @@ describe('saveRecord', function () {
   });
 
   it('should update a record when a record id is passed', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -106,10 +101,7 @@ describe('saveRecord', function () {
   });
 
   it('should return a 400 error when field data is empty', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -126,7 +118,7 @@ describe('saveRecord', function () {
   });
 
   it('should return a 401 error when the api key is invalid', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const response = await client.saveRecord(new Record(0, null, []));
 
     expect(response.statusCode).to.equal(401);
@@ -136,10 +128,7 @@ describe('saveRecord', function () {
   });
 
   it('should return a 403 error when the api key does not have access to the app', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');
@@ -155,10 +144,7 @@ describe('saveRecord', function () {
   });
 
   it('should return a 404 error when the record id is not found', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -176,9 +162,6 @@ describe('saveRecord', function () {
 });
 
 async function deleteRecord(appId: number, recordId: number): Promise<void> {
-  const client = new OnspringClient(
-    process.env.API_BASE_URL!,
-    process.env.SANDBOX_API_KEY!
-  );
+  const client = getClient();
   await client.deleteRecordById(appId, recordId);
 }

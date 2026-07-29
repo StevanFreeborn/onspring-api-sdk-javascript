@@ -1,5 +1,5 @@
 import { ListItemRequest } from './../../src';
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
 
 describe('addOrUpdateListItem', function () {
@@ -16,10 +16,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should add a list item', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_LIST_FIELD === undefined) {
       expect.fail('TEST_LIST_FIELD is not defined');
@@ -51,10 +48,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should update a list item', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_LIST_FIELD === undefined) {
       expect.fail('TEST_LIST_FIELD is not defined');
@@ -98,7 +92,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should return a 401 error when an invalid api key is used', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const request = new ListItemRequest(1, null, 'test', 1, '#000000');
     const response = await client.addOrUpdateListItem(request);
 
@@ -109,10 +103,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should return a 403 error when api key does not have access to the list', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const request = new ListItemRequest(1, null, 'test', 1, '#000000');
     const response = await client.addOrUpdateListItem(request);
 
@@ -123,10 +114,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should return a 404 error when the list does not exist', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const request = new ListItemRequest(0, null, 'test', 1, '#000000');
     const response = await client.addOrUpdateListItem(request);
 
@@ -137,10 +125,7 @@ describe('addOrUpdateListItem', function () {
   });
 
   it('should return a 404 error when the list item does not exist', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_LIST_ID === undefined) {
       expect.fail('TEST_LIST_ID is not defined');
@@ -164,10 +149,7 @@ describe('addOrUpdateListItem', function () {
 });
 
 async function deleteListItem(listItemIds: string): Promise<void> {
-  const client = new OnspringClient(
-    process.env.API_BASE_URL!,
-    process.env.SANDBOX_API_KEY!
-  );
+  const client = getClient();
 
   if (process.env.TEST_LIST_ID === undefined) {
     return;

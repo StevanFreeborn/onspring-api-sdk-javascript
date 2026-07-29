@@ -1,4 +1,4 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
 
 describe('getFieldsByIds', function () {
@@ -6,10 +6,7 @@ describe('getFieldsByIds', function () {
   this.retries(3);
 
   it('should return a collection of fields', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_FIELD_IDS === undefined) {
       return expect.fail('TEST_FIELD_IDS is not defined');
@@ -42,7 +39,7 @@ describe('getFieldsByIds', function () {
   });
 
   it('should return a 401 response when an invalid api key is used', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const response = await client.getFieldsByIds([1, 2, 3]);
 
     expect(response.statusCode).to.equal(401);
@@ -52,10 +49,7 @@ describe('getFieldsByIds', function () {
   });
 
   it('should return a 403 response when the api key does not have access to any of the requested fields', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_FIELD_IDS_NO_ACCESS === undefined) {
       return expect.fail('TEST_FIELD_IDS_NO_ACCESS is not defined');

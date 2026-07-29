@@ -1,4 +1,4 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
 
 describe('canConnect', function () {
@@ -6,10 +6,7 @@ describe('canConnect', function () {
   this.retries(3);
 
   it('should be able to connect to the API', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const response = await client.canConnect();
     expect(response).to.be.true;
   });

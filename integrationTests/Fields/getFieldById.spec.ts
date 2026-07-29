@@ -1,4 +1,4 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
 
 describe('getAppById', function () {
@@ -6,10 +6,7 @@ describe('getAppById', function () {
   this.retries(3);
 
   it('should return a field', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_FIELD_ID === undefined) {
       return expect.fail('TEST_FIELD_ID is not defined');
@@ -35,7 +32,7 @@ describe('getAppById', function () {
   });
 
   it('should return a 401 error when an invalid api key is used', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const response = await client.getFieldById(1);
 
     expect(response.statusCode).to.equal(401);
@@ -45,10 +42,7 @@ describe('getAppById', function () {
   });
 
   it('should return a 403 error when api key does not have access to the requested field', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_FIELD_ID_NO_ACCESS === undefined) {
       return expect.fail('TEST_FIELD_ID_NO_ACCESS is not defined');
@@ -64,10 +58,7 @@ describe('getAppById', function () {
   });
 
   it('should return a 404 error when the requested field does not exist', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const response = await client.getFieldById(0);
 
     expect(response.statusCode).to.equal(404);

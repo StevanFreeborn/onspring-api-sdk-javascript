@@ -1,4 +1,4 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
 import { addRecord } from '../utils/addRecord';
 
@@ -7,23 +7,14 @@ describe('deleteRecordsByIds', function () {
   this.retries(3);
 
   it('should delete records', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
     }
 
-    const recordId1 = await addRecord(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
-    const recordId2 = await addRecord(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const recordId1 = await addRecord(getClient());
+    const recordId2 = await addRecord(getClient());
 
     const response = await client.deleteRecordsByIds(
       parseInt(process.env.TEST_SURVEY_ID),
@@ -37,10 +28,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 400 error when no record ids are provided', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -58,7 +46,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 401 error when an invalid API key is used', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
 
     const response = await client.deleteRecordsByIds(1, [1]);
 
@@ -69,10 +57,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 403 error when the API key does not have access to the app', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');

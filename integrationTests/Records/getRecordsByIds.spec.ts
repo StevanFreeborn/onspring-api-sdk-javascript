@@ -1,15 +1,13 @@
-import { OnspringClient, GetRecordsRequest, DataFormat } from './../../src';
+import { GetRecordsRequest, DataFormat } from './../../src';
 import { expect } from 'chai';
+import { getClient } from '../mochaRootHooks';
 
 describe('getRecordsByIds', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should get records', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -52,10 +50,7 @@ describe('getRecordsByIds', function () {
   });
 
   it('should get records when field ids and data format are passed as parameters', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -108,10 +103,7 @@ describe('getRecordsByIds', function () {
   });
 
   it('should return a 400 error if too many record ids are passed', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
     const recordIds = new Array(101).fill(1);
     const request = new GetRecordsRequest(1, recordIds);
     const response = await client.getRecordsByIds(request);
@@ -123,7 +115,7 @@ describe('getRecordsByIds', function () {
   });
 
   it('should return a 401 error if the api key is invalid', async function () {
-    const client = new OnspringClient(process.env.API_BASE_URL!, 'invalid');
+    const client = getClient('invalid');
     const request = new GetRecordsRequest(1, [1]);
     const response = await client.getRecordsByIds(request);
 
@@ -134,10 +126,7 @@ describe('getRecordsByIds', function () {
   });
 
   it('should return a 403 error if the user does not have access to the app', async function () {
-    const client = new OnspringClient(
-      process.env.API_BASE_URL!,
-      process.env.SANDBOX_API_KEY!
-    );
+    const client = getClient();
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');
