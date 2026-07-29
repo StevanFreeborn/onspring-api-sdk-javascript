@@ -1,0 +1,12 @@
+{
+  "checkCoverage": true,
+  "branches": 100,
+  "lines": 100,
+  "functions": 100,
+  "statements": 100,
+  "all": true,
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/index.ts", "**/*.spec.ts"],
+  "reporter": ["html", "lcov", "text", "text-summary"],
+  "reportsDir": "coverage"
+}

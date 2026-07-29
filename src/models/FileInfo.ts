@@ -54,11 +54,11 @@ export class FileInfo {
     notes: string,
     fileHref: string
   ) {
-    if (FieldType[type] === undefined) {
+    if (FieldType[type as keyof typeof FieldType] === undefined) {
       throw new Error(`The type '${type}' is not a valid FieldType.`);
     }
 
-    this.type = FieldType[type];
+    this.type = FieldType[type as keyof typeof FieldType];
     this.contentType = contentType;
     this.name = name;
     this.createdDate = createdDate;

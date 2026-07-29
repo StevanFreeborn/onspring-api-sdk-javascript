@@ -1,13 +1,12 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
 
 describe('getAppsByIds', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return a collection of apps', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
     const appIds = process.env.TEST_APP_IDS;
 
     if (appIds === undefined) {
@@ -37,7 +36,7 @@ describe('getAppsByIds', function () {
   });
 
   it('should return a 401 error when an invalid api key is used', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = getClient('invalid');
     const response = await client.getAppsByIds([1]);
 
     expect(response.statusCode).to.equal(401);
@@ -47,7 +46,7 @@ describe('getAppsByIds', function () {
   });
 
   it('should return a 403 error when api key does not have access to any of the requested app', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
     const appIds = process.env.TEST_APP_IDS_NO_ACCESS;
 
     if (appIds === undefined) {

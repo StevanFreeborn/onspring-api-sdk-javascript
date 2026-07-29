@@ -1,13 +1,12 @@
-import { OnspringClient } from '../../src';
+import { getClient } from '../mochaRootHooks';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
 
 describe('getFileInfoById', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should return information about a file in an attachment field', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -45,7 +44,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return information about a file in an image field', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -82,7 +81,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 400 response when fieldId is not for a file field', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -108,7 +107,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 401 response when the api key is invalid', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = getClient('invalid');
 
     if (process.env.TEST_RECORD === undefined) {
       expect.fail('TEST_RECORD is not defined');
@@ -134,7 +133,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 403 response when the api key does not have access to the file field', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD_NO_ACCESS_FIELD is not defined');
@@ -150,7 +149,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 403 response when the api key does not have access to the app where the file is held', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_ATTACHMENT_FIELD_NO_ACCESS_APP === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD_NO_ACCESS_APP is not defined');
@@ -166,7 +165,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 404 response when the file field cannot be found', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
     const response = await client.getFileInfoById(1, 0, 1);
 
     expect(response.statusCode).to.equal(404);
@@ -176,7 +175,7 @@ describe('getFileInfoById', function () {
   });
 
   it('should return a 404 response when the file record cannot be found', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_ATTACHMENT_FIELD === undefined) {
       expect.fail('TEST_ATTACHMENT_FIELD is not defined');

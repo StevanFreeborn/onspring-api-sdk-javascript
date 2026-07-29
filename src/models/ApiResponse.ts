@@ -283,12 +283,12 @@ export class ApiResponse<T> {
       response.headers['Content-Length'] ??
       0;
 
-    contentLength = parseInt(contentLength);
+    contentLength = parseInt(String(contentLength));
 
     const file = new File(
       apiResponse.data,
       fileName,
-      contentType,
+      String(contentType ?? ''),
       contentLength
     );
 
@@ -348,7 +348,7 @@ export class ApiResponse<T> {
   asReportDataType(): ApiResponse<ReportData> {
     const apiResponse = this as ApiResponse<any>;
 
-    const rows = apiResponse.data.rows.map((row) => {
+    const rows = apiResponse.data.rows.map((row: any) => {
       return new Row(row.recordId, row.cells);
     });
 
@@ -466,7 +466,8 @@ export class ApiResponse<T> {
    * @returns {RecordValue} - The RecordValue.
    */
   private static getRecordValueByType(recordValueItem: any): RecordValue<any> {
-    const type = RecordValueType[recordValueItem.type];
+    const type =
+      RecordValueType[recordValueItem.type as keyof typeof RecordValueType];
 
     switch (type) {
       case RecordValueType.String: {
@@ -577,8 +578,8 @@ export class ApiResponse<T> {
    * @throws {Error} - If the field item's type is unknown.
    */
   private static getFieldByType(fieldItem: any): Field {
-    const type = FieldType[fieldItem.type];
-    const status = FieldStatus[fieldItem.status];
+    const type = FieldType[fieldItem.type as keyof typeof FieldType];
+    const status = FieldStatus[fieldItem.status as keyof typeof FieldStatus];
 
     if (type === undefined) {
       throw new Error(`Unknown field type: ${fieldItem.type as string}`);
@@ -586,7 +587,8 @@ export class ApiResponse<T> {
 
     switch (type) {
       case FieldType.Reference: {
-        const multiplicity = Multiplicity[fieldItem.multiplicity];
+        const multiplicity =
+          Multiplicity[fieldItem.multiplicity as keyof typeof Multiplicity];
 
         return new ReferenceField(
           fieldItem.id,
@@ -602,7 +604,8 @@ export class ApiResponse<T> {
       }
       case FieldType.List: {
         const values = ApiResponse.getListValues(fieldItem);
-        const multiplicity = Multiplicity[fieldItem.multiplicity];
+        const multiplicity =
+          Multiplicity[fieldItem.multiplicity as keyof typeof Multiplicity];
 
         return new ListField(
           fieldItem.id,
@@ -619,7 +622,10 @@ export class ApiResponse<T> {
       }
       case FieldType.Formula: {
         const values = ApiResponse.getListValues(fieldItem);
-        const outputType = FormulaOutputType[fieldItem.outputType];
+        const outputType =
+          FormulaOutputType[
+            fieldItem.outputType as keyof typeof FormulaOutputType
+          ];
 
         return new FormulaField(
           fieldItem.id,
@@ -653,7 +659,8 @@ export class ApiResponse<T> {
    * @returns {Delegate} - The converted Delegate object.
    */
   private static convertToDelegate(delegateItem: any): Delegate {
-    const delegateType = DelegateType[delegateItem.delegateType];
+    const delegateType =
+      DelegateType[delegateItem.delegateType as keyof typeof DelegateType];
 
     if (delegateType === undefined) {
       throw new Error(
@@ -704,7 +711,10 @@ export class ApiResponse<T> {
    * @returns {Attachment} - The converted attachment object.
    */
   private static convertToAttachment(attachmentItem: any): Attachment {
-    const storageLocation = FileStorageSite[attachmentItem.storageLocation];
+    const storageLocation =
+      FileStorageSite[
+        attachmentItem.storageLocation as keyof typeof FileStorageSite
+      ];
 
     if (storageLocation === undefined) {
       throw new Error(
@@ -733,13 +743,18 @@ export class ApiResponse<T> {
    * @returns {TimeSpanData} - The converted time span data object.
    */
   private static convertToTimeSpanData(timeSpanItem: any): TimeSpanData {
-    const increment = TimeSpanIncrement[timeSpanItem.increment];
+    const increment =
+      TimeSpanIncrement[
+        timeSpanItem.increment as keyof typeof TimeSpanIncrement
+      ];
 
     const hasRecurrence =
       timeSpanItem.recurrence !== null && timeSpanItem.recurrence !== undefined;
 
     const recurrence = hasRecurrence
-      ? TimeSpanRecurrenceType[timeSpanItem.recurrence]
+      ? TimeSpanRecurrenceType[
+          timeSpanItem.recurrence as keyof typeof TimeSpanRecurrenceType
+        ]
       : null;
 
     const hasEndAfterOccurrences =

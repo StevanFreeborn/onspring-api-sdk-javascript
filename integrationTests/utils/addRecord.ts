@@ -1,12 +1,7 @@
 import { OnspringClient, Record, StringRecordValue } from '../../src';
 import { expect } from 'chai';
 
-async function addRecord(
-  baseURL: string | undefined,
-  apiKey: string | undefined
-): Promise<number> {
-  const client = new OnspringClient(baseURL, apiKey);
-
+async function addRecord(client: OnspringClient): Promise<number> {
   if (process.env.TEST_SURVEY_ID === undefined) {
     expect.fail('TEST_SURVEY_ID is not defined');
   }

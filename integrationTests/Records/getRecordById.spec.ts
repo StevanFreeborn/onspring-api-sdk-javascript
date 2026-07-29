@@ -1,13 +1,13 @@
-import { OnspringClient, GetRecordRequest, DataFormat } from './../../src';
+import { GetRecordRequest, DataFormat } from './../../src';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
+import { getClient } from '../mochaRootHooks';
 
 describe('getRecordById', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should get a record', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -45,7 +45,7 @@ describe('getRecordById', function () {
   });
 
   it('should get a record when fieldIds and data format are passed as parameters', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -94,7 +94,7 @@ describe('getRecordById', function () {
   });
 
   it('should return a 401 error when an invalid API key is used', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = getClient('invalid');
     const response = await client.getRecordById(new GetRecordRequest(1, 1));
 
     expect(response.statusCode).to.equal(401);
@@ -104,7 +104,7 @@ describe('getRecordById', function () {
   });
 
   it('should return a 404 error when an invalid record id is used', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = getClient();
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
