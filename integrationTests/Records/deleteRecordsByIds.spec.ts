@@ -1,6 +1,6 @@
 import { OnspringClient } from '../../src';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
+import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 import { addRecord } from '../utils/addRecord';
 
 describe('deleteRecordsByIds', function () {
@@ -8,14 +8,14 @@ describe('deleteRecordsByIds', function () {
   this.retries(3);
 
   it('should delete records', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
     }
 
-    const recordId1 = await addRecord(baseURL, apiKey);
-    const recordId2 = await addRecord(baseURL, apiKey);
+    const recordId1 = await addRecord(getBaseUrl(), getApiKey());
+    const recordId2 = await addRecord(getBaseUrl(), getApiKey());
 
     const response = await client.deleteRecordsByIds(
       parseInt(process.env.TEST_SURVEY_ID),
@@ -29,7 +29,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 400 error when no record ids are provided', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -47,7 +47,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 401 error when an invalid API key is used', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = new OnspringClient(getBaseUrl(), 'invalid');
 
     const response = await client.deleteRecordsByIds(1, [1]);
 
@@ -58,7 +58,7 @@ describe('deleteRecordsByIds', function () {
   });
 
   it('should return a 403 error when the API key does not have access to the app', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');

@@ -1,14 +1,14 @@
 import { GetRecordsByAppIdRequest } from './../../src/models/GetRecordsByAppIdRequest';
 import { DataFormat, OnspringClient, PagingRequest } from './../../src';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
+import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 
 describe('getRecordsByAppId', function () {
   this.timeout(30000);
   this.retries(3);
 
   it('should get records', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -54,7 +54,7 @@ describe('getRecordsByAppId', function () {
   });
 
   it('should get records when fieldIds, paging information, and data format are passed as parameters', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
@@ -106,7 +106,7 @@ describe('getRecordsByAppId', function () {
   });
 
   it('should return a 401 error when an invalid API key is passed', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = new OnspringClient(getBaseUrl(), 'invalid');
     const request = new GetRecordsByAppIdRequest(0);
     const response = await client.getRecordsByAppId(request);
 
@@ -117,7 +117,7 @@ describe('getRecordsByAppId', function () {
   });
 
   it('should return a 403 error when the api key does not have access to the app', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');

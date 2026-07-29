@@ -1,6 +1,6 @@
 import { OnspringClient } from '../../src';
 import { expect } from 'chai';
-import { baseURL, apiKey } from '../mochaRootHooks';
+import { getBaseUrl, getApiKey } from '../mochaRootHooks';
 import { addRecord } from '../utils/addRecord';
 
 describe('deleteRecordById', function () {
@@ -8,13 +8,13 @@ describe('deleteRecordById', function () {
   this.retries(3);
 
   it('should delete a record', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_SURVEY_ID === undefined) {
       expect.fail('TEST_SURVEY_ID is not defined');
     }
 
-    const recordId = await addRecord(baseURL, apiKey);
+    const recordId = await addRecord(getBaseUrl(), getApiKey());
     const response = await client.deleteRecordById(
       parseInt(process.env.TEST_SURVEY_ID),
       recordId
@@ -27,7 +27,7 @@ describe('deleteRecordById', function () {
   });
 
   it('should return a 401 error when the API key is invalid', async function () {
-    const client = new OnspringClient(baseURL, 'invalid');
+    const client = new OnspringClient(getBaseUrl(), 'invalid');
     const response = await client.deleteRecordById(1, 1);
 
     expect(response.statusCode).to.equal(401);
@@ -37,7 +37,7 @@ describe('deleteRecordById', function () {
   });
 
   it('should return a 403 error when the API key does not have access to the record', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_APP_ID_NO_ACCESS === undefined) {
       expect.fail('TEST_APP_ID_NO_ACCESS is not defined');
@@ -55,7 +55,7 @@ describe('deleteRecordById', function () {
   });
 
   it('should return a 404 error when the record does not exist', async function () {
-    const client = new OnspringClient(baseURL, apiKey);
+    const client = new OnspringClient(getBaseUrl(), getApiKey());
 
     if (process.env.TEST_APP_ID === undefined) {
       expect.fail('TEST_APP_ID is not defined');

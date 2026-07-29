@@ -23,4 +23,22 @@ export const mochaHooks = (): RootHookObject => {
   };
 };
 
-export { baseURL, apiKey };
+export function getBaseUrl(): string {
+  if (baseURL === undefined) {
+    throw new Error(
+      'baseURL is not defined. Ensure mochaRootHooks beforeAll has run first.'
+    );
+  }
+
+  return baseURL;
+}
+
+export function getApiKey(): string {
+  if (apiKey === undefined) {
+    throw new Error(
+      'apiKey is not defined. Ensure mochaRootHooks beforeAll has run first.'
+    );
+  }
+
+  return apiKey;
+}

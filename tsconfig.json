@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "target": "ES6",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "types": ["mocha", "node"]
   },
   "include": ["src/**/*", "tests/**/*", "integrationTests/**/*"],
