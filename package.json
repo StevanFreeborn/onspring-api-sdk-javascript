@@ -98,7 +98,6 @@
     "form-data": "^4.0.5"
   },
   "overrides": {
-    "brace-expansion": "5.0.8",
     "serialize-javascript": "7.0.5",
     "uuid": "11.1.1"
   }
